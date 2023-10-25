@@ -27,6 +27,7 @@
     "title": "Resources"
   },
   "handbook": "Ephemeral Environments Handbook",
+  "compose-spec": "Uffizzi Compose",
   "troubleshooting": "Troubleshooting",
   "-- Products": {
     "type": "separator",

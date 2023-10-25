@@ -1,0 +1,45 @@
+# `config`
+
+Manage the CLI's configuration
+
+``` bash {10}
+uffizzi config [SUBCOMMAND] [OPTIONS]
+```
+
+## `config get-value`
+
+Displays the value of the specified option
+
+``` bash {10}
+uffizzi config get-value [OPTIONS]
+```
+
+| Option                    | Description                                                                                |
+| --------------------------|------------------------------------------------------------------------------------------- |
+| `-p`, `--print`           | Dump kubeconfig to `STDOUT`                                                                |
+| `-q`, `--quiet`           | Suppress output                                                                            |
+| `-k`, `--kubeconfig`      | This option specifies the location of the kubeconfig file to create or update              |
+
+## `config list`
+
+Lists all options and their values from the config file  
+
+``` bash {10}
+uffizzi config list
+```
+
+## `config set`
+
+Sets the value of the specified option
+
+``` bash {10}
+uffizzi config set [OPTION] [VALUE]
+```
+
+## `config unset`
+
+Deletes the value of the specified option
+
+``` bash {10}
+uffizzi config unset [OPTION]
+```

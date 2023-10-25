@@ -1,0 +1,90 @@
+# `project`
+
+Manage Uffizzi projects
+
+``` bash
+uffizzi project [SUBCOMMAND] [OPTIONS]
+```
+
+## `project create`
+
+Create a new Uffizzi project
+
+| Flags                          | Description                                                                                |
+|--------------------------------|--------------------------------------------------------------------------------------------|
+| `--description`                | Project description. Max of 256 characters.                                                |
+| `--name`                       | Name for the project to create                                                             |
+| `--slug`                       | A URL-compatible name used to uniquely identify your Uffizzi project. If a slug is not provided, Uffizzi will automatically generate one.|
+
+
+## `project delete`
+
+Deletes a Uffizzi project witht the given slug.
+
+``` bash
+uffizzi project delete my-app-xc8fw
+```
+
+## `project describe`
+
+Shows metadata for a project
+
+``` bash
+uffizzi project describe [OPTOIN]
+```
+
+| Flags                          | Description                                                                                |
+|--------------------------------|--------------------------------------------------------------------------------------------|
+| `--output`                     | Format output as `json` or `pretty`                                                        |
+
+## `project list`
+
+List all projects for a user's account
+
+``` bash
+uffizzi project list
+```
+
+## `project secret`
+
+Manage secrets for a project
+
+``` bash
+uffizzi project secret [SUBCOMMAND] [OPTIONS]
+```
+
+### `project secret create`
+
+Create a secret from STDIN. Once added, project secrets cannot be viewed or edited—only deleted. Be sure to pass your secrets securely so they are not recoverable from process logs. For example, this command reads standard input piped from the `printf` command: 
+
+``` bash
+printf "my secret password" | uffizzi project secret create MY_SECRET - 
+```
+
+### `project secret delete`
+
+Delete a secret
+
+``` bash
+uffizzi project secret delete [SECRET]
+```
+
+### `project secret list`
+
+Lists metadata for all secrets in a project
+
+``` bash
+uffizzi project secret list
+```
+
+## `project set_default`
+
+Set the default project given with the given project slug. When set, all commands use this project as the default context unless overridden by the --project flag. See [`config`](cli.md#config) for details about CLI configuration.
+
+``` bash
+uffizzi project set-default [PROJECT_SLUG]
+```
+
+## `project compose` (deprecated)
+
+Manage the default compose file for a project. This command has been deprecated.

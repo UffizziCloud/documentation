@@ -1,0 +1,73 @@
+# `dev`  
+
+Manage Uffizzi [dev clusters](/docs/core-concepts/dev-clusters)  
+
+Use these commands for building, pushing, and deploying your
+    project changes to a remote development cluster. Cloud-based
+    dev environments offer many benefits compared to traditional
+    local development, including:  
+      - More similar to production deployments
+      - Access to more memory and CPU for resource-intensive
+        apps
+      - Scalability and flexibility for microservices apps
+      - Faster build times
+      - Avoid accumulation of build artifacts on local machine
+      - App components available at public URLs or IP addresses
+      - TLS certificates for HTTPS
+      - Better team collaboration via shareable links
+
+## `dev start`  
+
+Creates a Uffizzi dev cluster and starts the Skaffold process
+
+``` bash
+uffizzi dev start [CONFIG_FILE] [OPTIONS]
+```
+
+### Positional Arguments
+    `[CONFIG_FILE]`  
+    Path to the development environment configuration file.
+    Currently supports [skaffold.yaml](https://skaffold.dev/docs/references/yaml/) files.
+
+### Options
+
+| Option                    | Description                                                                                |
+| --------------------------|------------------------------------------------------------------------------------------- |
+| `--k8s-version`           | Specify which version of the Kubernetes API to use when creating the cluster, formatted as `[MAJOR].[MINOR]`. Defaults to `1.27`. Minor versions point to the latest release of the corresponding k3s minor version. See https://github.com/k3s-io/k3s/releases|
+| `--default-repo`          | A public or private repo used to push/pull build artifacts. Overrides the global default image registry: `registry.uffizzi.com`.|
+| `-q`, `--quiet`           | Suppress output                                                                            |
+| `-k`, `--kubeconfig`      | This option specifies the location of the kubeconfig file to create or update              |
+
+### Example Usage
+
+If your configuration file is in the current working
+directory and you want to use an auto-generated name,
+run:  
+
+``` bash
+uffizzi dev start
+```
+
+To start a dev environment using a skaffold.yaml config
+file in directory '~/foo', run:
+
+``` bash
+uffizzi dev start ~/foo/skaffold.yaml
+```  
+
+To start a dev environment in quiet  mode,
+run:
+
+``` bash
+uffizzi dev start --quiet
+```
+To start a dev environment using an alternate kubeconfig file,
+run:
+
+``` bash
+uffizzi dev start --kubeconfig="/path/to/alternate/kubeconfig"
+```
+
+## `dev stop` 
+
+## `dev delete`  
