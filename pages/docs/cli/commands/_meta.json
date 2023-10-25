@@ -1,0 +1,12 @@
+{
+    "account": "account",
+    "compose": "compose",
+    "config": "config",
+    "cluster": "cluster",
+    "dev": "dev",
+    "help": "help",
+    "login": "login",
+    "logout": "logout",
+    "project": "project",
+    "version": "version"
+}

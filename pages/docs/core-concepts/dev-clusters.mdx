@@ -1,0 +1,86 @@
+---
+title: Dev Clusters
+description: Learn about dev clusters
+---
+
+import { Callout, FileTree } from 'nextra/components'
+
+# Dev Clusters
+
+Dev clusters are standard Uffizzi [virtual clusters](virtual-clusters) with additional developer tooling for building, testing, and auto-deploying 
+your local project files. This means every time you save changes in your local IDE, your deployed services are hot reloaded, **without having to 
+rebuild your containers**. Plus since the exectution environment is remote, you never have to worry about your local machine's resource constraints.
+
+<Callout>
+    Instead of rebuilding images on each save, your changes are serialized and sent to the dev cluster via gRPC calls, resulting in blazing fast refreshes ⚡️. 
+</Callout>
+
+
+Dev clusters are great for everyday development and testing of your applications, especially for teams that want their development 
+environments to more closely resemble production, such as using domains and TLS certificates for HTTPS, services meshes, and other components that aren't compatible with traditional 
+local development.
+
+## Benefits of Cloud-Based Development
+
+Dev clusters automate the process of building, pushing, and deploying your project changes to a remote development cluster. 
+Cloud-based dev environments offer many benefits compared to traditional local development, including: 
+    - [More similar to production](production-like)
+    - [Access to more CPU and memory](resource-quotas) for resource-intensive applications
+    - Scalability and flexibility for microservices apps
+    - Faster initial build times
+    - Avoid accumulation of build artifacts on local machine
+    - Application components available at public URLs or IP addresses
+    - TLS certificates for HTTPS
+    - Better team collaboration via shareable links 
+
+## Working with Dev Clusters
+
+### Create a Skaffold file
+Uffizzi dev clusters require a [`skaffold.yaml`](https://skaffold.dev/docs/references/yaml/) configuration file 
+that defines how your build artifacts are managed and where to find your application configuration files, such as Helm Charts or kustomizations. 
+
+### Start the dev cluster
+Once you have a valid skaffold file, you can create a dev clustering by running:
+
+```bash
+uffizzi dev start /path/to/skaffold.yaml
+```
+
+This command will provision a dev cluster on Uffizzi and start the Skaffold process on your local machine.
+Anytime you save local changes, they will be synced and redeployed to the remote cluster.  
+
+To learn more about incorporating Uffizzi dev cluster in your development workflow see this 
+guide [Getting Started with Dev Clusters](/docs/dev-environments/dev-clusters).
+
+### 
+
+## Comparison to Skaffold Dev
+
+### Example Skaffold File
+
+Skaffold files are relatively simple files that at a minium define `build` and `manifest` components. 
+Most of the configuration happens in your Charts or manifests, not in the `skaffold.yaml` file itself. 
+For example, this is the skaffold file we use for developing the Uffizzi Cloud platform, which despite 
+being comprised of a half a dozen services, is only about 20 lines of YAML:
+
+```yaml filename="skaffold.yaml"
+apiVersion: skaffold/v4beta6
+kind: Config
+build:
+  artifacts:
+  - image: uffizzi-platform
+    context: .
+    docker:
+      dockerfile: Dockerfile
+    sync:
+      infer:
+      - "**/*"
+manifests:
+  helm:
+    releases:
+      - name: uffizzi
+        chartPath: "charts/uffizzi-platform"
+        skipBuildDependencies: true
+        valuesFiles:
+          - ".helm_values.yaml"
+```

@@ -1,0 +1,68 @@
+import { Steps } from 'nextra/components'
+
+# Virtual Cluster Quickstart
+
+Create a Kubernetes virtual cluster and deploy an example application.
+
+## Prerequisites
+
+- [Install](https://kubernetes.io/docs/tasks/tools/) `kubectl`
+- [Install](installation/cli) the Uffizzi CLI.
+- [Create an account](https://app.uffizzi.com) on Uffizzi Cloud.
+
+## Get started
+
+In this quickstart, we'll use the CLI to create a virtual cluster on Uffizzi Cloud, then use `kubectl` to apply Kubernetes manifests for an [example application](https://github.com/UffizziCloud/quickstart-hello-world).  
+
+<Steps>  
+
+### Create a cluster  
+
+  ```bash copy
+  uffizzi cluster create quickstart
+  # [⠏] Creating cluster quickstart...
+  ```
+
+  _This command will also update the current context of your kubeconfig file. This means that you can use `kubectl` to interact with your virtual cluster._
+
+  ### Clone the example application repo:
+
+  ```bash copy
+  git clone https://github.com/UffizziCloud/quickstart.git && \
+  cd quickstart
+  ```
+
+  This repo includes a [`web.yaml`](https://github.com/UffizziCloud/quickstart/blob/main/manifests/web.yaml) manifest that includes `service`, `ingress` and `deployment` resources.
+
+  ### Apply the manifest to your cluster:
+
+  ```bash copy
+  kubectl apply -f ./manifests
+  # deployment.apps/web created
+  # ingress.networking.k8s.io/web created
+  # service/web created
+  ```
+
+  ### Get the `ingress` of this deployment:
+
+  ```bash copy
+  kubectl get ingress
+  # NAME   CLASS     HOSTS                                                    ADDRESS   PORTS     AGE
+  # web    uffizzi   web-default-quickstart-c831.uclusters.app.uffizzi.com              80, 443   13m
+  ```
+
+  You should see a host address that looks something like this:  
+  > `web-default-quickstart-c831.uclusters.app.uffizzi.com`  
+
+  You can `curl` this address, or copy and paste it into your browser to see the example application running. 
+
+### Clean up
+
+  To clean up your cluster, simply run:
+
+  ```bash copy
+  uffizzi cluster delete quickstart
+  # Cluster quickstart deleted
+  ```
+
+</Steps>

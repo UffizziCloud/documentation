@@ -1,0 +1,39 @@
+---
+title: Reducing E2E Test Exectution by 6x for Ingress-Nginx
+description: By swapping replacing KinD with Uffizzi virtual clusters, we dropped the execution time of the Ingress-Nginx project's end-to-end tests from 55 minutes to 9 minutes.
+---
+
+import { Callout } from 'nextra/components'
+
+# Ingress-Nginx: 6x Faster Tests with Virtual Clusters
+
+Our team at Uffizzi recently collaborated with the open-source project, [ingress-nginx](https://github.com/kubernetes/ingress-nginx), to tackle a persistent challenge: lengthy execution times for end-to-end (e2e) tests. The project has been using [kind](https://kind.sigs.k8s.io) (Kubernetes in Docker) for these tests, running them on GitHub Action runners. However, due to the runners' resource constraints, test execution was slow, allowing only a limited number of tests in parallel. **We saw an opportunity for improvement by introducing [Uffizzi virtual clusters](../../core-concepts/virtual-clusters), which, unlike KinD, operate on multiple compute instances and behave like standard Kubernetes clusters, including greater scalability.** This change aimed to enhance load handling and reduce test times. In this post, we'll walk through how this switch to Uffizzi unfolded and led to a 6x reduction in e2e execution for the ingress-nginx project.
+
+## About Ingress-Nginx
+
+Ingress-nginx is a Kubernetes tool that manages external access to services in a cluster, essentially acting as an HTTP load balancer. It utilizes an Ingress Controller, specifically for NGINX, to interpret and execute routing rules. This controller extends functionality beyond standard Ingress features, supporting various protocols like Websocket, gRPC, and even TCP/UDP applications. Additionally, it offers advanced routing options through additional resources like VirtualServer and TransportServer.
+
+## Pre-existing Test Configuration
+
+Since early 2019, the ingress-nginx project has used [kind](https://kind.sigs.k8s.io) for automated e2e testing. These tests run within a [GitHub Action runner](https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners/about-github-hosted-runners) every time someone pushes to the `main` branch or a pull request. Because these free runners have limited resources, only seven of the 435 tests may be performed in parallel, and each run takes about 55 minutes to complete. 
+
+<Callout>
+    GitHub Actions runners are virtual machines pre-installed with tools necessary for automating tasks like code testing. GitHub-hosted runners are provisioned automatically when a job starts, allow shared information through the runner's filesystem during the job, and are decommissioned after the job's completion.
+</Callout>
+
+
+The `Makefile` and shell scripts contain most of the e2e test logic.
+
+I began replacing kind with Uffizzi by copying and modifying the `run-kind-e2e.sh` script. Instead of creating a local `kind` Cluster, the new script runs the 'uffizzi cluster create` command. Container images must be pushed to a remote registry, so we used our public ephemeral registry `registry.uffizzi.com`. Because the image names were no longer static, a few more environment variables needed to be passed through to the `ginkgo` test runner. The rest of the scripting remains largely unchanged. The Uffizzi virtual cluster is destroyed after the tests finish.
+
+The first e2e tests on Uffizzi initially took roughly 55 minutes to complete, just like `kind` on GitHub Actions. But because we're no longer constrained by the GitHub runner's resources, we can execute more tests in parallel. 21 parallel tests did execute much faster, but some tests randomly failed due to errors from the virtual Kubernetes master, implemented by `k3s` with an embedded SQLite database.
+
+While provisioning faster virtual disks did marginally raise the performance ceiling, my testing showed SQLite was the bottleneck blocking more parallelization. When it became saturated, the Kubernetes API returned errors like "database is locked". Fortunately, external database options are available.
+
+Backing `k3s` with PostgreSQL did allow more parallel tests to execute, but it consumed much more resources. When we tested `etcd`, its performance was remarkable. With 42 parallel test runners, the full suite finished in just 25 minutes. This was a significant improvement, but more opportunities remained.
+
+The Ginkgo framework runs most tests in parallel, but some tests must be executed one at a time. The ingress-nginx project has about a dozen of these serial tests, and they always take roughly nine minutes to complete. This creates an execution time "floor" that became our goal. Environment variables can specify tests to skip or tests to exclusively focus on, so we can separate serial tests out into their own workflow.
+
+One hundred parallel tests were now possible, and they finished in nine minutes, matching the execution time of the serial tests. We even executed all 435 tests in parallel, but the total time didn't improve any further. This parallelization and its speed are not possible on GitHub's free action runners.
+
+Even while executing all tests simultaneously, resource consumption remained low: `k3s` and `etcd` consumed only a few gigabytes of memory and vCPU's. This low profile empowers Uffizzi to offer this performance to all of our customers.

@@ -1,0 +1,38 @@
+{
+  "-- Getting Started": {
+    "type": "separator",
+    "title": "Getting Started"
+  },
+  "index": {
+    "title": "Introduction"
+  },
+  "installation": "Installing Uffizzi",
+  "quickstart": "Quickstart",
+  "core-concepts": "Core Concepts",
+  "cli": "CLI",
+  "compose": {
+    "title": "Compose",
+    "display": "hidden"
+  },
+  "-- Use Cases": {
+    "type": "separator",
+    "title": "Use Cases / Guides"
+  },
+  "dev-environments": "Development",
+  "testing": "Testing",
+  "ci": "CI / Pull Requests",
+  "staging": "Staging",
+  "-- Resources": {
+    "type": "separator",
+    "title": "Resources"
+  },
+  "handbook": "Ephemeral Environments Handbook",
+  "troubleshooting": "Troubleshooting",
+  "-- Products": {
+    "type": "separator",
+    "title": "Products"
+  },
+  "cloud": "Uffizzi Cloud",
+  "enterprise": "Uffizzi Enterprise",
+  "open-source": "Uffizzi Open Source"
+}

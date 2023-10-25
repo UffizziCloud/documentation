@@ -1,0 +1,18 @@
+{
+    "index": {
+        "title": "Spotlight",
+        "theme": {
+            "breadcrumb": true,
+            "footer": true,
+            "pagination": false
+        }
+    },
+    "-- Topics": {
+        "type": "separator",
+        "title": "Topics"
+    },
+    "development": "Development",
+    "testing": "Testing",
+    "ci": "CI / Pull Requests",
+    "staging": "Staging"
+}
