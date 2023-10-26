@@ -1,0 +1,91 @@
+# `dev`  
+
+Manage Uffizzi [dev clusters](/docs/core-concepts/dev-clusters)  
+
+Use these commands for building, pushing, and deploying your
+    project changes to a remote development cluster. Cloud-based
+    dev environments offer many benefits compared to traditional
+    local development, including:  
+      - More similar to production deployments
+      - Access to more memory and CPU for resource-intensive
+        apps
+      - Scalability and flexibility for microservices apps
+      - Faster build times
+      - Avoid accumulation of build artifacts on local machine
+      - App components available at public URLs or IP addresses
+      - TLS certificates for HTTPS
+      - Better team collaboration via shareable links
+
+## `dev start`  
+
+Creates a Uffizzi dev cluster and starts the Skaffold process  
+
+This command watches for file changes in a given local
+project directory, as specified in your configuration file.
+It then serializes those changes and redeploys them onto
+a Uffizzi dev cluster.
+
+``` bash
+uffizzi dev start [CONFIG_FILE] [OPTIONS]
+```
+
+### Positional Arguments
+    `[CONFIG_FILE]`  
+    Path to the development environment configuration file.
+    Currently supports [skaffold.yaml](https://skaffold.dev/docs/references/yaml/) files.
+
+    The `CONFIG_FILE` location is stored in `~/.configu/uffizzi/config_default.json`, so you can run `uffizzi dev start` from 
+    anywhere in your filesystem.  
+
+### Options
+
+| Option                    | Description                                                                                |
+| --------------------------|------------------------------------------------------------------------------------------- |
+| `--k8s-version`           | Specify which version of the Kubernetes API to use when creating the cluster, formatted as `[MAJOR].[MINOR]`. Defaults to `1.27`. Minor versions point to the latest release of the corresponding k3s minor version. See https://github.com/k3s-io/k3s/releases|
+| `--default-repo`          | A public or private repo used to push/pull build artifacts. Overrides the global default image registry: `registry.uffizzi.com`.|
+| `-q`, `--quiet`           | Suppress output                                                                            |
+| `-k`, `--kubeconfig`      | This option specifies the location of the kubeconfig file to create or update              |
+
+### Example Usage
+
+To start a dev environment using a skaffold.yaml config
+file in directory '~/foo', run:
+
+``` bash
+uffizzi dev start ~/foo/skaffold.yaml
+```  
+
+To start a dev environment in quiet  mode,
+run:
+
+``` bash copy
+uffizzi dev start --quiet
+```
+To start a dev environment using an alternate kubeconfig file,
+run:
+
+``` bash
+uffizzi dev start --kubeconfig="/path/to/alternate/kubeconfig"
+```
+
+## `dev stop` 
+
+Stops the skaffold process for the dev environment. 
+This command does not delete the dev cluster or any 
+associated resources. You can restart the dev environment
+with `uffizzi dev start`. To delete the dev cluster entirely,
+see `uffizzi dev delete`.
+
+``` bash
+uffizzi dev stop
+```
+
+## `dev delete`  
+
+Deletes the backing dev cluster resources, including any persistent
+volumes, and the namespace itself. The dev cluster config is deleted 
+from the kubeconfig file.  
+
+``` bash copy
+uffizzi dev delete
+```

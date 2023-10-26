@@ -1,0 +1,7 @@
+# Production-like Environments  
+
+By "production-like" environments, we mean that Uffizzi virtual clsuters are close approximations to real Kubernetes clusters in that they provide a full copy of the Kubernetes API, giving them the same functionality of real Kubernetes clusters, while requiring less resources and quicker start times. This means Uffizzi virtual clusters can safely support custom resource definitions (CRD) and other components that require cluster-wide access.  
+
+However, they are not perfectly isomorphic replicas of production clusters. For example, Uffizzi virtual clusters do not support resources that require node-level access, such as hostPath volumes and DaemonSets (This is to enforce hard multi-tenancy between virtual cluster workloads.). 
+
+Yet, Uffizzi virtual clusters are still useful for teams looking to keep development and test configurations as close to proudction as possible. For example, Uffizzi virtual clusters can be used to test Kubernetes operators, Helm charts, and other Kubernetes components that require cluster-wide access, or test against different versions of Kubernetes before upgrade the production verison.
