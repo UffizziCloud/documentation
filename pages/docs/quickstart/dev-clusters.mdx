@@ -2,7 +2,7 @@ import { Steps } from 'nextra/components'
 
 # Dev Cluster Quickstart
 
-Create a dev cluster and see your local changes deployed instantly.
+Create a [dev cluster](/docs/core-concepts/dev-clusters) and see your local changes deployed instantly.
 
 ## Prerequisites
 
@@ -75,9 +75,28 @@ const port = 8080
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 ```
 
-</Steps>
+### Stop the dev cluster
 
-## Next steps
+If you started the dev cluster in quiet mode (`-q`, `--quiet`), then you can stop the background dev process by running:  
+
+  ```bash copy
+  uffizzi dev stop
+  ```
+
+  Otherwise, you can stop the dev process by pressing `Ctrl+C` in the terminal window where you started the dev cluster.
+
+### Delete the dev cluster
+
+To permanently delete the cluster, including all persistent volumes and the namespace itself, run:  
+
+```bash copy
+uffizzi dev delete
+```
+
+Remember that your project files are stored locally, so there is no risk in delete the remote dev cluster, unless you have 
+important data stored in the cluster. However, [this is not recommended](/docs/handbook/dos-and-donts). 
+
+</Steps>
 
 Explore the [Usage section](cli/usage.mdx) to learn more about how to use the Uffizzi CLI, or checkout the [CLI reference](cli.mdx) for more information on specific commands.
 

@@ -13,29 +13,56 @@ uffizzi cluster [SUBCOMMAND] [OPTIONS]
 Create a [virtual cluster](../topics/virtual-clusters.md)
 
 ``` bash
-uffizzi cluster create -n [CLUSTER_NAME] -k [PATH_TO_KUBECONFIG] -m [PATH_TO_MANIFEST_FILE] --update-current-context
-```  
+uffizzi cluster create [CLUSTER_NAME] [OPTIONS]
+```
+
+`[CLUSTER_NAME]` is the name of the cluster to create. This argument is optional. If no name is provided, a cluster name 
+is generated for you.
 
 | Option                    | Description                                                                                |
 | --------------------------|------------------------------------------------------------------------------------------- |
-| `-n`, `--name`            | The name of the cluster to be created. If no name is provided, a name is auto-generated.   |
+| `-n`, `--name`            | Option is deprecated and will be removed in the newer versions.Please use a positional argument instead: uffizzi cluster create my-awesome-name.   |
+| `--k8s-version`           | Specify which version of the Kubernetes API to use when creating the cluster, formatted as [MAJOR].[MINOR]. Defaults to 1.27. Minor versions point to the latest release of the corresponding k3s minor version. See https://github.com/k3s-io/k3s/releases |
 | `-k`, `--kubeconfig`      | The location of the kubeconfig file to create or update                                    |
 | `-m`, `--manifest`        | The path to a Kubernetes manifest file. If no manifest is provided, Uffizzi creates an empty cluster instance. |
 | `-o`, `--output`          | Formats the output of this command. Accepted values are `pretty-json` and `json`           |
-| `--update-current-context`| Updates the current kubeconfig context                                                     |
+| `--update-current-context`| Updates the current kubeconfig context. Defaults to `true`                                 |
+
+### Example Usage
+
+To create a cluster with the auto generated name, run:  
+
+``` bash copy
+uffizzi cluster create
+```
+
+To create a cluster with name 'my-cluster', run:
+
+``` bash copy
+uffizzi cluster create my-cluster
+```
+
+To create a cluster and apply manifests from a directory, run:  
+
+``` bash copy
+uffizzi cluster create --manifest=manifests/
+```
+
+To create a cluster using Kubernetes v1.28, run:  
+
+``` bash copy
+uffizzi cluster create --k8s-version=1.28
+```
 
 ## `cluster delete`
 
 Delete a [virtual cluster](../topics/virtual-clusters.md)
 
 ``` bash
-uffizzi cluster delete -n [CLUSTER_NAME]
+uffizzi cluster delete [CLUSTER_NAME]
 ```
 
-| Option                    | Description                                                                                           |
-| --------------------------|------------------------------------------------------------------------------------------------------ |
-| `-n`, `--name`            | (Required) The name of the cluster to be deleted                                                      |
-
+`CLUSTER_NAME` is the name of the cluster to delete.
 
 ## `cluster describe`
 

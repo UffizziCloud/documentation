@@ -37,7 +37,11 @@ Cloud-based dev environments offer many benefits compared to traditional local d
 
 ### Create a Skaffold file
 Uffizzi dev clusters require a [`skaffold.yaml`](https://skaffold.dev/docs/references/yaml/) configuration file 
-that defines how your build artifacts are managed and where to find your application configuration files, such as Helm Charts or kustomizations. 
+that defines how your build artifacts are managed and where to find your application configuration files, such as 
+Helm Charts or kustomizations. 
+
+If you've never used Skaffold before, don't worry. Despite the many configuration options available, most `skaffold.yaml` files 
+are pretty simple. You can see an example Skaffold file [here](#example-skaffold-file).
 
 ### Start the dev cluster
 Once you have a valid skaffold file, you can create a dev clustering by running:
@@ -52,9 +56,13 @@ Anytime you save local changes, they will be synced and redeployed to the remote
 To learn more about incorporating Uffizzi dev cluster in your development workflow see this 
 guide [Getting Started with Dev Clusters](/docs/dev-environments/dev-clusters).
 
-### 
-
 ## Comparison to Skaffold Dev
+
+The [`uffizzi dev`](/docs/cli/commands/dev) command is a convenience wrapper around [`uffizzi cluster`](/docs/cli/commands/cluster) and 
+[`skaffold dev`](https://skaffold.dev/docs/workflows/dev/) commands. It manages the lifecycle of Uffizzi 
+virutal clusters (creates, updates, and deletes necessary resources) and automatically configures Skaffold 
+for use with Uffizzi. Additionally, `uffizzi dev` provides sensible default configurations, such as using Uffizzi Cloud's ephemeral registry 
+`registry.uffizzi.com` to temporarily store build artifacts. For a full list of command options, see the [CLI reference](/docs/cli/commands/dev).
 
 ### Example Skaffold File
 
@@ -84,3 +92,11 @@ manifests:
         valuesFiles:
           - ".helm_values.yaml"
 ```
+
+See the official [Skaffold documentation](https://skaffold.dev/docs/references/yaml/) for more information about Skaffold configuration files.
+
+## Getting Started  
+
+If you need help creating a Skaffold file for your application, check out these resources:  
+-  [`skaffold init`](https://skaffold.dev/docs/init/) - An interactive setup wizard provided by the Skaffold CLI   
+- 

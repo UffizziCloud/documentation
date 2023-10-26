@@ -18,7 +18,12 @@ Use these commands for building, pushing, and deploying your
 
 ## `dev start`  
 
-Creates a Uffizzi dev cluster and starts the Skaffold process
+Creates a Uffizzi dev cluster and starts the Skaffold process  
+
+This command watches for file changes in a given local
+project directory, as specified in your configuration file.
+It then serializes those changes and redeploys them onto
+a Uffizzi dev cluster.
 
 ``` bash
 uffizzi dev start [CONFIG_FILE] [OPTIONS]
@@ -28,6 +33,9 @@ uffizzi dev start [CONFIG_FILE] [OPTIONS]
     `[CONFIG_FILE]`  
     Path to the development environment configuration file.
     Currently supports [skaffold.yaml](https://skaffold.dev/docs/references/yaml/) files.
+
+    The `CONFIG_FILE` location is stored in `~/.configu/uffizzi/config_default.json`, so you can run `uffizzi dev start` from 
+    anywhere in your filesystem.  
 
 ### Options
 
@@ -40,14 +48,6 @@ uffizzi dev start [CONFIG_FILE] [OPTIONS]
 
 ### Example Usage
 
-If your configuration file is in the current working
-directory and you want to use an auto-generated name,
-run:  
-
-``` bash
-uffizzi dev start
-```
-
 To start a dev environment using a skaffold.yaml config
 file in directory '~/foo', run:
 
@@ -58,7 +58,7 @@ uffizzi dev start ~/foo/skaffold.yaml
 To start a dev environment in quiet  mode,
 run:
 
-``` bash
+``` bash copy
 uffizzi dev start --quiet
 ```
 To start a dev environment using an alternate kubeconfig file,
@@ -70,4 +70,22 @@ uffizzi dev start --kubeconfig="/path/to/alternate/kubeconfig"
 
 ## `dev stop` 
 
+Stops the skaffold process for the dev environment. 
+This command does not delete the dev cluster or any 
+associated resources. You can restart the dev environment
+with `uffizzi dev start`. To delete the dev cluster entirely,
+see `uffizzi dev delete`.
+
+``` bash
+uffizzi dev stop
+```
+
 ## `dev delete`  
+
+Deletes the backing dev cluster resources, including any persistent
+volumes, and the namespace itself. The dev cluster config is deleted 
+from the kubeconfig file.  
+
+``` bash copy
+uffizzi dev delete
+```
