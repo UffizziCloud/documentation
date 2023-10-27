@@ -1,8 +1,9 @@
 {
     "index": {
         "type": "page",
-        "title": "Uffizzi",
-        "display": "hidden"
+        "title": "Home",
+        "display": "hidden",
+        "href": "http://uffizzi.com"
     },
     "docs": {
         "type": "page",

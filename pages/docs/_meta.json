@@ -35,5 +35,24 @@
   },
   "cloud": "Uffizzi Cloud",
   "enterprise": "Uffizzi Enterprise",
-  "open-source": "Uffizzi Open Source"
+  "open-source": "Uffizzi Open Source",
+  "showcase": {
+    "title": "Showcase",
+    "type": "menu",
+    "items": {
+      "backstage": {
+        "title": "Backstage",
+        "href": "/showcase/backstage"
+      },
+      "harbor": {
+        "title": "Harbor",
+        "href": "/showcase/harbor"
+      }
+    }
+  },
+  "blog": {
+    "type": "page",
+    "title": "Blog",
+    "href": "/blog"
+  }
 }
