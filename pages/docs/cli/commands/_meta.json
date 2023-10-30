@@ -1,8 +1,8 @@
 {
     "account": "account",
+    "cluster": "cluster",
     "compose": "compose",
     "config": "config",
-    "cluster": "cluster",
     "dev": "dev",
     "help": "help",
     "login": "login",
