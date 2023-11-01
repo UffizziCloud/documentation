@@ -1,0 +1,5 @@
+{
+    "cli": "From the CLI",
+    "dashboard": "From the Dashboard",
+    "ci": "From a CI Pipeline"
+}

@@ -9,14 +9,17 @@ import { Tabs } from 'nextra/components'
 
 # Installing Uffizzi
 
+ This guide describes how to **install and configure the CLI** for use with [Uffizzi Cloud](/docs/cloud) or a private managed version of [Uffizzi Enterprise](/docs/enterprise).
+
 <Callout className="mt-6">
-  **Note:** This guide describes how to install and configure the CLI for use with [Uffizzi Cloud](https://app.uffizzi.com) or a private managed version of [Uffizzi Enterprise](uffizzi.com/pricing). If you want to self-host open source Uffizzi, see the [Self-hosted Installation Guide](https://github.com/UffizziCloud/uffizzi/blob/develop/INSTALL.md) on GitHub.
+  **Note:** If you want to install the full Uffizzi platform, including the API server, [contact sales](mailto:sales@uffizzi.com) or try the [open-source version](/docs/open-source). You can also reach out on [Slack](https://join.slack.com/t/uffizzi/shared_invite/zt-24toel26u-4JB2pLqdUnrt2qJcWoLcDA) to get help.
 </Callout>
+
+## Install
 
 <Steps>
 
 ### Download the Uffizzi CLI
-
 
 <Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
     <Tabs.Tab>
@@ -42,7 +45,7 @@ import { Tabs } from 'nextra/components'
 
 ### Configure the CLI with the default API server
 
-Select the default server `app.uffizzi.com` (Uffizzi Cloud). Alternatively, if you're [self-hosting Uffizzi](https://github.com/UffizziCloud/uffizzi/blob/develop/INSTALL.md), use the Uffizzi API endpoint you configured.
+Select the Uffizzi Cloud default server `app.uffizzi.com`:
 
 ```bash {10}
 uffizzi config
@@ -52,7 +55,7 @@ uffizzi config
 
 ### Login or create an account
 
-Running this command will open a browser window where you can create an account or login to an existing account. If
+Running this command will open a browser window where you can create an account or login to an existing account:
 
 ```bash {10}
 uffizzi login
@@ -65,6 +68,28 @@ uffizzi login
 
 That's it! You've successfully installed and configured the Uffizzi CLI.
 
-### Next Steps
+## Update
 
-Checkout the [Qucikstart guide](quickstart), or see the [CLI section](cli) for more information.
+It's a good idea to regularly check for updates to the Uffizzi CLI. You can update your CLI with the following command:
+
+<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
+    <Tabs.Tab>
+        ```bash {10}
+		brew upgrade uffizzicloud/tap/uffizzi
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```bash {10}
+		gem update uffizzi-cli
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```bash
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+## Next Steps
+
+Checkout the [Qucikstart guides](quickstart), or see the [CLI section](cli) for more information.

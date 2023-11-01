@@ -6,7 +6,7 @@
   "index": {
     "title": "Introduction"
   },
-  "installation": "Installing Uffizzi",
+  "install": "Installing Uffizzi",
   "quickstart": "Quickstart",
   "core-concepts": "Core Concepts",
   "cli": "CLI",
@@ -14,6 +14,7 @@
     "title": "Compose",
     "display": "hidden"
   },
+  "usage": "Using Uffizzi",
   "-- Use Cases": {
     "type": "separator",
     "title": "Use Cases / Guides"

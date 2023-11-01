@@ -2,8 +2,5 @@
     "internal-developer-platform": "Internal Developer Platform",
     "platform-engineering": "Platform Engineering",
     "ephemeral-environments": "Ephemeral Environments",
-    "virtual-clusters": "Virtual Clusters",
-    "dev-clusters": "Dev Clusters",
-    "compose": "Compose Environments",
     "production-like": "Production-like Environments"
 }
