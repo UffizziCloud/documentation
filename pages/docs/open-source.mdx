@@ -1,0 +1,24 @@
+# Uffizzi Open Source
+
+The Uffizzi platform is available as open-source software under the [Apache License 2.0](https://github.com/UffizziCloud/uffizzi/blob/develop/LICENSE). Uffizzi Open Source requires Kubernetes v1.19 or greater and installs via Helm Chart.
+
+## What's Included
+
+Included in Uffizzi Open Source are the folllowing components: [API server](#uffizzi-api), [controller](#uffizzi-controller), 
+[cluster operator](#uffizzi-cluster-operator), and [CLI](#uffizzi-cli). These components together allow users to obtain the core 
+functionality of Uffizzi ephemeral environments, including creating virtual clusters, dev clusters, and Docker Compose environments.
+These components also allow you to trigger environments from your CI pipeline and create end-to-end development and test workflows.
+
+
+## What's Not Included
+
+Uffizzi Open Source does not include the following premium features:
+- [Uffizzi Dashboard](/docsusage/dashboard) web UI  
+- Role-based access control (RBAC)  
+- Environment sleep and wake functionality
+
+## Recommended Use
+
+Uffizzi Open Source is recommended for users who want to evaluate Uffizzi ephemeral environments and/or who want to use Uffizzi ephemeral environments in a headless manner. Using Uffizzi Open Source also assumes you are capabale and willing to self-host Uffizzi on infrastructure you manage.  
+
+It is suitable for individuals and small teams less than 5-7 developers who want to use Uffizzi ephemeral environments for development and testing. It is **not recommended for teams greater than 7**, as it does not include RBAC—meaning you will have little adminstrative control over developers's permissions and their access to environments.

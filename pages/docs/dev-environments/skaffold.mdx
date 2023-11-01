@@ -1,0 +1,109 @@
+# Skaffold
+
+Uffizzi currently requires a `skaffold.yaml` file to configure [dev clusters](/docs/core-concepts/ephemeral-environments/dev-clusters). This page provides an overview of Skaffold and its role in Uffizzi dev clusters. For detailed information on configuring your `skaffold.yaml`, visit the [official Skaffold documentation](https://skaffold.dev/docs/).
+
+## What is Skaffold?
+
+[Skaffold](https://skaffold.dev) is an open-source command-line tool designed by Google to facilitate a continuous development workflow for Kubernetes applications. It automates the tasks involved in building, pushing, and deploying applications, and it also supports iterative development. Instead of manually executing these tasks, developers can use Skaffold to watch their codebase, rebuild images, and redeploy applications upon changes.
+
+## Role in Uffizzi Dev Clusters
+
+For users of Uffizzi [dev clusters](/docs/core-concepts/ephemeral-environments/dev-clusters), Skaffold acts as the engine driving the deployment pipeline. While Uffizzi handles provisioning, monitoring, and cleaning up Kubernetes resources, Skaffold takes care of deploying your application to the Uffizzi dev cluster. It uses the `skaffold.yaml` configuration file to understand your application’s structure, dependencies, and deployment specifications. This streamlined process ensures that you can focus on writing code while Skaffold synchronizes your changes to a live Uffizzi cluster, providing a seamless development experience.
+
+### Comparison to Skaffold Dev
+
+The [`uffizzi dev`](/docs/cli/commands/dev) command is a convenience wrapper around [`uffizzi cluster`](/docs/cli/commands/cluster) and 
+[`skaffold dev`](https://skaffold.dev/docs/workflows/dev/) commands. It manages the lifecycle of Uffizzi 
+virutal clusters (creates, updates, and deletes necessary resources) and automatically configures Skaffold 
+for use with Uffizzi.  
+
+Additionally, `uffizzi dev` provides sensible default configurations, such as using Uffizzi Cloud's ephemeral registry 
+`registry.uffizzi.com` to temporarily store build artifacts and the option to use the 
+[Uffizzi Dev Ingress](/dev-environments/dev-ingress) service for automatically provisioning domains and certificates for your 
+environments. For a full list of command options, see the [CLI reference](/docs/cli/commands/dev).
+
+## `skaffold.yaml`
+
+To leverage Skaffold within Uffizzi dev clusters, users must provide a `skaffold.yaml` file. This file is the blueprint for your application’s lifecycle management and dictates how images are built, pushed, and deployed.  
+
+### Example `skaffold.yaml`
+
+The following `skaffold.yaml` file is what we use to develop the Uffizzi platform. It uses the [`kaniko`](https://skaffold.dev/docs/builders/builder-types/docker/#dockerfile-in-cluster-with-kaniko) builder to build 
+images on the cluster and the `helm` deployer to deploy the application using a Helm Chart. It also specifies a `helm_values.yaml` file that 
+contains the values for the Helm chart.  
+
+Notice that this Skaffold file is relatively simple, since most of the configuration happens in our Helm Charts.  
+
+
+
+```yaml filename="skaffold.yaml"
+apiVersion: skaffold/v4beta6
+kind: Config
+build:
+  artifacts:
+  - image: uffizzi-platform
+    context: .
+    kaniko: {}
+    sync:
+      infer:
+      - "**/*"
+  cluster: {}
+manifests:
+  helm:
+    releases:
+      - name: uffizzi
+        chartPath: "charts/uffizzi-platform"
+        skipBuildDependencies: true
+        valuesFiles:
+          - "./helm_values.yaml"
+```
+
+### Configuration Options
+
+1. **Defining Build Configuration**: Specify the container images you are building and the context in which they are built. You can choose between different builders like Docker, Jib, or Buildpacks, depending on your project needs.
+
+2. **Tagging Strategy**: Choose how you want your images tagged. Skaffold supports a range of tagging strategies, such as using the Git commit SHA or generating timestamps.
+
+3. **Defining Deploy Configuration**: Tell Skaffold how to deploy the application. It can be through `kubectl`, Helm charts, or Kubernetes manifest files. You’ll need to reference the manifests or the Helm charts that define your Kubernetes resources.
+
+4. **Profiles**: Define different deployment profiles for various environments like development or staging. This is particularly useful when your build or deploy process differs across environments.
+
+5. **Development Settings**: Configure the development-specific settings, such as file synchronization, port forwarding, and logs. These settings enable Skaffold to update containers and resources during the development without rebuilding images or redeploying resources unnecessarily.
+
+6. **Pipeline Stages**: Skaffold’s pipeline consists of several stages – build, test, deploy, and cleanup. You can customize each of these stages to suit your workflow.
+
+7. **Hooks**: Define custom actions at different points in your development and deployment lifecycle with lifecycle hooks. This can include running scripts or commands before or after builds, deployments, and cleanups.
+
+By properly configuring `skaffold.yaml`, you integrate your development environment with the cloud-based Kubernetes clusters provided by Uffizzi, effectively bringing cloud-native development to your desktop.
+
+### Getting Started
+
+For detailed information on configuring your `skaffold.yaml`, visit the [official Skaffold documentation](https://skaffold.dev/docs/). Here, you can find exhaustive resources, including configuration schema, examples, and best practices to tailor Skaffold to your project needs. Our goal is to ensure your development workflow is as smooth and efficient as possible, powered by Uffizzi virtual clusters and Skaffold's robust automation.
+
+## How It Works
+
+When you run `skaffold dev`, Skaffold initiates a development cycle that actively monitors your project's source code for any changes. Upon detecting an update, instead of rebuilding the entire container image, Skaffold serializes just the changes and transmits them to the running containers within your Uffizzi dev cluster. This process leverages gRPC, a high-performance, open-source universal RPC framework, to efficiently communicate between the Skaffold process and the Uffizzi cluster.
+
+### gRPC
+
+gRPC plays a crucial role in how Skaffold updates applications. When Skaffold detects a file change:
+
+1. **Change Detection**: Skaffold immediately identifies which parts of your source code have changed.
+
+2. **Incremental Builds and Syncs**: For files that can be synchronized without a full image rebuild (e.g., interpreted languages, scripts), Skaffold uses its sync functionality to copy the changed files directly to the appropriate containers.
+
+3. **gRPC Calls**: The incremental changes are packaged into a series of gRPC calls. These calls include information on the changed files and instructions on where to place them within the container's file system.
+
+4. **Cluster Communication**: These gRPC calls are sent to the Kubernetes cluster where a server-side component of Skaffold interprets them.
+
+5. **Hot-reloading**: The receiving component within the cluster updates the running containers with the new code, often utilizing language- or framework-specific hot-reloading capabilities to refresh the application without a full restart.
+
+#### Benefits of Using `skaffold dev`
+
+The primary benefit of using `skaffold dev` is the dramatic improvement in the development loop. By avoiding image rebuilds and container restarts for every small code change, the command significantly reduces the time between writing code and seeing it run on the Kubernetes cluster. This process is transparent, requiring no extra action from the developer, and maintains a high fidelity environment that closely mimics production.
+
+Furthermore, the `skaffold dev` command provides additional developer-friendly features such as:
+
+- **Automated Pipelining**: The command integrates building, deploying, and monitoring into one streamlined pipeline.
+- **Continuous Feedback**: Developers receive immediate feedback on their code changes directly in their terminal, thanks to Skaffold’s log tailing feature.
+- **Intelligent Cleanup**: On termination, `skaffold dev` automatically cleans up all the resources it deployed, leaving no clutter in the development cluster.

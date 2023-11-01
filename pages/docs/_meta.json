@@ -19,15 +19,16 @@
     "type": "separator",
     "title": "Use Cases / Guides"
   },
-  "dev-environments": "Development",
-  "testing": "Testing",
+  "dev-environments": "Dev Environments",
+  "testing": "Test Environments",
   "ci": "CI / Pull Requests",
-  "staging": "Staging",
+  "staging": "Staging Environments",
   "-- Resources": {
     "type": "separator",
     "title": "Resources"
   },
   "handbook": "Ephemeral Environments Handbook",
+  "architecture": "Architecture",
   "compose-spec": "Uffizzi Compose",
   "troubleshooting": "Troubleshooting",
   "-- Products": {
@@ -36,24 +37,5 @@
   },
   "cloud": "Uffizzi Cloud",
   "enterprise": "Uffizzi Enterprise",
-  "open-source": "Uffizzi Open Source",
-  "showcase": {
-    "title": "Showcase",
-    "type": "menu",
-    "items": {
-      "backstage": {
-        "title": "Backstage",
-        "href": "/showcase/backstage"
-      },
-      "harbor": {
-        "title": "Harbor",
-        "href": "/showcase/harbor"
-      }
-    }
-  },
-  "blog": {
-    "type": "page",
-    "title": "Blog",
-    "href": "/blog"
-  }
+  "open-source": "Uffizzi Open Source"
 }

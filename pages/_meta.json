@@ -9,6 +9,24 @@
         "type": "page",
         "title": "Documentation"
     },
+    "products": {
+        "title": "Products",
+        "type": "menu",
+        "items": {
+            "cloud": {
+                "title": "Uffizzi Cloud",
+                "href": "/docs/cloud"
+            },
+            "enterprise": {
+                "title": "Uffizzi Enterprise",
+                "href": "/docs/enterprise"
+            },
+            "open-source": {
+                "title": "Uffizzi Open Source",
+                "href": "/docs/open-source"
+            }
+        }
+    },
     "showcase": {
         "title": "Showcase",
         "type": "menu",
@@ -27,5 +45,9 @@
         "type": "page",
         "title": "Blog",
         "href": "/blog"
+    },
+    "references": {
+        "type": "page",
+        "display": "hidden"
     }
 }
