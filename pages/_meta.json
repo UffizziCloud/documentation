@@ -38,6 +38,10 @@
             "harbor": {
                 "title": "Harbor",
                 "href": "/showcase/harbor"
+            },
+            "ingress-nginx": {
+                "title": "Ingress Nginx",
+                "href": "/docs/testing/case-study/ingress-nginx"
             }
         }
     },

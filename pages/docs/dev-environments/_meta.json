@@ -1,6 +1,5 @@
 {
     "dev-clusters": "Using Dev Clusters",
     "skaffold": "Skaffold",
-    "ingress": "Configure Dev Ingress",
-    "resource-quotas": "Resource Quotas"
+    "ingress": "Configure Dev Ingress"
 }

@@ -3,7 +3,39 @@ title: Development Environments
 description: Cloud-based development environments for your team
 ---
 
+import { Cards } from 'nextra/components'
+
 # Development Environments
 
 Cloud-based development environments are a common starting point for teams looking to build out their 
-[Internal Developer Platform (IDP)](core-concepts/internal-developer-platform).
+[Internal Developer Platform (IDP)](core-concepts/internal-developer-platform).  
+
+Dev environments can be used to provide a consistent, self-service environment for developers to build and test their applications 
+and can greatly reduce the time it takes to onboard new developers. 
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    title="Using Dev Clusters"
+    href="/docs/dev-environments/dev-clusters"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    title="Configure Dev Evnironments with Skaffold"
+    href="/docs/dev-environments/skaffold"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    title="Enable HTTPS for Dev Environments with Dev Ingress" 
+    href="/docs/dev-environments/ingress"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    title="Managing Dev Resource Quotas"
+    href="/docs/resource-quotas"
+  >
+  </Cards.Card>
+</Cards>

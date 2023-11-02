@@ -1,0 +1,23 @@
+# Dev Ingress
+
+There are two ingress options on Uffizzi: **`uffizzi`** (default) and **custom**.
+
+## Default IngressClass `uffizzi`
+
+The default IngressClass for any ingress created in a virtual cluster or dev cluster is `uffizzi`. If a cluster with this `uffizzi` IngressClass is detected, the Uffizzi Dev Ingress service will automatically generate a hostname and provision a Ingress controller with TLS certificate. 
+
+The Dev Ingress service works by overriding any existing hostnames with the following format:
+
+`https://<ingress-name>-<virtual-namespace>-<ucluster-name>-<ucluster-id>.uclusters.app.uffizzi.com `
+
+This allows cluster users to quickly start testing their serivces and routing traffic from the outside world without having to configure hostnames manually or provisioning their own Ingress controller. 
+
+If you're using [dev clusters](/docs/dev-environments/dev-clusters) with the `uffizzi` IngressClass, you can easily find and open the provisioned hostname with the `uffizzi dev ingress open` command.
+
+If you wish to define a custom IngressClass, instead, you still can, as described below.
+
+## Custom IngressClass
+
+You can also bring your own IngressClass, and install the necessary controller on your virtual cluster. Custom IngressClasses on Uffizzi virtual clusters and dev clusters are configured just like they are for a standard Kubernetes cluster.
+
+Follow the official Kubernetes documentation for understanding what an IngressClass is and how you can back it up by deploying your own Ingress controller of choice.
