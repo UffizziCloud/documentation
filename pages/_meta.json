@@ -78,7 +78,8 @@
     "blog": {
         "type": "page",
         "title": "Blog",
-        "href": "/blog"
+        "href": "https://uffizzi.com/blog",
+        "newWindow": true
     },
     "references": {
         "type": "page",
