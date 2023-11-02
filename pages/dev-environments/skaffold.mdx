@@ -1,6 +1,6 @@
 # Skaffold
 
-Uffizzi currently requires a `skaffold.yaml` file to configure [dev clusters](/docs/core-concepts/ephemeral-environments/dev-clusters). This page provides an overview of Skaffold and its role in Uffizzi dev clusters. For detailed information on configuring your `skaffold.yaml`, visit the [official Skaffold documentation](https://skaffold.dev/docs/).
+Uffizzi currently requires a `skaffold.yaml` file to configure [dev clusters](/core-concepts/ephemeral-environments/dev-clusters). This page provides an overview of Skaffold and its role in Uffizzi dev clusters. For detailed information on configuring your `skaffold.yaml`, visit the [official Skaffold documentation](https://skaffold.dev/).
 
 ## What is Skaffold?
 
@@ -8,19 +8,19 @@ Uffizzi currently requires a `skaffold.yaml` file to configure [dev clusters](/d
 
 ## Role in Uffizzi Dev Clusters
 
-For users of Uffizzi [dev clusters](/docs/core-concepts/ephemeral-environments/dev-clusters), Skaffold acts as the engine driving the deployment pipeline. While Uffizzi handles provisioning, monitoring, and cleaning up Kubernetes resources, Skaffold takes care of deploying your application to the Uffizzi dev cluster. It uses the `skaffold.yaml` configuration file to understand your application’s structure, dependencies, and deployment specifications. This streamlined process ensures that you can focus on writing code while Skaffold synchronizes your changes to a live Uffizzi cluster, providing a seamless development experience.
+For users of Uffizzi [dev clusters](/core-concepts/ephemeral-environments/dev-clusters), Skaffold acts as the engine driving the deployment pipeline. While Uffizzi handles provisioning, monitoring, and cleaning up Kubernetes resources, Skaffold takes care of deploying your application to the Uffizzi dev cluster. It uses the `skaffold.yaml` configuration file to understand your application’s structure, dependencies, and deployment specifications. This streamlined process ensures that you can focus on writing code while Skaffold synchronizes your changes to a live Uffizzi cluster, providing a seamless development experience.
 
 ### Comparison to Skaffold Dev
 
-The [`uffizzi dev`](/docs/cli/commands/dev) command is a convenience wrapper around [`uffizzi cluster`](/docs/cli/commands/cluster) and 
-[`skaffold dev`](https://skaffold.dev/docs/workflows/dev/) commands. It manages the lifecycle of Uffizzi 
+The [`uffizzi dev`](/cli/commands/dev) command is a convenience wrapper around [`uffizzi cluster`](/cli/commands/cluster) and 
+[`skaffold dev`](https://skaffold.dev/workflows/dev/) commands. It manages the lifecycle of Uffizzi 
 virutal clusters (creates, updates, and deletes necessary resources) and automatically configures Skaffold 
 for use with Uffizzi.  
 
 Additionally, `uffizzi dev` provides sensible default configurations, such as using Uffizzi Cloud's ephemeral registry 
 `registry.uffizzi.com` to temporarily store build artifacts and the option to use the 
 [Uffizzi Dev Ingress](/dev-environments/dev-ingress) service for automatically provisioning domains and certificates for your 
-environments. For a full list of command options, see the [CLI reference](/docs/cli/commands/dev).
+environments. For a full list of command options, see the [CLI reference](/cli/commands/dev).
 
 ## `skaffold.yaml`
 
@@ -28,7 +28,7 @@ To leverage Skaffold within Uffizzi dev clusters, users must provide a `skaffold
 
 ### Example `skaffold.yaml`
 
-The following `skaffold.yaml` file is what we use to develop the Uffizzi platform. It uses the [`kaniko`](https://skaffold.dev/docs/builders/builder-types/docker/#dockerfile-in-cluster-with-kaniko) builder to build 
+The following `skaffold.yaml` file is what we use to develop the Uffizzi platform. It uses the [`kaniko`](https://skaffold.dev/builders/builder-types/docker/#dockerfile-in-cluster-with-kaniko) builder to build 
 images on the cluster and the `helm` deployer to deploy the application using a Helm Chart. It also specifies a `helm_values.yaml` file that 
 contains the values for the Helm chart.  
 
@@ -78,7 +78,7 @@ By properly configuring `skaffold.yaml`, you integrate your development environm
 
 ### Getting Started
 
-For detailed information on configuring your `skaffold.yaml`, visit the [official Skaffold documentation](https://skaffold.dev/docs/). Here, you can find exhaustive resources, including configuration schema, examples, and best practices to tailor Skaffold to your project needs. Our goal is to ensure your development workflow is as smooth and efficient as possible, powered by Uffizzi virtual clusters and Skaffold's robust automation.
+For detailed information on configuring your `skaffold.yaml`, visit the [official Skaffold documentation](https://skaffold.dev/). Here, you can find exhaustive resources, including configuration schema, examples, and best practices to tailor Skaffold to your project needs. Our goal is to ensure your development workflow is as smooth and efficient as possible, powered by Uffizzi virtual clusters and Skaffold's robust automation.
 
 ## How It Works
 

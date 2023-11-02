@@ -21,7 +21,7 @@
     },
     "dev-environments": "Dev Environments",
     "testing": "Test Environments",
-    "ci": "CI / Pull Requests",
+    "ci": "CI Recipes",
     "staging": "Staging Environments",
     "-- Resources": {
         "type": "separator",
@@ -45,15 +45,15 @@
         "items": {
             "cloud": {
                 "title": "Uffizzi Cloud",
-                "href": "/docs/cloud"
+                "href": "/cloud"
             },
             "enterprise": {
                 "title": "Uffizzi Enterprise",
-                "href": "/docs/enterprise"
+                "href": "/enterprise"
             },
             "open-source": {
                 "title": "Uffizzi Open Source",
-                "href": "/docs/open-source"
+                "href": "/open-source"
             }
         }
     },
@@ -71,7 +71,7 @@
             },
             "ingress-nginx": {
                 "title": "Ingress Nginx",
-                "href": "/docs/testing/case-study/ingress-nginx"
+                "href": "/testing/case-study/ingress-nginx"
             }
         }
     },
@@ -81,6 +81,10 @@
         "href": "/blog"
     },
     "references": {
+        "type": "page",
+        "display": "hidden"
+    },
+    "virtual-cluster-environment": {
         "type": "page",
         "display": "hidden"
     }

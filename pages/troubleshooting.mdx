@@ -121,7 +121,7 @@ configs:
 ```
 
 ## 6. Setting and accessing sensitive environment variable (Compose Environments)
-If you're using Uffizzi [Compose Environments](/docs/core-concepts/ephemeral-environments/compose), you can set sensitive environment variables like access tokens, secret keys, etc. by storing it within your CI platform and accessing it through the [`environment`](https://docs.uffizzi.com/references/compose-spec/#environment) directive in the `docker-compose.uffizzi.yml` file with variable substitution. 
+If you're using Uffizzi [Compose Environments](/core-concepts/ephemeral-environments/compose), you can set sensitive environment variables like access tokens, secret keys, etc. by storing it within your CI platform and accessing it through the [`environment`](https://docs.uffizzi.com/references/compose-spec/#environment) directive in the `docker-compose.uffizzi.yml` file with variable substitution. 
 
 **Example with GitHub Actions**  
 Once you have added the secrets to your GitHub repository, these can be accessed in your GitHub Actions (GHA) workflow file. You can then export them and consequently, they will be available for use within your compose file. 

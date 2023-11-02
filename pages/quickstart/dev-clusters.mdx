@@ -2,11 +2,11 @@ import { Steps } from 'nextra/components'
 
 # Dev Cluster Quickstart
 
-Create a [dev cluster](/docs/core-concepts/ephemeral-environments/dev-clusters) and see your local changes deployed instantly.
+Create a [dev cluster](/core-concepts/ephemeral-environments/dev-clusters) and see your local changes deployed instantly.
 
 ## Prerequisites
 
-- [Install](https://kubernetes.io/docs/tasks/tools/) `kubectl`
+- [Install](https://kubernetes.io/tasks/tools/) `kubectl`
 - [Install](../installation) the Uffizzi CLI.
 - [Create an account](https://app.uffizzi.com) on Uffizzi Cloud.
 
@@ -44,7 +44,7 @@ Make sure you are in the root of the project directory, then run:
 
   This command will: 
   - Start a dev cluster with a auto-generated name
-  - Start a [skaffold](https://skaffold.dev/docs/) process to build and deploy your project changes.  Alternatively, you can start a dev cluster in quiet mode (no output) 
+  - Start a [skaffold](https://skaffold.dev/) process to build and deploy your project changes.  Alternatively, you can start a dev cluster in quiet mode (no output) 
     by running `uffizzi dev start -q`.
   - Update the current context of your kubeconfig file (so you can use `kubectl` to manage the cluster)  
 
@@ -94,7 +94,7 @@ uffizzi dev delete
 ```
 
 Remember that your project files are stored locally, so there is no risk in delete the remote dev cluster, unless you have 
-important data stored in the cluster. However, [this is not recommended](/docs/handbook/dos-and-donts). 
+important data stored in the cluster. However, [this is not recommended](/handbook/dos-and-donts). 
 
 </Steps>
 

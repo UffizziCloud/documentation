@@ -9,10 +9,10 @@ import { Tabs } from 'nextra/components'
 
 # Installing Uffizzi
 
- This guide describes how to **install and configure the CLI** for use with [Uffizzi Cloud](/docs/cloud) or a private managed version of [Uffizzi Enterprise](/docs/enterprise).
+ This guide describes how to **install and configure the CLI** for use with [Uffizzi Cloud](/cloud) or a private managed version of [Uffizzi Enterprise](/enterprise).
 
 <Callout className="mt-6">
-  **Note:** If you want to install the full Uffizzi platform, including the API server, [contact sales](mailto:sales@uffizzi.com) or try the [open-source version](/docs/open-source). You can also reach out on [Slack](https://join.slack.com/t/uffizzi/shared_invite/zt-24toel26u-4JB2pLqdUnrt2qJcWoLcDA) to get help.
+  **Note:** If you want to install the full Uffizzi platform, including the API server, [contact sales](mailto:sales@uffizzi.com) or try the [open-source version](/open-source). You can also reach out on [Slack](https://join.slack.com/t/uffizzi/shared_invite/zt-24toel26u-4JB2pLqdUnrt2qJcWoLcDA) to get help.
 </Callout>
 
 ## Install
@@ -32,13 +32,13 @@ import { Tabs } from 'nextra/components'
         ```bash {10}
 		gem install uffizzi-cli
 		```
-    If you plan to use [`uffizzi dev`](/docs/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/docs/install/#standalone-binary) as a dependency.
+    If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
     </Tabs.Tab>
     <Tabs.Tab>
         ```bash
         curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
         ```
-        If you plan to use [`uffizzi dev`](/docs/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/docs/install/#standalone-binary) as a dependency.
+        If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
     </Tabs.Tab>
 </Tabs>
 

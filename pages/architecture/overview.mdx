@@ -1,0 +1,88 @@
+import Image from 'next/image'
+
+# Uffizzi Platform Architecture
+
+The following is a high-level overview of the various components that make up the Uffizzi platform.
+
+## Open Core Components
+
+The following core components are common to all Uffizzi products, including [Uffizzi Cloud](/cloud), [Uffizzi Enterprise](/enterprise), and [Uffizzi Open Source](/open-source). These components are all open source under the Apache License 2.0.
+
+<Image
+    src="/../public/images/uffizzi-architecture.png"
+    width={640}
+    height={433}
+    alt="Uffizzi Architecture"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+
+### Uffizzi API
+
+The Uffizzi API implements the primary REST API for creating and managing ephemeral environments. It is a Ruby on Rails application that is available as a Docker image.  
+[View source code](https://github.com/UffizziCloud/uffizzi)
+
+
+### Uffizzi Controller  
+
+The Uffizzi Controller smart proxy service that handles requests from Uffizzi API to the host Kubernetes API. The Uffizzi Controller installs on a host cluster in its own namespace.  
+[View source code](https://github.com/UffizziCloud/uffizzi_controller)
+
+### Uffizzi Cluster Operator  
+
+The Uffizzi Cluster Operator is a Kubernetes operator for creating fully managed virtual clusters. It's responsible for:  
+
+ - Creating a virtual cluster  
+ - Installing Helm and Source Controller in the virtual cluster  
+ - Creating Helm charts when mentioned in the UffizziCluster CRD  
+ - Exposing Ingress for the virtual cluster to connect  
+ - Exposing Services from within the virtual cluster  
+ - Enabling authentication for the Ingresses  
+ 
+[View source code](https://github.com/UffizziCloud/uffizzi-cluster-operator)
+
+### Uffizzi CLI 
+
+The Uffizzi CLI is a command line interface for interacting with the Uffizzi API. By default, it is configured to work with [Uffizzi Cloud](/cloud), but can be configured to work with [Uffizzi Enterprise](/enterprise) or [Uffizzi Open Source](/open-source).
+
+[View source code](https://github.com/UffizziCloud/uffizzi_cli)
+
+## Uffizzi Cloud and Enterprise Components
+
+The following components are exclusive to [Uffizzi Cloud](/cloud) and [Uffizzi Enterprise](/enterprise) customers.
+
+### Role-based Access Control (RBAC)
+
+[Uffizzi Cloud](/cloud) and [Uffizzi Enterprise](/enterprise) support role-based access control (RBAC) for managing access to ephemeral environments. RBAC allows team administrators to create teams and assign roles to team members. Roles include:
+
+ - **Owner** - Full access to all team resources
+ - **Admin** - Full access to all team resources except for team management
+ - **Developer** - Full access to all team resources except for team management and billing
+ - **View Only** - Read-only access to all team resources  
+
+ See [Role-based Access Control](/cloud/rbac) for more information.
+
+### Cloud Dashboard
+
+The Uffizzi Cloud Dashboard is a web-based user interface for managing ephemeral environments. From the dashboard, users can create virtual clusters, view deployment and application logs for troubleshooting, and manage their personal or team account.
+
+<br />
+<Image
+    src="/../public/images/dashboard.png"
+    width={640}
+    height={433}
+    alt="Cloud Dashboard"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+<Image
+    src="/../public/images/dashboard-2.png"
+    width={640}
+    height={433}
+    alt="Cloud Dashboard Create Team"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+### Enterprise Operator
+
+The Uffizzi Enterprise Operator is part of each [Uffizzi Enterprise](/enterprise) installation and includes premium features not included in the open-source [Uffizzi Cluster Operator](#uffizzi-cluster-operator), most notably the ability to customize the cluster sleep / wake funtionality.

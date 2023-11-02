@@ -9,7 +9,7 @@ environments are intended for development and testing, not production.
 
 **Do seed test data when the environment is created** 
 
-When adding data to an ephemeral environment you should seed it on start up (See [Database Seeding](/docs/handbook/managing-state/database-seeding)). 
+When adding data to an ephemeral environment you should seed it on start up (See [Database Seeding](/handbook/managing-state/database-seeding)). 
 Any data that should persist beyond the lifecycle of an ephemeral environment, should be store it outside the environment, such as in object (bucket) storage.
 
 ## External Services (Stateful)
@@ -23,8 +23,8 @@ stateful services.
 
 **Do create mock services or internal copies of stateful services**
 
-If you need to manipulate stateful services, you should [mock the service](/docs/handbook/mock-services) or create a copy  
-that is internal to your environment, such as with [containerized databases](/docs/handbook/managing-state/database-seeding), so 
+If you need to manipulate stateful services, you should [mock the service](/handbook/mock-services) or create a copy  
+that is internal to your environment, such as with [containerized databases](/handbook/managing-state/database-seeding), so 
 they are isolated from other team member environments.
 
 ## Production 
@@ -37,18 +37,18 @@ Additionally, Uffizzi environments have default resource limits, depending on yo
 
 **Do use ephemeral environments for development and testing**
 
-Use Uffizzi [dev clusters](/docs/core-concepts/ephemeral-environments/dev-clusters) for continuous development and deployment and 
-[virtual clusters](/docs/core-concepts/ephemeral-environments/virtual-clusters) to test pre-production releases or against [different versions of 
-Kubernetes](/docs/cli/commands/cluster#cluster-create).
+Use Uffizzi [dev clusters](/core-concepts/ephemeral-environments/dev-clusters) for continuous development and deployment and 
+[virtual clusters](/core-concepts/ephemeral-environments/virtual-clusters) to test pre-production releases or against [different versions of 
+Kubernetes](/cli/commands/cluster#cluster-create).
 
 ## CI Pipelines
 
 **Do configure Uffizzi with your CI platform**  
 
-In addition to creating ephemeral environments from the [Uffizzi CLI](/docs/cli), you can also add Uffizzi to your 
+In addition to creating ephemeral environments from the [Uffizzi CLI](/cli), you can also add Uffizzi to your 
 GitHub Actions, GitLab CI, or other CI platform. This will allow you to create ephemeral environments every time a team member 
 opens a pull request. Incorporating Uffizzi in your CI process has many benefits including the ability to paralellize automated 
-tests and avoid the flakiness and resource contraints of running CI tests in pipeline runners. See our [CI guides](/docs/ci) for 
+tests and avoid the flakiness and resource contraints of running CI tests in pipeline runners. See our [CI guides](/ci) for 
 detailed integration instructions.
 
 **Don't forget to update and delete ephemeral environments from your CI pipeline!**  

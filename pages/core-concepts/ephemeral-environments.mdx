@@ -24,37 +24,37 @@ In addition to their ephemeral nature, they are also provide isolation from othe
 Uffizzi currently supports three types of ephemeral environments: virtual clusters, dev clusters, and compose environments.
 
 ### Virtual Cluster Environments
-[Virtual Clusters](/docs/core-concepts/ephemeral-environments/virtual-clusters) are Kubernetes-based environments built from a Kubernetes specification—typically [Helm Charts](https://helm.sh), [kustomizations](https://kustomize.io), or standard manifests applied by [kubectl](https://kubernetes.io/docs/reference/kubectl/). You can read more about Uffizzi's virtual clusters [here](topics/virtual-clusters.md), but in short, these are fully functional Kubernetes clusters that run in isolation on top of a host cluster. Once you've created these clusters with the Uffizzi CLI or from your CI pipeline, you can use standard Kubernetes tools like `kubectl` and `helm` to manage them and their configurations.
+[Virtual Clusters](/core-concepts/ephemeral-environments/virtual-clusters) are Kubernetes-based environments built from a Kubernetes specification—typically [Helm Charts](https://helm.sh), [kustomizations](https://kustomize.io), or standard manifests applied by [kubectl](https://kubernetes.io/reference/kubectl/). You can read more about Uffizzi's virtual clusters [here](topics/virtual-clusters.md), but in short, these are fully functional Kubernetes clusters that run in isolation on top of a host cluster. Once you've created these clusters with the Uffizzi CLI or from your CI pipeline, you can use standard Kubernetes tools like `kubectl` and `helm` to manage them and their configurations.
 
 <Cards num={2}>
   <Cards.Card
     arrow
     title="Learn more about virtual clusters"
-    href="/docs/core-concepts/ephemeral-environments/virtual-clusters"
+    href="/core-concepts/ephemeral-environments/virtual-clusters"
   >
   </Cards.Card>
 </Cards>
 
 ### Dev Cluster Environments
-[Dev Clusters](/docs/core-concepts/ephemeral-environments/dev-clusters) are virtual clusters intended to be used for interactive cloud-based development on Kubernetes. By shifting the compute from your local machine to a remote server environment, Uffizzi dev environments great for resource intensive applications or large microservices architectures. 
+[Dev Clusters](/core-concepts/ephemeral-environments/dev-clusters) are virtual clusters intended to be used for interactive cloud-based development on Kubernetes. By shifting the compute from your local machine to a remote server environment, Uffizzi dev environments great for resource intensive applications or large microservices architectures. 
 
 <Cards num={2}>
   <Cards.Card
     arrow
     title="Learn more about dev clusters"
-    href="/docs/core-concepts/ephemeral-environments/virtual-clusters"
+    href="/core-concepts/ephemeral-environments/virtual-clusters"
   >
   </Cards.Card>
 </Cards>
 
 ### Compose Environments 
-[Compose environments](/docs/core-concepts/ephemeral-environments/compose) are container-based environments built from a Docker Compose specification. You can read more about Uffizzi's support for the Compose specification [here](references/compose-spec.md), as well as a tutorial on how to [configure a Uffizzi Compose file](docker-compose-environment.md#create-a-docker-compose-template).
+[Compose environments](/core-concepts/ephemeral-environments/compose) are container-based environments built from a Docker Compose specification. You can read more about Uffizzi's support for the Compose specification [here](references/compose-spec.md), as well as a tutorial on how to [configure a Uffizzi Compose file](docker-compose-environment.md#create-a-docker-compose-template).
 
 <Cards num={2}>
   <Cards.Card
     arrow
     title="Learn more about compose environments"
-    href="/docs/core-concepts/ephemeral-environments/compose"
+    href="/core-concepts/ephemeral-environments/compose"
   >
   </Cards.Card>
 </Cards>

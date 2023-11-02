@@ -34,7 +34,7 @@ local development.
 
 
 Uffizzi dev clusters offer a dramatic improvement in the development loop. By avoiding image rebuilds 
-and container restarts for every small code change, the [`uffizzi dev`](/docs/cli/commands/dev) command significantly reduces the time between writing code and seeing 
+and container restarts for every small code change, the [`uffizzi dev`](/cli/commands/dev) command significantly reduces the time between writing code and seeing 
 it run on the cluster. **This process is transparent, requiring no extra action from the developer**, and maintains a high fidelity 
 environment that closely mimics production.
 
@@ -60,7 +60,7 @@ To start a dev cluster, run:
 uffizzi dev start [CONFIG_FILE]
 ```
 
-where `CONFIG_FILE` is the path to a [Skaffold file](/docs/dev-environments/skaffold).
+where `CONFIG_FILE` is the path to a [Skaffold file](/dev-environments/skaffold).
 
 This command will provision a dev cluster on Uffizzi and start the Skaffold process on your local machine.
 Anytime you save local changes, they will be synced and redeployed to the remote cluster.  
@@ -68,4 +68,4 @@ Anytime you save local changes, they will be synced and redeployed to the remote
 ## Getting Started  
 
 To learn more about incorporating Uffizzi dev cluster in your development workflo, see this 
-guide [Using Dev Clusters](/docs/dev-environments/dev-clusters).
+guide [Using Dev Clusters](/dev-environments/dev-clusters).

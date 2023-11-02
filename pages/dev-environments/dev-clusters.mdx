@@ -3,10 +3,10 @@ import { Callout, FileTree } from 'nextra/components'
 
 # Using Dev Clusters
 
-Uffizzi [dev clusters](/docs/core-concepts/ephemeral-environments/dev-clusters) let you code locally in your favorite IDE and see your changes automatically reflected in your deployed services in 
+Uffizzi [dev clusters](/core-concepts/ephemeral-environments/dev-clusters) let you code locally in your favorite IDE and see your changes automatically reflected in your deployed services in 
 real-time. 
 
-Dev clusters provide [many benefits](/docs/core-concepts/ephemeral-environments/dev-clusters) compared to traditional 
+Dev clusters provide [many benefits](/core-concepts/ephemeral-environments/dev-clusters) compared to traditional 
 local development environments, including standardizing developer workflows and offloading compute to remote servers. 
 
 <Callout>
@@ -14,19 +14,19 @@ local development environments, including standardizing developer workflows and 
   One of the primary benefits of using Uffizzi Dev Clusters is the option to use the [Uffizzi Dev 
   Ingress](/dev-environments/ingress) service. With this option enabled, Uffizzi will provision for your dev environment its 
   own URL (with a unique domain and TLS certificate), allowing you to test your application with HTTPS and enforce a more 
-  [production-like](/docs/core-concepts/production-like) configuration.
+  [production-like](/core-concepts/production-like) configuration.
 </Callout>
 
 ## Requirements
-To create a [dev cluster](/docs/core-concepts/ephemeral-environments/dev-clusters), you'll need two things:
+To create a [dev cluster](/core-concepts/ephemeral-environments/dev-clusters), you'll need two things:
 
-1. **A [`skaffold.yaml`](https://skaffold.dev/docs/references/yaml/) file**  
+1. **A [`skaffold.yaml`](https://skaffold.dev/references/yaml/) file**  
 2. **Your application's configuration files** - typically Helm Charts, kustomizations or Kubernetes manifests
 
 ## Setup
 
-Dev clusters can be easily created from the [Uffizzi Cloud dashboard](/docs/usage/dashboard) or from the CLI 
-by running [`uffizzi dev start`](/docs/cli/commands/dev), passing your `skaffold.yaml` file as an argument:
+Dev clusters can be easily created from the [Uffizzi Cloud dashboard](/usage/dashboard) or from the CLI 
+by running [`uffizzi dev start`](/cli/commands/dev), passing your `skaffold.yaml` file as an argument:
 
 ```bash
 uffizzi dev start /path/to/skaffold.yaml
@@ -35,7 +35,7 @@ uffizzi dev start /path/to/skaffold.yaml
 This command will also save the location of your skaffold file in the CLI configuration `.config/uffizzi/config_default.json`.
 
 ### Create a Skaffold file
-Uffizzi dev clusters require a [`skaffold.yaml`](https://skaffold.dev/docs/references/yaml/) configuration file 
+Uffizzi dev clusters require a [`skaffold.yaml`](https://skaffold.dev/references/yaml/) configuration file 
 that defines how your build artifacts are managed and where to find your application configuration files, such as 
 Helm Charts or kustomizations. 
 
@@ -53,11 +53,11 @@ entire dev cluster and all of its resources, including any persistent volumes yo
 
 ## Comparison to Skaffold Dev
 
-The [`uffizzi dev`](/docs/cli/commands/dev) command is a convenience wrapper around [`uffizzi cluster`](/docs/cli/commands/cluster) and 
-[`skaffold dev`](https://skaffold.dev/docs/workflows/dev/) commands. It manages the lifecycle of Uffizzi 
+The [`uffizzi dev`](/cli/commands/dev) command is a convenience wrapper around [`uffizzi cluster`](/cli/commands/cluster) and 
+[`skaffold dev`](https://skaffold.dev/workflows/dev/) commands. It manages the lifecycle of Uffizzi 
 virutal clusters (creates, updates, and deletes necessary resources) and automatically configures Skaffold 
 for use with Uffizzi. Additionally, `uffizzi dev` provides sensible default configurations, such as using Uffizzi Cloud's ephemeral registry 
-`registry.uffizzi.com` to temporarily store build artifacts. For a full list of command options, see the [CLI reference](/docs/cli/commands/dev).
+`registry.uffizzi.com` to temporarily store build artifacts. For a full list of command options, see the [CLI reference](/cli/commands/dev).
 
 ### Example Skaffold File
 

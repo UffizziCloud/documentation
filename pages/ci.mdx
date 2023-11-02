@@ -1,0 +1,33 @@
+import Image from 'next/image'
+import { Callout, Cards } from 'nextra/components'
+
+# Continuous Integration Guides
+
+Follow these recipes to add Uffizzi to your CI pipeline to create ephemeral environments for your pull requests/merge requests.
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    title="GitHub Actions (Monorepo)"
+    href="/ci/github-actions/monorepo"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    title="GitHub Actions (Polyrepo)"
+    href="/ci/github-actions/polyrepo"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    title="GitLab CI "
+    href="/ci/gitlab-ci/monorepo"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    title="Azure DevOps"
+    href="/ci/azure-devops/monorepo"
+  >
+  </Cards.Card>
+</Cards>
