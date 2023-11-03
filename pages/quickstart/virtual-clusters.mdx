@@ -32,12 +32,12 @@ In this quickstart, we'll use the CLI to create a virtual cluster on Uffizzi Clo
   cd quickstart
   ```
 
-  This repo includes a [`web.yaml`](https://github.com/UffizziCloud/quickstart/blob/main/manifests/web.yaml) manifest that includes `service`, `ingress` and `deployment` resources.
+  This repo includes a [`web.yaml`](https://github.com/UffizziCloud/quickstart/blob/main/k8s/web.yaml) manifest that includes `service`, `ingress` and `deployment` resources.
 
   ### Apply the manifest to your cluster:
 
   ```bash copy
-  kubectl apply -f ./manifests
+  kubectl apply -f ./k8s
   # deployment.apps/web created
   # ingress.networking.k8s.io/web created
   # service/web created
