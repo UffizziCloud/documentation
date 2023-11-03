@@ -33,7 +33,7 @@ const config: DocsThemeConfig = {
     const { asPath } = useRouter()
     if (asPath !== '/') {
       return {
-        titleTemplate: '%s – Nextra'
+        titleTemplate: '%s – Uffizzi'
       }
     }
   },
@@ -62,14 +62,14 @@ const config: DocsThemeConfig = {
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={socialCard} />
-        <meta name="twitter:site:domain" content="nextra.site" />
-        <meta name="twitter:url" content="https://nextra.site" />
+        <meta name="twitter:site:domain" content="uffizzi.com" />
+        <meta name="twitter:url" content="https://uffizzi.com" />
         <meta
           name="og:title"
-          content={title ? title + ' – Nextra' : 'Nextra'}
+          content={title ? title + ' – Uffizzi' : 'Uffizzi'}
         />
         <meta name="og:image" content={socialCard} />
-        <meta name="apple-mobile-web-app-title" content="Nextra" />
+        <meta name="apple-mobile-web-app-title" content="Uffizzi" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.png" type="image/png" />
         <link
@@ -123,7 +123,7 @@ const config: DocsThemeConfig = {
             target="_blank"
             rel="noopener noreferrer"
             title="uffizzi.com homepage"
-            href="https://vercel.com?utm_source=nextra.site"
+            href="https://uffizzi.com"
           >
           </a>
         </div>
