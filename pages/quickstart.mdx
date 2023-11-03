@@ -1,0 +1,29 @@
+---
+title: Uffizzi Quickstart
+description: Get started with ephemeral environments on Uffizzi.
+---
+
+import { Callout, Steps, Cards } from 'nextra/components'
+
+# Quickstart Guides
+
+You can choose between creating a standard [virtual cluster](core-concepts/virtual-clusters) or a [dev cluster](core-concepts/dev-cluster).  
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    title="Virtual Cluster Quickstart"
+    href="/quickstart/virtual-clusters"
+  >
+  </Cards.Card>
+  <Cards.Card 
+  arrow 
+  title="Dev Cluster Quickstart" 
+  href="/quickstart/dev-clusters">
+  </Cards.Card>
+</Cards>
+
+<Callout className="mt-6">
+  **What's the difference?**  
+  Stardard [virtual clusters](/core-concepts/ephemeral-environments/virtual-clusters) are packaged with a [k3s](https://k3s.io) certified Kubernetes distribution. [Dev clusters](/core-concepts/ephemeral-environments/dev-clusters) are standard virtual clusters with additional developer tooling for building, testing, and auto-deploying your local project files.
+</Callout>

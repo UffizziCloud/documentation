@@ -1,0 +1,71 @@
+---
+title: Dev Clusters
+description: Learn about dev clusters
+---
+
+import { Callout, FileTree } from 'nextra/components'
+import Image from 'next/image'
+
+# Dev Clusters
+
+Dev clusters are standard Uffizzi [virtual clusters](virtual-clusters) with additional developer tooling for building, testing, and auto-deploying 
+your local project files. This means every time you save changes in your local IDE, your deployed services are hot reloaded, **without having to 
+rebuild your containers**. Plus since the exectution environment is remote, you never have to worry about your local machine's resource constraints.
+
+<br />
+<Image
+    src="/images/dev-environment.png"
+    width={640}
+    height={433}
+    alt="Uffizzi Dev Environments"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+Dev clusters are great for everyday development and testing of your applications, especially for teams that want their development 
+environments to more closely resemble production, such as using domains and TLS certificates for HTTPS, services meshes, and other components that aren't compatible with traditional 
+local development.
+
+## Real-Time Deployments
+
+<Callout>
+    Instead of rebuilding images on each save, your changes are serialized and sent to the dev cluster via gRPC calls, resulting in blazing fast refreshes ⚡️. 
+</Callout>
+
+
+Uffizzi dev clusters offer a dramatic improvement in the development loop. By avoiding image rebuilds 
+and container restarts for every small code change, the [`uffizzi dev`](/cli/commands/dev) command significantly reduces the time between writing code and seeing 
+it run on the cluster. **This process is transparent, requiring no extra action from the developer**, and maintains a high fidelity 
+environment that closely mimics production.
+
+## Benefits
+
+Cloud-based dev environments offer many benefits compared to traditional local development, including: 
+    - Faster on-boarding for new team members
+    - Enforces consistency across developer environments
+    - [More similar to production](production-like)
+    - [Access to more CPU and memory](resource-quotas) for resource-intensive applications
+    - Scalability and flexibility for microservices apps
+    - Faster initial build times
+    - Avoid accumulation of build artifacts on local machine
+    - Application components available at public URLs or IP addresses
+    - TLS certificates for HTTPS
+    - Better team collaboration via shareable links 
+
+## Working with Dev Clusters
+
+To start a dev cluster, run:  
+
+```bash
+uffizzi dev start [CONFIG_FILE]
+```
+
+where `CONFIG_FILE` is the path to a [Skaffold file](/dev-environments/skaffold).
+
+This command will provision a dev cluster on Uffizzi and start the Skaffold process on your local machine.
+Anytime you save local changes, they will be synced and redeployed to the remote cluster.  
+
+## Getting Started  
+
+To learn more about incorporating Uffizzi dev cluster in your development workflo, see this 
+guide [Using Dev Clusters](/dev-environments/dev-clusters).

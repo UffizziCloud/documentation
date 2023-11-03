@@ -1,12 +1,152 @@
-import { useEffect } from "react"
-import { useRouter } from "next/router"
+---
+title: Introduction
+description: Get started with ephemeral environments on Uffizzi.
+---
 
-export default function Home() {
-  const router = useRouter()
+import {
+	Accordion,
+	AccordionItem,
+	AccordionTrigger,
+	AccordionContent,
+} from '@/components/ui/accordion'
 
-  useEffect(() => {
-    router.replace("https://uffizzi.com")
-  })
+import { 
+	Cards,
+	Steps,
+	Tabs, 
+} from 'nextra/components'
 
-  return null
-}
+# Uffizzi
+
+Uffizzi helps teams build internal developer platforms (IDPs) in minutes, not months, by providing out-of-the-box [Kubernetes multi-tenancy](https://www.uffizzi.com/kubernetes-multi-tenancy), [cluster virtualization](#why-virtual-clusters), cloud-based dev environments, customizable templating, and more. 
+
+Uffizzi provides a foundation for building IDPs, so platform teams can build end-to-end workflows, giving every developer access to self-service, [ephemeral environments]() for development, testing, PRs, staging and more.
+
+## Quickstart Guides
+
+Choose a quickstart guide to get started:
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    title="Create a virtual cluster"
+    href="/quickstart/virtual-clusters"
+  >
+  </Cards.Card>
+  <Cards.Card 
+  arrow 
+  title="Create a dev cluster" 
+  href="/quickstart/dev-clusters">
+  </Cards.Card>
+</Cards>
+
+## Features
+
+In addition to enabling Kubernetes [virtual clusters](/core-concepts/virtual-clusters) and [dev clusters](/core-concepts/dev-clusters), it also provides:  
+- Environment sandboxing  
+- Fair sharing of resources
+- Environment lifecycle management
+- Access control
+- Options for self-hosting, private cloud, or fully managed (SaaS)'
+
+## Examples
+
+You can clone a Uffizzi starter repository to get a head start on your developer platform.
+
+## FAQ
+
+<Accordion type="single" collapsible>
+
+
+<AccordionItem value="faq-1">
+        <AccordionTrigger>
+                Why build an internal developer platform (IDP)?
+        </AccordionTrigger>
+        <AccordionContent>
+                IDPs enforce standardization, increase developer productivity, and improve developer experience—not to mention elimintating piles of bash scripts, manual processes, and the maintenance headaches that come with them. 
+
+
+                IDPs are maintainable and scalable systems that can reduce hours spent: 
+
+
+                - On-boarding developers
+                - Updating app configurations
+                - Adding/Updating services and dependencies
+                - Adding/Updating resources
+                - Waiting for environment availability
+                - Waiting for environment creation
+                - Waiting on other teams
+                - Rolling back failed deployments
+                - Refactoring architecture
+                - Debugging
+
+
+        </AccordionContent>
+</AccordionItem>
+
+
+<AccordionItem value="faq-2">
+        <AccordionTrigger>
+                What are ephemeral environments?
+        </AccordionTrigger>
+        <AccordionContent>
+                Ephemeral environments, unlike traditional persistent staging or production environments, are created on-demand and are intended to be short-lived, existing only as long as they are needed. Some example use cases for ephemeral environments include:
+                - Individual developer environments
+                - Feature branch environments
+                - Pull request environments
+                - Testing environments
+                - Debugging / hotfix environments
+                - Release candidate environments
+                - Staging environments  
+
+
+                In addition to their ephemeral nature, they are also provide isolation from other ephemeral development and test environments, making them a perfect companion to IDPs.
+        </AccordionContent>
+</AccordionItem>
+
+
+<AccordionItem value="faq-3">
+        <AccordionTrigger>
+                What do you mean by "virtual clusters"?
+        </AccordionTrigger>
+        <AccordionContent>
+
+
+        **What exactly do you mean by virtual clusters?**
+
+
+        Similar to the concept of virtual machines, Uffizzi virtual clusters are virtualized instances of Kubernetes clusters running on top of a host cluster. Uffizzi virtual clusters provide all the same functionality of real Kubernetes clusters, while being more convenient and efficient. 
+
+
+        Inside each virtual cluster is a **_full copy of the Kubernetes API_**—i.e. each developer can query his or her own instance of the K8s control plane. This means Uffizzi virtual clusters can safely support custom resource definitions (CRD) and other components that require cluster-wide access.
+
+
+        </AccordionContent>
+</AccordionItem>
+
+
+<AccordionItem value="faq-4">
+        <AccordionTrigger>
+                Can I bring my own manifests / Helm Charts / kustomizations?
+        </AccordionTrigger>
+        <AccordionContent>
+        
+                Yes! By providing a virtualization layer on top of Kubernetes, Uffizzi let's teams reuse their templates of choice, while providing a secure, multi-tenant environment for running them.
+
+
+</AccordionContent>
+</AccordionItem>
+
+
+<AccordionItem value="faq-6">
+        <AccordionTrigger>
+                What kinds of Kubernetes resources are supported?
+        </AccordionTrigger>
+<AccordionContent>
+        In general, any Kubernetes resource that can be created in a regular cluster can be created in a Uffizzi virtual cluster. This includes custom resource definitions (CRDs), which are cluster-wide resources.
+        The one exception to this is any resources that require node access, such as DaemonSets and hostPath volumes. These resources are not supported in Uffizzi virtual clusters since these they require host-level access.
+</AccordionContent>
+</AccordionItem>
+
+
+</Accordion>

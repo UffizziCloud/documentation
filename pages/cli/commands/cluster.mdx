@@ -1,0 +1,115 @@
+import { Callout } from 'nextra/components'
+
+# `cluster`
+
+Manage [virtual clusters](/core-concepts/ephemeral-environments/virtual-clusters)
+
+``` bash
+uffizzi cluster [SUBCOMMAND] [OPTIONS]
+```
+
+## `cluster create`
+
+Create a [virtual cluster](../topics/virtual-clusters.md)
+
+``` bash
+uffizzi cluster create [CLUSTER_NAME] [OPTIONS]
+```
+
+`[CLUSTER_NAME]` is the name of the cluster to create. This argument is optional. If no name is provided, a cluster name 
+is generated for you.
+
+| Option                    | Description                                                                                |
+| --------------------------|------------------------------------------------------------------------------------------- |
+| `-n`, `--name`            | Option is deprecated and will be removed in the newer versions.Please use a positional argument instead: uffizzi cluster create my-awesome-name.   |
+| `--k8s-version`           | Specify which version of the Kubernetes API to use when creating the cluster, formatted as [MAJOR].[MINOR]. Defaults to 1.27. Minor versions point to the latest release of the corresponding k3s minor version. See https://github.com/k3s-io/k3s/releases |
+| `-k`, `--kubeconfig`      | The location of the kubeconfig file to create or update                                    |
+| `-m`, `--manifest`        | The path to a Kubernetes manifest file. If no manifest is provided, Uffizzi creates an empty cluster instance. |
+| `-o`, `--output`          | Formats the output of this command. Accepted values are `pretty-json` and `json`           |
+| `--update-current-context`| Updates the current kubeconfig context. Defaults to `true`                                 |
+
+### Example Usage
+
+To create a cluster with the auto generated name, run:  
+
+``` bash copy
+uffizzi cluster create
+```
+
+To create a cluster with name 'my-cluster', run:
+
+``` bash copy
+uffizzi cluster create my-cluster
+```
+
+To create a cluster and apply manifests from a directory, run:  
+
+``` bash copy
+uffizzi cluster create --manifest=manifests/
+```
+
+To create a cluster using Kubernetes v1.28, run:  
+
+``` bash copy
+uffizzi cluster create --k8s-version=1.28
+```
+
+## `cluster delete`
+
+Delete a [virtual cluster](../topics/virtual-clusters.md)
+
+``` bash
+uffizzi cluster delete [CLUSTER_NAME]
+```
+
+`CLUSTER_NAME` is the name of the cluster to delete.
+
+## `cluster describe`
+
+Shows metadata for a cluster given a valid cluster name  
+
+| Option                    | Description                                                                                |
+| --------------------------|------------------------------------------------------------------------------------------- |
+| `-n`, `--name`            | The name of the cluster to describe                                                        |
+| `-o`, `--output`          | Formats the output of this command. Accepted values are `pretty-json` and `json`           |
+
+
+## `cluster list`
+
+List all virtual clusters for the default account and project context. See [account](cli.md#account) and [config](cli.md#config) for details about changing default account or project contexts.
+
+``` bash
+uffizzi cluster list
+```
+
+To view clusters from a different project, you can pass the CLI-wide `--project` option and pass an alternative project:
+
+``` bash
+uffizzi cluster list --project [ALT_PROJECT]
+```
+
+| Option                    | Description                                                                                |
+| --------------------------|------------------------------------------------------------------------------------------- |
+| `-o`, `--output`          | Formats the output of this command. Accepted values are `pretty-json` and `json`           |
+
+## `cluster update-kubeconfig`
+
+Create or update the user's kubeconfig file with the named cluster's details.
+
+``` bash
+uffizzi cluster update-kubeconfig [CLUSTER_NAME] [OPTIONS]
+```
+
+| Option                    | Description                                                                                |
+| --------------------------|------------------------------------------------------------------------------------------- |
+| `-p`, `--print`           | Dump kubeconfig to `STDOUT`                                                                |
+| `-q`, `--quiet`           | Suppress output                                                                            |
+| `-k`, `--kubeconfig`      | This option specifies the location of the kubeconfig file to create or update              |
+
+<Callout>
+    <b>Behavior of <code>update-kubeconfig</code></b>
+    - If you specify a path with the `--kubeconfig` option, then the resulting configuration file is created at that location if none exists or is merged with an existing kubeconfig at that location.  
+    - If you have the `KUBECONFIG` environment variable set, then the resulting configuration file is created at the first entry in that variable or merged with an existing kubeconfig at that location.  
+    - If a previous cluster configuration exists for a Uffizzi cluster with the same name at the specified path, the existing configuration is overwritten with the new configuration.  
+    - When `update-kubeconfig` writes a configuration to a kubeconfig file, the current context of the kubeconfig file is set to that configuration.
+</Callout>

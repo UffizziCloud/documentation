@@ -1,0 +1,79 @@
+import { Callout} from 'nextra/components'
+
+# CLI Configuration Options
+
+The Uffizzi CLI has several configuration options, so that each time you run a command, you don't have to pass values 
+for your account, project, location of your kubeconfig file, etc. These configurations are stored in 
+`~/.config/uffizzi/config_default.json`.
+
+## `config_default.json`  
+
+The `config_default.json` file stores the configuration properties for your Uffizzi CLI installation. You can 
+set/unset these properties by running the `uffizzi config set` / `unset` 
+commands. **It is not recommended to edit this file manually.** See the [CLI reference](/cli/commands/config) for details. 
+
+### Properties
+`server` (string) -  The Uffizzi API server. Defaults to `app.uffizzi.com` (Uffizzi Cloud)  
+`account` (object) - The Uffizzi account object  
+`account.id` (int) - The Uffizzi account ID  
+`account.name` (string) - The Uffizzi account name  
+`project` (string) - A URL-compatible slug generated from your Project name
+`previous_current_contexts` (array) - Helper config that tracks the previous and current cluster contexts. Used to switch back to previous context when the current cluster is deleted.  
+
+
+## Setup Wizard
+
+Once you've [installed the Uffizzi CLI](/install), you can run `uffizzi config` to launch an 
+interactive configuration wizard. The CLI configuration is stored in `~/.config/uffizzi/config_default.json`.
+
+``` bash
+uffizzi config
+```
+
+### Server  
+
+Set the Uffizzi API server you want to connect to. If you're using Uffizzi Cloud, accept the default value 
+`app.uffizzi.com`, otherwise enter the URL of your Uffizzi API server.  
+
+``` bash
+uffizzi config
+# ...
+# Server (app.uffizzi.com):
+```
+
+### Account
+
+The account you use to log in to Uffizzi. For example, if you login to Uffizzi via GitHub or GitLab, select 
+your personal or organizational/group account
+
+``` bash
+uffizzi config
+# ...
+# Select an account: (Press ↑/↓/←/→ arrow to move and Enter to select)
+# ‣ jdoe
+#   Acme Inc
+```
+
+### Project 
+
+Create a new project or select an existing project. 
+
+``` bash
+uffizzi config
+# ...
+# Select a project: (Press ↑/↓/←/→ arrow to move and Enter to select)
+# ‣ default
+#   My Project
+#   Create a new project
+```
+
+<Callout>
+You can also pass the Uffizzi-wide flag `--project` to any CLI command to change the target project on the fly:
+``` bash
+uffizzi cluster create --project some-other-project
+```
+</Callout>
+
+## Next Steps  
+
+Once your CLI is configured, take a look at the [list of CLI commands and their options](/cli/commands/account).
