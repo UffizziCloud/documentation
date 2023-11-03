@@ -9,7 +9,6 @@
     "backstage": {
         "title": "Backstage",
         "theme": {
-            "typesetting": "article",
             "toc": false,
             "sidebar": false
         }

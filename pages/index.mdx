@@ -3,6 +3,7 @@ title: Introduction
 description: Get started with ephemeral environments on Uffizzi.
 ---
 
+import { Group, ChevronRightSquare } from 'lucide-react';
 import {
 	Accordion,
 	AccordionItem,
@@ -29,12 +30,14 @@ Choose a quickstart guide to get started:
 <Cards num={2}>
   <Cards.Card
     arrow
+    icon={<Group />}
     title="Create a virtual cluster"
     href="/quickstart/virtual-clusters"
   >
   </Cards.Card>
   <Cards.Card 
   arrow 
+  icon={<ChevronRightSquare />}
   title="Create a dev cluster" 
   href="/quickstart/dev-clusters">
   </Cards.Card>

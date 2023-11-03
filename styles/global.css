@@ -87,6 +87,14 @@
     --shiki-token-punctuation: #bbb;
     --shiki-token-link: #ffab70;
   }
+
+  .backstage-icon path {
+    fill: #121212;
+  }
+
+  .dark .backstage-icon path {
+    fill: #9BF0E1;
+  }
 }
 
 @layer base {

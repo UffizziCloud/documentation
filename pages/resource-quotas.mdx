@@ -4,25 +4,21 @@ Uffizzi virtual clusters are designed with specific resource limits and quotas t
 
 Should you find that the standard resource allocation does not align with your requirements, you can request a quota increase by contacting us at support@uffizzi.com.  
 
-| Type                 | Resource                | Default   | Default Request | Quota    |
-|----------------------|-------------------------|-----------|-----------------|----------|
-| **Limit Range**      | CPU                     | 1         | 100m            | -        |
-|                      | Memory                  | 512Mi     | 128Mi           | -        |
-|                      | Ephemeral Storage       | 8Gi       | 3Gi             | -        |
-| **Resource Quota**   | Pods                    | -         | -               | 100      |
-|                      | Secrets                 | -         | -               | 100      |
-|                      | Services                | -         | -               | 100      |
-|                      | Endpoints               | -         | -               | 100      |
-|                      | ConfigMaps              | -         | -               | 100      |
-|                      | PersistentVolumeClaims  | -         | -               | 100      |
-|                      | CPU (Limits)            | -         | -               | 200      |
-|                      | Memory (Limits)         | -         | -               | 100Gi    |
-|                      | Ephemeral Storage (Limits) | -     | -               | 1600Gi   |
-|                      | CPU (Requests)          | -         | -               | 200      |
-|                      | Memory (Requests)       | -         | -               | 100Gi    |
-|                      | Storage (Requests)      | -         | -               | 1000Gi   |
-|                      | Ephemeral Storage (Requests) | -   | -               | 1600Gi   |
-|                      | NodePorts (Services)    | -         | -               | 5        |
-|                      | LoadBalancers (Services) | -        | -               | 5        |
+| Type     | Resource                | Quota    |
+|----------|-------------------------|----------|
+| Count    | ConfigMaps              | 100      |
+|          | Endpoints               | 100      |
+|          | PersistentVolumeClaims  | 100      |
+|          | Pods                    | 100      |
+|          | Secrets                 | 100      |
+|          | Services                | 100      |
+| Limit    | CPU                     | 20       |
+|          | Memory                  | 10Gi     |
+|          | Ephemeral Storage       | 160Gi    |
+| Requests | CPU                     | 20       |
+|          | Memory                  | 10Gi     |
+|          | Storage                 | 100Gi    |
+|          | Ephemeral Storage       | 60Gi     |
+| Services | NodePorts               | 5        |
+|          | LoadBalancers           | 5        |
 
-*Note: The "Default" columns relate to the default values set for resources if not specified by a container, while the "Quota" column represents the hard limits set for the cluster. For any adjustments or custom configurations, customers should contact our support team.*

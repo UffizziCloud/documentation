@@ -1,8 +1,72 @@
-## How Backstage Uses Uffizzi 
+import Image from 'next/image'
+import BackstageIcon from '@/components/icons/backstage'
+import { Library } from 'lucide-react';
+import { Callout, Cards } from 'nextra/components'
 
-With nearly 400 ephemeral environments created every month, is leveraging Uffizzi to accelerate their 
-release frequency by 20% every month.
+<br />
+<BackstageIcon />
 
 ---
 
-Lorem ipsum
+<Callout type="info" emoji="🚀">
+    With nearly 400 ephemeral environments created every month, [Backstage](https://github.com/backstage/backstage) is leveraging Uffizzi to **accelerate their 
+    release frequency by 20%** (🤯).
+</Callout>
+<br />
+
+# How Backstage Uses Uffizzi 
+
+Spotify's Backstage team has boosted its development velocity by 20% in just two months by adopting Uffizzi ephemeral environments to streamline their pull request review process. Backstage, an open-source developer portal framework, has experienced rapid growth, with over 500 companies and more than 1 million developers using it. However, the increasing number of contributions and pull requests created a need for more efficient acceptance testing.
+
+Ephemeral environments, which are temporary dev, test, or staging environments resembling production, were introduced to help streamline testing. These environments are created on-demand for feature branches and are then deleted when no longer needed. They enable contributors to confirm functionality and allow maintainers to preview changes, improving efficiency and saving time.
+
+## Challenges
+
+Backstage faced several challenges that led to the adoption of Uffizzi:
+
+1. **Growing Contribution Volume**: With an exploding community of contributors, Backstage was dealing with hundreds of pull requests each month. This massive volume required an efficient system to manage and test these contributions.
+
+2. **Development Velocity**: The need to improve development velocity was paramount. They needed to streamline the process for reviewing and accepting git contributions to maintain their pace of innovation.
+
+3. **Efficiency in Acceptance Testing**: Before Uffizzi, the process of testing contributions was likely slower and more cumbersome, possibly involving conflicts in a shared staging environment.
+
+4. **Infrastructure Scalability**: The existing system could not scale effectively to support the demand for concurrent ephemeral environments required for the volume of active pull requests.
+
+5. **User Experience**: There was a need for a better user experience, especially for the vast number of external contributors.
+
+6. **Cost Management**: The cost implications of maintaining a static host cluster for each contribution were prohibitive, and the previous solution had escalating costs and issues with storage.
+
+7. **Security and Access Control**: Given the open-source nature of Backstage and the number of external contributors, robust security and access control mechanisms were needed.
+
+8. **Integration with Existing Workflows**: It was important to have a solution that worked seamlessly with their existing GitHub Actions workflows.
+
+
+## Solution
+
+Uffizzi offered solutions to these challenges:
+
+- **Scalability**: Built on Kubernetes, it could handle the required number of ephemeral environments concurrently.
+- **Automation**: It automated the creation, updating, and deletion of environments, requiring no manual steps.
+- **Isolated Testing**: Provided isolated environments for feature branches, preventing conflicts from other branches.
+- **Shareability**: Generated URLs for each ephemeral environment that could be accessed easily from pull requests, improving collaboration.
+- **Cost-Effectiveness**: Being ephemeral, the environments were deleted after use, avoiding the cost of maintaining persistent environments.
+- **Access Control**: Implemented secure access for external contributors without compromising sensitive information.
+- **Lifecycle Management**: Managed build artifacts efficiently, addressing the issue of registry storage for temporary artifacts.
+
+## Results
+
+By addressing the technical and logistical challenges with Uffizzi, Backstage was able to pack more features into every release, **increase the merges per week by 20%**, with more efficient pull request reviews, faster iterations, fewer bugs, and significant time savings. It also enhanced the overall development process for its maintainers and contributors.
+
+Ephemeral environments also save money by avoiding the need for a static host cluster for every contributor. They are "short-lived" and cost-effective, especially for testing in isolation and faster iterations, and support hundreds of simultaneous pull requests.
+
+Uffizzi integrated seamlessly with Backstage's workflow, providing automated, isolated, shareable, and scalable environments. Outside contributors gained secure access to ephemeral environments, and build artifacts were efficiently managed, reducing storage requirements.
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<Library />}
+    title="Read the full article"
+    href="https://uffizzi.com/ephemeral-environments"
+  >
+  </Cards.Card>
+</Cards>
