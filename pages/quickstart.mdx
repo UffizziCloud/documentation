@@ -4,6 +4,7 @@ description: Get started with ephemeral environments on Uffizzi.
 ---
 
 import { Callout, Steps, Cards } from 'nextra/components'
+import { Group, ChevronRightSquare } from 'lucide-react';
 
 # Quickstart Guides
 
@@ -12,18 +13,20 @@ You can choose between creating a standard [virtual cluster](core-concepts/virtu
 <Cards num={2}>
   <Cards.Card
     arrow
+    icon={<Group />}
     title="Virtual Cluster Quickstart"
     href="/quickstart/virtual-clusters"
   >
   </Cards.Card>
   <Cards.Card 
   arrow 
+  icon={<ChevronRightSquare />}
   title="Dev Cluster Quickstart" 
   href="/quickstart/dev-clusters">
   </Cards.Card>
 </Cards>
 
-<Callout className="mt-6">
+<Callout className="mt-6" type="info">
   **What's the difference?**  
   Stardard [virtual clusters](/core-concepts/ephemeral-environments/virtual-clusters) are packaged with a [k3s](https://k3s.io) certified Kubernetes distribution. [Dev clusters](/core-concepts/ephemeral-environments/dev-clusters) are standard virtual clusters with additional developer tooling for building, testing, and auto-deploying your local project files.
 </Callout>

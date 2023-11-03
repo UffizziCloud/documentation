@@ -10,7 +10,7 @@ import Image from 'next/image'
 
 Similar to the concept of virtual machines, Uffizzi virtual clusters are virtualized instances of Kubernetes clusters running on top of a host cluster. Uffizzi virtual clusters provide all the same functionality of real Kubernetes clusters, while being more convenient and efficient. 
 
-<Callout className="mt-4">
+<Callout className="mt-4" type="info">
 Inside each virtual cluster is a **full copy of the Kubernetes API**—i.e. each developer can query his or her own instance of the K8s control plane. This means Uffizzi virtual clusters can safely support custom resource definitions (CRD) and other components that require cluster-wide access.
 </Callout>
 

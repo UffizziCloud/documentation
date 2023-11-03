@@ -106,7 +106,7 @@ uffizzi cluster update-kubeconfig [CLUSTER_NAME] [OPTIONS]
 | `-q`, `--quiet`           | Suppress output                                                                            |
 | `-k`, `--kubeconfig`      | This option specifies the location of the kubeconfig file to create or update              |
 
-<Callout>
+<Callout type="info">
     <b>Behavior of <code>update-kubeconfig</code></b>
     - If you specify a path with the `--kubeconfig` option, then the resulting configuration file is created at that location if none exists or is merged with an existing kubeconfig at that location.  
     - If you have the `KUBECONFIG` environment variable set, then the resulting configuration file is created at the first entry in that variable or merged with an existing kubeconfig at that location.  
