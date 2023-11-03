@@ -54,11 +54,11 @@ const config: DocsThemeConfig = {
         <meta httpEquiv="Content-Language" content="en" />
         <meta
           name="description"
-          content="Make beautiful websites with Next.js & MDX."
+          content="Build developer platforms in minutes, not months."
         />
         <meta
           name="og:description"
-          content="Make beautiful websites with Next.js & MDX."
+          content="Build developer platforms in minutes, not months."
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={socialCard} />
