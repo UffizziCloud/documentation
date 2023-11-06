@@ -64,7 +64,6 @@ Open a pull request for `try-uffizzi` branch against `main` in your fork.
 
 The PR will trigger a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart-k8s/blob/main/.github/workflows/uffizzi.yml) that uses the Uffizzi CLI and Kubernetes manifests to create a Uffizzi ephemeral environment for the [microservices application](#architecture-of-this-example-app) defined by the repo. When the workflow completes, the ephemeral environment URL will be posted as a comment in your PR issue.
 
-
 <Callout>
     This virtual cluster is configured with a [Uffizzi Ingress](/ingress), which makes the `web` service available at a predictable URL, consisting of `https://app.uffizzi.com/` appended with the GitHub pull request domain. For example:  
     `https://app.uffizzi.com/github.com/{account}/{repo}/pull/{pull-request-number}`.  
@@ -88,6 +87,25 @@ When a pull request is open/closed/reopened/updated, the workflow will run the f
 4. Post a new comment or update an existing comment with the ephemeral environment URL and instructions for accessing the environment
 5. Delete the virtual cluster when the PR is closed or merged
 
+## Connecting to the Cluster
+
+To run `kubectl` commands on this cluster, first update your kubeconfig by running:  
+
+``` bash
+uffizzi cluster update-kubeconfig [CLUSTER_NAME]
+```
+
+<Callout>
+    **Tip**: We recommend using the pull request number for cluster names to make it easy to connect to your clusters, e.g.: `uffizzi cluster update-kubeconfig pr-281`  
+</Callout>
+
+To find the ingress of this deployment, run:   
+
+``` bash
+kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
+```
+
+
 ## Next Steps  
 
 Now that you've seen the process from start to finish, **add Uffizzi to your own project** on GitHub.  
@@ -97,7 +115,7 @@ Now that you've seen the process from start to finish, **add Uffizzi to your own
     arrow
     icon={<ChefHat size={24} />}
     title="Follow the Recipe"
-    href="/ci/github-actions/recipe"
+    href="/ci/github-actions/virtual-cluster/recipe"
   >
   </Cards.Card>
 </Cards>

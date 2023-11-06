@@ -66,13 +66,9 @@
                 "title": "Backstage",
                 "href": "/showcase/backstage"
             },
-            "harbor": {
-                "title": "Harbor",
-                "href": "/showcase/harbor"
-            },
             "ingress-nginx": {
                 "title": "Ingress Nginx",
-                "href": "/testing/case-study/ingress-nginx"
+                "href": "/testing/ingress-nginx"
             }
         }
     },

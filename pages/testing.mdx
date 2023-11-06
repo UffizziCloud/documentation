@@ -1,0 +1,35 @@
+# Ephemeral Test Environments on Uffizzi
+
+Uffizzi Test Environments help alleviate three problems that commonly plague software development teams:  
+
+1. **Dirty code in your `main` branch**: Uffizzi provides Dev and QA teams with the ability to rapidly share and review new features before they're merged—catching bugs early and keeping them out of a team's `main` git branch. This capability also empowers a team to simplify their testing process by separating functional testing from integration testing - an individual developer's topic branch can be tested in isolation before merging it with the rest of the team's contributions.
+
+2. **Limited Dev/QA environments**: Uffizzi eliminates problems associated with multiple developers sharing a single or limited number of test environments. With Uffizzi, previews are isolated (one developer's preview won't clobber another's) and ephemeral (they exist only as long as they are needed). New previews can be triggered when important events occur, like when a new PR is opened or a new image tag is created. Then previews environments are destroyed when the PR is closed or on a preset time-based deletion.  If an on-demand environment is broken you can throw it away and create a new one without impacting your teammates.
+
+3. **Differences in Kubernetes Versions**: With Uffizzi, you can test your application on the same version of Kubernetes that you'll be deploying to. This helps you catch issues that might arise from differences in Kubernetes versions. See our guide on [Kubernetes Version Testing](https://github.com/UffizziCloud/quickstart-k8s-version-testing).  
+
+Uffizzi supports *configuration-as-code*. To configure Uffizzi, you provide a Kubernetes manifests, Helm Charts, or a [`docker-compose.uffizzi.yml`](/compose) file that defines your application stack and how it should be deployed.
+
+## What can I use Uffizzi for?  
+
+- **Catch mistakes early**  
+It's much easier to find and fix issues early in the development cycle than after an issue has been merged. Merge with confidence knowing a feature works as intended.  
+
+- **Iterate quickly**  
+Uffizzi helps improve collaboration across Dev and Product Teams to iterate faster.  
+
+- **Accelerate release cycles**  
+Uffizzi directly improves Lead Time, Cycle Time, Team Velocity, and Code Stability Key Performance Indicators (KPIs) 
+
+- **Deconflict your shared Test/QA environment**  
+You can eliminate the bottlenecks of a shared development environment since every developer on your team can have as many preview environments as they need. And because preview environments are isolated and ephemeral, you no longer have to worry that a new commit might break QA for the rest of the team. 
+
+- **Trace root causes more easily**  
+With Uffizzi, teams can test topic branches *before* they're merged. This means you can separate functional testing from integration testing, allowing you to merge with confidence knowing that the feature works as expected before it undergoes integration testing.  
+
+- **Reduce costs**  
+Uffizzi's preview environments can replace your static QA environment. Every preview exists in its own lightweight environment, which is destroyed when a PR is closed or after a certain number of hours. See [Uffizzi Compose file reference](../references/compose-spec.md) for configuration options.
+
+- **Augment your existing CI/CD pipeline with CP**  
+Continuous Previews can be combined with your existing CI/CD solution 
+

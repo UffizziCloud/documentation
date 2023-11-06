@@ -1,1 +1,129 @@
-# GitLab CI Example (Virtual Cluster)
+import { Steps, Callout, Cards } from 'nextra/components'
+import Image from 'next/image'
+import { ChefHat } from 'lucide-react';
+
+# GitLab CI Virtual Cluster Example
+
+Follow the example guide below to see what how the Uffizzi virtual cluster integration with GitLab CI works end-to-end. Or you can [skip ahead](/ci/gitlab-ci/recipe) to the recipe if you'd rather get started integrating Uffizzi with your project. 
+
+## Get Started
+
+<Steps>
+
+### Fork the quickstart repo 
+
+Start by forking the [`quickstart`](https://gitlab.com/uffizzicloud/quickstart) repository on GitLab.  
+
+From the project home page, select **Fork**, then choose a namespace and project slug. Select **Fork project**.
+
+<br />
+<Image
+    src="/images/quickstart-gitlab-fork-1.png"
+    width={640}
+    height={433}
+    alt="Fork quickstart repo"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+<Image
+    src="/images/quickstart-gitlab-fork-2.png"
+    width={640}
+    height={433}
+    alt="Select fork"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+### Enable CI/CD 
+
+Ensure GitLab CI/CD is enabled for your project. If you don't see the **Build > Pipelines** option in left sidebar, following [these steps](https://docs.gitlab.com/ee/ci/enable_or_disable_ci.html#enable-cicd-in-a-project) to enable it.
+
+<br />
+<Image
+    src="/images/quickstart-gitlab-build-pipelines.png"
+    width={640}
+    height={433}
+    alt="Enable CI/CD"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+### Open a Merge Request
+
+Open a merge request (MR) for `try-uffizzi` branch against `master` in your fork.
+
+<Callout type="warning">
+    Be sure that you’re opening the MR on the branches of _your fork_ (i.e. `your-account/master` ← `your-account/try-uffizzi`).
+</Callout>
+
+If you try to open a MR for `uffizzi/quickstart/~/tree/master` ← `your-account/~/tree/try-uffizzi`, the pipeline will not run in this example.
+
+<br />
+<Image
+    src="/images/quickstart-gitlab-create-mr.png"
+    width={640}
+    height={433}
+    alt="Open a merge request"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+This will kick off a GitLab pipeline and the ephemeral environment URL will be dumped to `stdout` of the pipeline job. 
+
+</Steps>
+
+## What to expect
+
+The MR will trigger a pipeline defined in [`.gitlab-ci.yml`](https://gitlab.com/uffizzicloud/quickstart/-/blob/master/.gitlab-ci.yml) that creates a Uffizzi ephemeral environment and deploys the Hello World application defined by this repo. The ephemeral environment URL (See [Uffizzi Ingress](/ingress) will be echoed to `stdout` of the `deploy_environment` Job. Look for the following line in the Job logs:
+
+<Callout type="info">
+    This virtual cluster is configured with a [Uffizzi Ingress](/ingress), which makes the `web` service available at a predictable URL, consisting of `https://app.uffizzi.com/` appended with the GitHub pull request domain. For example:  
+    `https://app.uffizzi.com/github.com/{account}/{repo}/pull/{pull-request-number}`.  
+
+    You can make requests to specific endpoints by appending a route to the end of the URL. For example:  
+    `https://app.uffizzi.com/github.com/boxyhq/jackson/pull/661/api/health`  
+
+    To learn how to enable predicable URLs for your ephemeral environments, see the [Uffizzi Ingress](/ingress) documentation.
+
+</Callout>
+
+## How it works 
+
+Ephemeral environments are configured with a [kustomization.yaml](https://gitlab.com/uffizzicloud/quickstart/-/blob/master/kustomization.yaml) that describes the `service`, `ingress`, and `deployment' components and a [GitLab CI pipeline](https://gitlab.com/uffizzicloud/quickstart/-/blob/master/.gitlab-ci.yml) that includes a series of jobs triggered by a `merge_request_event`:
+
+1. Build and Push the Image
+2. Create a virtual cluster using the Uffizzi CLI in a GitLab CI pipeline runner  
+3. Apply a kustomization to deploy the application on the virtual cluster
+4. Delete the virtual cluster when the PR is closed or merged
+
+## Connecting to the Cluster
+
+To run `kubectl` commands on this cluster, first update your kubeconfig by running:  
+
+``` bash
+uffizzi cluster update-kubeconfig [CLUSTER_NAME]
+```
+
+<Callout>
+    **Tip**: We recommend using the merge request number for cluster names to make it easy to connect to your clusters, e.g.: `uffizzi cluster update-kubeconfig mr-281`  
+</Callout>
+
+To find the ingress of this deployment, run:   
+
+``` bash
+kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
+```
+
+## Next Steps  
+
+Now that you've seen the process from start to finish, **add Uffizzi to your own project** on GitLab.  
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<ChefHat size={24} />}
+    title="Follow the Recipe"
+    href="/ci/gitlab-ci/virtual-clusters/recipe"
+  >
+  </Cards.Card>
+</Cards>

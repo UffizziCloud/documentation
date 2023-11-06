@@ -106,7 +106,7 @@ const config: DocsThemeConfig = {
   banner: {
     key: 'k8s-testing',
     text: (
-      <a href="/testing/case-study/ingress-nginx">
+      <a href="/testing/ingress-nginx">
         ⚡️ <strong>Achieving 6x faster tests</strong> ⚡️ Learn how to accelerate e2e testing with virtual clusters →
       </a>
     )

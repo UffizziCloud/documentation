@@ -1,0 +1,15 @@
+# Ephemeral Staging Environments on Uffizzi
+
+Ephemeral staging environments on Uffizzi are temporary, automated environments that are created to evaluate a potential release candidate. These environments are "ephemeral" because they are spun up only when needed and are disposed of once their purpose, such as testing or reviewing a feature, is completed. This setup enables developers to test changes in isolation, ensuring that new code can be evaluated without the risk of interfering with the ongoing work of others or destabilizing a persistent testing environment.
+
+## Compare to a Traditonal Staging Environment
+
+The traditional bottleneck of a shared staging environment is significantly mitigated by the introduction of ephemeral staging environments on platforms like Uffizzi. In a common scenario without ephemeral environments, teams must wait for access to a limited set of testing environments, which can lead to queuing and delays that slow down the development cycle. However, with Uffizzi, each developer or QA professional can have their own dedicated preview environment. This isolation ensures that the work of one developer does not interfere with or "clobber" the work of another, greatly reducing the contention for resources. Ephemeral environments, by their nature, also support a more dynamic workflow.
+
+## No More Polluted Environments
+
+The utility of these ephemeral environments stems from their ability to provide a clean, dedicated space for validating each new feature or fix independently. Traditional staging environments, which are persistent and shared, can become "polluted" with the changes from multiple developers, leading to an increased chance of bugs and conflicts. The isolation of ephemeral environments on Uffizzi circumvents this issue, allowing developers to detect and resolve conflicts, and ensure functionality at the feature branch level before any code is merged into the main branch. This results in a more streamlined and efficient development process, reducing the time spent on finding and fixing issues caused by the interaction of concurrent changes.
+
+## Facilitating E2E Testing
+
+Moreover, Uffizzi's ephemeral environments facilitate a more sophisticated and responsive testing flow by allowing automated and manual tests to run in a clean environment corresponding to each pull request. This provides immediate feedback to developers and helps maintain a high quality of code throughout the development cycle. By enabling quicker iterations and fostering a shift towards iterative thinking, these environments help teams to speed up their release cycles and improve their overall productivity, as evidenced by the increased release frequency and issue throughput experienced by teams using Uffizzi.
