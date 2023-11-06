@@ -1,8 +1,15 @@
 {
-    "cypress": "Cypress",
-    "testkube": "Testkube",
-    "kubernetes-versions": "Kubernetes Versions",
-    "improving-speed": "Faster Tests",
-    "case-study": "Case Study",
-    "examples": "Other Examples"
+    "cypress": {
+        "title": "Cypress",
+        "display": "hidden"
+    },
+    "testkube": {
+        "title": "TestKube",
+        "display": "hidden"
+    },
+    "kubernetes-versions": {
+        "title": "Kubernetes Version Testing",
+        "display": "hidden"
+    },
+    "ingress-nginx": "6x Faster Tests (Case Study)"
 }

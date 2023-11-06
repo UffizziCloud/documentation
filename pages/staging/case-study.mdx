@@ -1,5 +1,28 @@
-# Case Study: Dogfooding Uffizzi  
+import { Cards } from 'nextra/components'
+import { Library } from 'lucide-react'
+
+# Case Study: 64% increase in release frequency  
 
 At Uffizzi, we're consumers of our own tools. Learn how we ditched static staging environments and adopted a dynamic, ephemeral staging environments for our developers. We'll cover the challenges we faced, the strategies we used, and the lessons we learned along the way. \
 
-[Read the article](https://www.uffizzi.com/blog/dynamic-environments)
+The Team Uffizzi experienced a significant acceleration in their development process after integrating ephemeral environments into their workflow. Initially, the team used to have a release frequency of roughly once a week, with an average of 1 release every 5.6 days, totaling 23 releases over four months. However, post-implementation of ephemeral environments, the release frequency soared to an average of 1 release every 2.2 days, culminating in 56 releases in the following four months. Even after adjusting for the nearly doubled size of the engineering team, the normalized data indicated a 64% improvement in release frequency per engineer.
+
+The quantitative improvements extended beyond release frequency. There was a 36% increase in total issue throughput, with issues pushed to production rising from 59 (13.5 per engineer) in the pre-ephemeral environment phase to 119 (18.3 per engineer) post-implementation. Moreover, there was a notable 20% reduction in issues per release, indicating a shift towards smaller, more frequent changes. Before ephemeral environments were adopted, larger batched releases were common; after, it became usual to release single issues as soon as they were ready.
+
+The qualitative benefits that surfaced were also noteworthy. The team observed several efficiencies such as no longer needing to track down the originator of a bug, resolving merge conflicts before testing, less context switching for developers, easier conflict resolution at the feature branch level, fewer returned tickets, no test environment data inconsistencies to deal with, and the avoidance of "code freezes" for testing or releases. The ephemeral environments also eliminated the time-consuming task of environment management, as breaking one meant it could simply be discarded and a new one started.
+
+Previously, Uffizzi's process involved persistent shared test environments, including a QA environment and a UAT/Staging environment, which created a complex and slow multi-step development process that could only sustain a release frequency of about once a week. Issues such as "polluted" shared environments and bugs introduced by various commits were common, slowing down the process further. Now, this approach has been replaced with ephemeral environments for each Pull Request, allowing for pre-merge testing in clean, isolated environments, and more proactive roles for developers in testing.
+
+The new workflow introduced by Uffizzi significantly streamlines development. It starts with a developer checking out a feature branch and testing locally, then moving through automated CI pipelines which include image building, linting/testing, deploying a ephemeral environment, and posting a deployment URL to the PR for review. The testing flow now utilizes a risk-based tagging system to determine the pathway for each feature, leading to a more sophisticated and responsive testing process. Furthermore, automated tests run against every ephemeral environment, and only after passing all tests does the feature merge into the mainline for release.
+
+In conclusion, the shift from traditional, persistent test environments to ephemeral ephemeral environments has profoundly impacted Team Uffizzi's development process. The strategy not only achieved a remarkable increase in release frequency and issue throughput but also facilitated a cultural shift towards faster iterative thinking and accountability. The success story serves as an encouragement to others considering ephemeral environments, and Uffizzi offers resources for others to create their first ephemeral environment easily.
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<Library />}
+    title="Read the full article"
+    href="https://www.uffizzi.com/preview-environments-guide/case-study-uffizzi"
+  >
+  </Cards.Card>
+</Cards>
