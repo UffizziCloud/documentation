@@ -41,10 +41,7 @@ const config: DocsThemeConfig = {
   head: function useHead() {
     const { title } = useConfig()
     const { route } = useRouter()
-    const socialCard =
-      route === '/' || !title
-        ? 'https://nextra.site/og.jpeg'
-        : `https://nextra.site/api/og?title=${title}`
+    const socialCard = 'https://github.com/gadkins/docs/blob/main/public/images/og.png'
 
     return (
       <>
