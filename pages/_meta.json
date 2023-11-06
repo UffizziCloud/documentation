@@ -29,6 +29,7 @@
     },
     "handbook": "Ephemeral Environments Handbook",
     "architecture": "Architecture",
+    "ingress": "Uffizzi Ingress",
     "resource-quotas": "Resource Quotas",
     "compose-spec": "Uffizzi Compose",
     "troubleshooting": "Troubleshooting",

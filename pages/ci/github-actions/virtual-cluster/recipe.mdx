@@ -1,0 +1,369 @@
+import Image from 'next/image'
+import { Callout, Cards, Steps } from 'nextra/components'
+
+# GitHub Actions Virtual Cluster Recipe
+
+Learn how to integrate Uffizzi into your GitHub Actions workflows to create [virtual clusters](/core-concepts/ephemeral-environments/virtual-clusters) for your pull requests.
+
+## Getting Started
+
+We'll create a virtual cluster from a GitHub Actions workflow with the Uffizzi [Cluster Action](https://github.com/UffizziCloud/cluster-action). This action creates/updates/deletes a Uffizzi virtual cluster every time a pull request is opened, updated, or closed.  
+
+Clusters are configured with a [Kubernetes manifest](https://github.com/UffizziCloud/quickstart/tree/main/k8s) that describes the application components and a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart/blob/main/.github/workflows/uffizzi-cluster.yaml) that includes a series of jobs triggered a pull request.  
+
+<Steps>
+
+### Trigger on `pull_request`
+
+Configure the workflow to trigger on `pull_request` events targeting the `main` branch (or whatever you use as default). These events include types `opened`, `closed`, and `reopened` and subsequent push events (`synchronized`):
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened,reopened,synchronize,closed]
+# ...
+```
+
+### Build and Push
+
+The `build-image` job dynamically creates a random image name and pushes the image to the Uffizzi ephemeral registry (`registry.uffizzi.com`). Alternatively, you can replace this with your own a private registry.
+
+[View on GitHub](https://github.com/UffizziCloud/quickstart/blob/f217f1322b5d1efb46df884fc70a70418aa05aa6/.github/workflows/uffizzi-cluster.yaml#L14-L44)
+
+#### Output Tags and UUID
+
+These are used to uniquely identify the images built for each new PR or new push event.
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+# ...
+jobs:
+  build-image:
+# ...
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+      uuid: ${{ env.UUID_IMAGE }}
+    steps:
+      - name: Generate UUID image name
+              id: uuid
+              run: echo "UUID_IMAGE=$(uuidgen)" >> $GITHUB_ENV
+```
+
+#### Push to Container Registry  
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+jobs:
+  build-image:
+# ...
+    with:
+        # Replace with your own registry if desired
+        images: registry.uffizzi.com/${{ env.UUID_IMAGE }}
+```
+
+If you are using a private registry, be sure to include a step to authenticate with your registry. For example, to authenticate with Docker Hub, you can use the `docker/login-action`:  
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+jobs:
+  build-image:
+# ...
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+```
+
+You can store your secrets in the GitHub repository settings under `Settings > Secrets and variables > Actions > New repository secret`.
+
+### Create the Cluster
+
+This step of the `uffizzi-cluster` job calls the Uffizzi [Cluster Action](https://github.com/UffizziCloud/cluster-action), which starts the Uffizzi [CLI](/cli) as a container in the GitHub Actions runner, to create the cluster. It also names the cluster with the pull request number.  
+
+[View on GitHub](https://github.com/UffizziCloud/quickstart/blob/f217f1322b5d1efb46df884fc70a70418aa05aa6/.github/workflows/uffizzi-cluster.yaml#L86-L90)
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+jobs:
+# ...
+  uffizzi-cluster:
+      - name: Create and connect to cluster
+        uses: UffizziCloud/cluster-action@main
+        with:
+          cluster-name: pr-${{ github.event.pull_request.number }}-e2e-helm
+          server: https://app.uffizzi.com
+
+```
+
+### Apply Manifests
+
+Once the cluster has been created, you can apply your Kubernetes manifests, kustomizations, or Helm Charts to the cluster.  
+
+[View on GitHub](https://github.com/UffizziCloud/quickstart/blob/f217f1322b5d1efb46df884fc70a70418aa05aa6/.github/workflows/uffizzi-cluster.yaml#L92-L119)  
+
+#### `kustomize edit`  
+
+In our example, we're using the `kustomize edit` command to update our kustomization with the new image names we just built and pushed.  
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+jobs:
+# ...
+  uffizzi-cluster:
+# ...
+    steps:
+      - name: Apply Kustomize to test the new image
+      id: prev
+      run: |
+        # Change the image name to those just built and pushed.
+        kustomize edit set image uffizzi/hello-world-k8s=${{ needs.build-image.outputs.tags }}
+```
+
+#### `kubectl apply`
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+jobs:
+# ...
+  uffizzi-cluster:
+# ...
+    steps:
+      - name: Apply Kustomize to test the new image
+      id: prev
+      run: |
+# ...
+        # Apply kustomized manifests to virtual cluster.
+        kubectl apply --kustomize . --kubeconfig ./kubeconfig
+```
+
+### Post a Comment (optional)
+
+This step of the `uffizzi-cluster` job posts a new comment or updates an existing comment on the pull request issue. It's typical to include a link to the virtual cluster or instructions for connecting to the cluster in the comment.  
+
+[View on GitHub](https://github.com/UffizziCloud/quickstart/blob/f217f1322b5d1efb46df884fc70a70418aa05aa6/.github/workflows/uffizzi-cluster.yaml#L121-L130)
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+jobs:
+# ...
+  uffizzi-cluster:
+#   ...
+    steps:
+#     ...
+      - name: Create or Update Comment with Deployment URL
+      uses: peter-evans/create-or-update-comment@v2
+      with:
+        comment-id: ${{ steps.notification.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+          body: |
+          ## Uffizz i Ephemeral Environment - Virtual Cluster
+#         ...
+          edit-mode: replace
+#         ...
+```
+
+### Delete the Cluster
+
+The final job of the workflow deletes the cluster when the pull request is closed or merged. 
+
+[View on GitHub](https://github.com/UffizziCloud/quickstart/blob/f217f1322b5d1efb46df884fc70a70418aa05aa6/.github/workflows/uffizzi-cluster.yaml#L132-L160)
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+jobs:
+# ...
+  uffizzi-cluster-delete:
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Virtual Cluster
+        uses: UffizziCloud/cluster-action@main
+        with:
+          action: delete
+          cluster-name: pr-${{ github.event.pull_request.number }}-e2e-helm
+          server: https://app.uffizzi.com
+```
+
+#### Update the Comment (optional)
+
+You can notify users that the cluster has been deleted by updating the comment you posted earlier.
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+jobs:
+# ...
+  uffizzi-cluster-delete:
+# ...
+    steps:
+        - name: Update Comment with Deletion
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Uffizzi Cluster `pr-${{ github.event.pull_request.number }}` was deleted.
+          edit-mode: replace
+```
+
+</Steps>
+
+## Putting It All Together
+
+Here is the complete workflow file:
+
+``` yaml filename=".github/workflows/uffizzi-cluster.yaml"
+name: Uffizzi Cluster
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened,reopened,synchronize,closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  build-image:
+    name: Build and Push `nodejs` Image
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+      uuid: ${{ env.UUID_IMAGE }}
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Generate UUID image name
+        id: uuid
+        run: echo "UUID_IMAGE=$(uuidgen)" >> $GITHUB_ENV
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # An anonymous, emphemeral registry built on ttl.sh
+          images: registry.uffizzi.com/${{ env.UUID_IMAGE }}
+          tags: type=raw,value=48h
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and Push Image to Uffizzi Ephemeral Registry
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          context: ./
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  uffizzi-cluster:
+    name: Deploy Helm chart to Uffizzi Virtual Cluster
+    needs:
+      - build-image
+    if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Identify comment to be updated
+      - name: Find comment for Ephemeral Environment
+        uses: peter-evans/find-comment@v2
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: pr-${{ github.event.pull_request.number }}-e2e-helm
+          direction: last
+
+      # Create/Update comment with action deployment status
+      - name: Create or Update Comment with Deployment Notification
+        id: notification
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Uffizzi Ephemeral Environment - Virtual Cluster - E2E Helm Chart
+
+            :cloud: deploying ...
+
+            :gear: Updating now by workflow run [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
+
+            Cluster name will be `pr-${{ github.event.pull_request.number }}-e2e-helm`
+
+            Download the Uffizzi CLI to interact with the upcoming virtual cluster
+            https://docs.uffizzi.com/install
+          edit-mode: replace
+
+      - name: Create and connect to cluster
+        uses: UffizziCloud/cluster-action@main
+        with:
+          cluster-name: pr-${{ github.event.pull_request.number }}-e2e-helm
+          server: https://app.uffizzi.com
+
+      - name: Apply Kustomize to test the new image
+        id: prev
+        run: |
+          # Change the image name to those just built and pushed.
+          kustomize edit set image uffizzi/hello-world-k8s=${{ needs.build-image.outputs.tags }}
+
+          if [[ ${RUNNER_DEBUG} == 1 ]]; then
+            cat kustomization.yaml
+            echo "`pwd`"
+            echo "`ls`"
+          fi
+
+          # Apply kustomized manifests to virtual cluster.
+          kubectl apply --kustomize . --kubeconfig ./kubeconfig
+
+          # Allow uffizzi to sync the resources
+          sleep 5
+
+          # Get the hostnames assigned by uffizzi
+          export WEB_HOST=$(kubectl get ingress web --kubeconfig kubeconfig -o json | jq '.spec.rules[0].host' | tr -d '"')
+
+          if [[ ${RUNNER_DEBUG} == 1 ]]; then
+            kubectl get all --kubeconfig ./kubeconfig
+          fi
+
+          echo "web_url=${WEB_HOST}" >> $GITHUB_OUTPUT
+
+          echo "Access the \`web\` endpoint at [\`${WEB_HOST}\`](http://${WEB_HOST})" >> $GITHUB_STEP_SUMMARY
+
+      - name: Create or Update Comment with Deployment URL
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.notification.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ## Uffizzi Ephemeral Environment - Virtual Cluster - E2E Helm Chart
+
+            E2E tests in progress on the `pr-${{ github.event.pull_request.number }}-e2e-helm` cluster.
+          edit-mode: replace
+
+  uffizzi-cluster-delete:
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Virtual Cluster
+        uses: UffizziCloud/cluster-action@main
+        with:
+          action: delete
+          cluster-name: pr-${{ github.event.pull_request.number }}-e2e-helm
+          server: https://app.uffizzi.com
+
+      # Identify comment to be updated
+      - name: Find comment for Ephemeral Environment
+        uses: peter-evans/find-comment@v2
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: pr-${{ github.event.pull_request.number }}-e2e-helm
+          direction: last
+
+      - name: Update Comment with Deletion
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            Uffizzi Cluster `pr-${{ github.event.pull_request.number }}` was deleted.
+          edit-mode: replace
+```

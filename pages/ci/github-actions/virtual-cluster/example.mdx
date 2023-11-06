@@ -1,0 +1,103 @@
+import { Steps, Callout, Cards } from 'nextra/components'
+import Image from 'next/image'
+import { ChefHat } from 'lucide-react';
+
+# GitHub Actions Virtual Cluster Example
+
+Follow the example guide below to see what how the Uffizzi virtual cluster integration with GitHub Actions works end-to-end. Or you can [skip ahead](/ci/github-actions/recipe) to the recipe if you'd rather get started integrating Uffizzi with your project.
+
+## Get Started
+
+<Steps>
+
+### Fork the quickstart repo 
+
+Start by forking the [`quickstart`](https://github.com/UffizziCloud/quickstart) repository on GitHub, if you haven't already.  
+
+<Callout type="warning">
+    Be sure to uncheck the option **Copy the `main` branch only**. This ensures that the `try-uffizzi` branch will be included in your fork.  
+</Callout>
+
+<br />
+<Image
+    src="/images/uncheck-copy-main-branch-only.png"
+    width={640}
+    height={433}
+    alt="Fork quickstart repo"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+### Enable GitHub Actions workflows
+Enable GitHub Actions workflows for your fork by selecting **Actions**, then select **I understand my workflows, go ahead and enable them**.   
+
+<br />
+<Image
+    src="/images/enable-github-actions.png"
+    width={640}
+    height={433}
+    alt="Enable GitHub Actions"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+
+### Open a PR  
+
+Open a pull request for `try-uffizzi` branch against `main` in your fork.  
+
+<Callout type="warning">
+    Be sure that you're opening a PR on the branches of _your fork_ (i.e. `your-account/main` ← `your-account/try-uffizzi`). If you try to open a PR for `UffizziCloud/main` ← `your-account/try-uffizzi`, the Actions workflow will not run in this example. 
+</Callout>  
+
+<br />
+<Image
+    src="/images/github-actions-jobs.png"
+    width={800}
+    height={541}
+    alt="Open a pull request"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+</Steps>
+
+## What to expect
+
+The PR will trigger a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart-k8s/blob/main/.github/workflows/uffizzi.yml) that uses the Uffizzi CLI and Kubernetes manifests to create a Uffizzi ephemeral environment for the [microservices application](#architecture-of-this-example-app) defined by the repo. When the workflow completes, the ephemeral environment URL will be posted as a comment in your PR issue.
+
+
+<Callout>
+    This virtual cluster is configured with a [Uffizzi Ingress](/ingress), which makes the `web` service available at a predictable URL, consisting of `https://app.uffizzi.com/` appended with the GitHub pull request domain. For example:  
+    `https://app.uffizzi.com/github.com/{account}/{repo}/pull/{pull-request-number}`.  
+
+    You can make requests to specific endpoints by appending a route to the end of the URL. For example:  
+    `https://app.uffizzi.com/github.com/boxyhq/jackson/pull/661/api/health`  
+
+    To learn how to enable predicable URLs for your ephemeral environments, see the [Uffizzi Ingress(/docs/ingress) documentation].
+
+</Callout>
+
+## How it works
+
+Ephemeral environments are configured with a [Kubernetes manifest](https://github.com/UffizziCloud/quickstart/tree/main/k8s) that describes the application components and a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart/blob/main/.github/workflows/uffizzi-cluster.yaml) that includes a series of jobs triggered by `pull_request` events. 
+
+When a pull request is open/closed/reopened/updated, the workflow will run the following jobs:
+
+1. Build and Push the Image
+2. Create a virtual cluster using the Uffizzi CLI in a GitHub Actions runner  
+3. Apply a kustomization to deploy the application on the virtual cluster
+4. Post a new comment or update an existing comment with the ephemeral environment URL and instructions for accessing the environment
+5. Delete the virtual cluster when the PR is closed or merged
+
+## Next Steps  
+
+Now that you've seen the process from start to finish, **add Uffizzi to your own project** on GitHub.  
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<ChefHat size={24} />}
+    title="Follow the Recipe"
+    href="/ci/github-actions/recipe"
+  >
+  </Cards.Card>
+</Cards>

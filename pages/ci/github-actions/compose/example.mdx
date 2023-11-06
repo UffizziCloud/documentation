@@ -1,0 +1,101 @@
+import { Steps, Callout, Cards } from 'nextra/components'
+import Image from 'next/image'
+import { ChefHat } from 'lucide-react';
+
+# GitHub Actions Compose Example
+
+Follow the example guide below to see what how the Uffizzi Compose integration with GitHub Actions works end-to-end. Or you can [skip ahead](/ci/github-actions/recipe) to the recipe if you'd rather get started integrating Uffizzi with your project.
+
+## Get Started
+
+Create a [Compose environment](/core-concepts/ephemeral-environment/compose) using the [Preview Environments Action](https://github.com/marketplace/actions/preview-environments). This action creates/updates/deletes an ephemeral Docker Compose environment every time a pull request is opened, updated, closed, or reopened.
+
+<Steps>
+
+### Fork the quickstart repo
+
+Start by forking the [`quickstart-compose`](https://github.com/UffizziCloud/quickstart-compose) repository on GitHub.  
+
+<Callout type="warning">
+    Be sure to uncheck the option **Copy the `main` branch only**. This ensures that the `try-uffizzi` branch will be included in your fork.  
+</Callout>
+
+<br />
+<Image
+    src="/images/uncheck-copy-main-branch-only.png"
+    width={640}
+    height={433}
+    alt="Fork quickstart repo"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+### Enable GitHub Actions
+
+Enable GitHub Actions workflows for your fork by selecting **Actions**, then select **I understand my workflows, go ahead and enable them**. GitHub Actions is free for public repositories.   
+
+<br />
+<Image
+    src="/images/enable-github-actions.png"
+    width={640}
+    height={433}
+    alt="Enable GitHub Actions"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+
+### Open a PR
+
+Open a pull request for `try-uffizzi` branch against `main` in your fork.  
+
+<Callout type="warning">
+    Be sure that you're opening a PR on the branches of _your fork_ (i.e. `your-account/main` ← `your-account/try-uffizzi`). If you try to open a PR for `UffizziCloud/main` ← `your-account/try-uffizzi`, the Actions workflow will not run in this example. 
+</Callout>  
+
+<br />
+<Image
+    src="/images/github-actions-jobs.png"
+    width={800}
+    height={541}
+    alt="Open a pull request"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+
+</Steps>
+
+## What To Expect
+
+The PR will trigger a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart/blob/main/.github/workflows/uffizzi-preview.yaml) that creates a Uffizzi Ephemeral Environment for the [microservices application](https://github.com/UffizziCloud/quickstart#architecture-of-this-example-app) defined by the repo. The environment URL will be posted as a comment in your PR issue when the workflow completes, along with a link to the Uffizzi Dashboard where you can view application logs. The environment and comment is deleted when the PR is merged/closed or after 1 hour (configurable).  
+
+<Callout>
+    Each ephemeral environment is available at a predictable URL which consists of `https://app.uffizzi.com/` appended with the GitHub pull request domain. For example:  
+    `https://app.uffizzi.com/github.com/{account}/{repo}/pull/{pull-request-number}`.  
+
+    You can make requests to specific endpoints by appending a route to the end of the URL. For example:  
+    `https://app.uffizzi.com/github.com/boxyhq/jackson/pull/661/api/health`  
+
+</Callout>
+
+## How It Works
+
+Previews are configured with a [Docker Compose template](https://github.com/UffizziCloud/quickstart/blob/main/docker-compose.uffizzi.yml) that describes the application configuration and a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart/blob/main/.github/workflows/uffizzi-preview.yaml) that includes a series of jobs triggered by a `pull_request` event and subsequent `push` events:  
+
+1. [Build and push images to a container registry](https://github.com/UffizziCloud/quickstart/blob/5699f461f752b0bd787d69abc2cfad3b79e0308b/.github/workflows/uffizzi-preview.yaml#L14-L116)  
+2. [Render a Docker Compose file](https://github.com/UffizziCloud/quickstart/blob/5699f461f752b0bd787d69abc2cfad3b79e0308b/.github/workflows/uffizzi-preview.yaml#L118-L156) from the Docker Compose template and the built images  
+3. [Deploy the application (per the Docker Compose file) to a Uffizzi Preview Environment](https://github.com/UffizziCloud/quickstart/blob/5699f461f752b0bd787d69abc2cfad3b79e0308b/.github/workflows/uffizzi-preview.yaml#L158-L171) and post a comment to the PR issue  
+4. [Delete the Preview Environment](https://github.com/UffizziCloud/quickstart/blob/5699f461f752b0bd787d69abc2cfad3b79e0308b/.github/workflows/uffizzi-preview.yaml#L173-L184) when the PR is merged/closed or after `1h`      
+
+Running this workflow will create a [Uffizzi Cloud](https://uffizzi.com) account and project from your GitHub user and repo information, respectively, if they do not already exits. If you sign in to the [Uffizzi Dashboard](https://app.uffizzi.com/sign_in) you can view logs, password protect your previews, manage projects and team members, set role-based access controls, and configure single-sign on (SSO).
+
+## Next Steps  
+
+Now that you've seen the process from start to finish, **add Uffizzi to your own project** on GitHub.  
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<ChefHat size={24} />}
+    title="Follow the Recipe"
+    href="/ci/github-actions/recipe"
+  >
+  </Cards.Card>
+</Cards>

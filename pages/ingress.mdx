@@ -1,12 +1,12 @@
-# Dev Ingress
+# Uffizzi Ingress
 
 There are two ingress options on Uffizzi: **`uffizzi`** (default) and **custom**.
 
 ## Default IngressClass `uffizzi`
 
-The default IngressClass for any ingress created in a virtual cluster or dev cluster is `uffizzi`. If a cluster with this `uffizzi` IngressClass is detected, the Uffizzi Dev Ingress service will automatically generate a hostname and provision a Ingress controller with TLS certificate. 
+The default IngressClass for any ingress created in a virtual cluster or dev cluster is `uffizzi`. If a cluster with this `uffizzi` IngressClass is detected, the Uffizzi Ingress service will automatically generate a hostname and provision a Ingress controller with TLS certificate. 
 
-The Dev Ingress service works by overriding any existing hostnames with the following format:
+The Ingress service works by overriding any existing hostnames with the following format:
 
 `https://<ingress-name>-<virtual-namespace>-<ucluster-name>-<ucluster-id>.uclusters.app.uffizzi.com `
 

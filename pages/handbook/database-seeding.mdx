@@ -1,0 +1,50 @@
+import { Callout } from 'nextra/components'
+
+# Database Seeding  
+
+As described in [Do's and Don'ts](/handbook/dos-and-donts), databases in Uffizzi should be deployed as containers to your ephemeral environments. And since each ephemeral environment is created as a clean slate, it is necessary to seed the database with data. This is especially true for applications that require a database to function.  
+
+## Two Strategies  
+
+Two primary strategies exist for seeding databases in ephemeral environments: 
+1. Loading an SQL dump file when the container is initiated   
+2. Leverage language or framework-specific migration tools  
+
+The choice between these methods depends on factors such as the application needs and the frequency of data updates, with the seed data being stored either in the repository or object storage.
+
+## Storage Considerations for Seed Data  
+
+### Git Repository Storage
+Smaller datasets that seldom change may be stored in a Git repository, but this has limitations regarding file size. GitHub, for instance, has restrictions on file sizes above 50MB and uses Large File Storage for bigger files, which can be cumbersome if the seed data is frequently updated.
+
+### Object Storage
+
+For larger or more dynamic datasets, the recommended storage solution is an object storage service like Amazon S3 or Google Cloud Storage, which offers scalability and simplicity.  
+
+## Strategy 1: SQL Dump File Loading
+
+The first seeding strategy involves loading an SQL dump file during the initialization of a container. Official images for databases such as Postgres, MySQL, and MariaDB on Docker Hub are configured to automatically populate the database at startup using files in a specific directory. Database containers execute files in `/docker-entrypoint-initdb.d` when starting up, so you can store initialization files (`*.sql`, `*sql.gz`, or `*.sh` ) in the `/docker-entrypoint-initdb.d` directory, mounted as a Docker volume.
+
+### Pros
+- Applicable across various SQL databases (e.g., Postgres, MySQL, MariaDB)  
+- Relies on database containers to self-seed upon initialization  
+
+### Cons
+- Needs updates alongside database schema changes  
+
+## Strategy 2: Migration Tools
+
+The second strategy recommends using a migration tool specific to the application's language or framework, like Django's ORM or Rails' Active Record. This is particularly useful for applications that frequently update their database schemas, as the tool can seamlessly perform migrations. In both Django and Rails, for instance, there are specific commands and files (such as `db/seeds.rb` for Rails) that facilitate the seeding process. However, this approach may require additional logic in the application or the continuous integration pipeline.  
+
+### Pros
+- Facilitates both database seeding and schema migration  
+- Often integrated into the application language/framework  
+
+### Cons
+- May not be available for all languages/frameworks  
+- Might require additional application or CI pipeline logic  
+
+### Examples of Migration Tools
+- **Django**: Uses the `manage.py loaddata` command  
+- **Go**: Utilizes Atlas CLI for declarative migrations  
+- **Rails**: Leverages built-in migrations and `db/seeds.rb` for seeding  

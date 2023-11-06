@@ -1,10 +1,7 @@
 {
     "ephemeral-environments": "What are Ephemeral Environments?",
     "dos-and-donts": "Do's and Don'ts",
-    "managing-state": "Managing State",
+    "database-seeding": "Database Seeding",
     "mock-services": "Mock Services",
-    "dynamic-domains": "Dynamic Domains",
-    "shareable-links": "Shareable Links",
-    "continuous-testing": "Continuous Testing",
-    "cleaning-up": "Cleaning Up"
+    "microservices": "Microservices (Compose)"
 }

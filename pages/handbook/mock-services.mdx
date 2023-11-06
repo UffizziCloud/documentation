@@ -1,0 +1,12 @@
+# Mock Services
+
+It's sometimes useful to mock out services in your tests in the context of an ephemeral environment—this way you can feel confident that you're not making changes to a shared service. For example, as discussed in [Do's and Don'ts](/handbook/dos-and-donts), you should avoid manipulating stateful external services from your Uffizzi environments.  
+
+If the service you want to mock is in the AWS catalog, we recommend using [LocalStack](https://docs.localstack.cloud/user-guide/aws/feature-coverage/) which provides containerized APIs for many AWS services. Some popular mock services include:  
+
+- [IAM](https://docs.localstack.cloud/user-guide/aws/iam/)  
+- [Lambda](https://docs.localstack.cloud/user-guide/aws/lambda/)  
+- [Kenisis](https://docs.localstack.cloud/user-guide/aws/kinesis/)  
+- [Secrets Manager](https://docs.localstack.cloud/user-guide/aws/secretsmanager/)
+- [SNS](https://docs.localstack.cloud/user-guide/aws/sns/)  
+- [SQS](https://docs.localstack.cloud/user-guide/aws/sqs/)  

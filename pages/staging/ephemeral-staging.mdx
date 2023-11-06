@@ -1,1 +1,11 @@
-# Ephemeral Staging environments
+# Ephemeral Staging Environments
+
+Uffizzi's internal playbook for ephemeral staging environments revolutionizes software development by allowing for daily releases. These environments act as a conduit between local development and production, significantly improving the speed of code reviews, testing, and release processes. They enable a workflow that is as fast as hotfix deployments but includes essential testing.
+
+Using Uffizzi's dynamic environments, each feature branch is developed in isolation, allowing developers to work independently without affecting others. These environments are seamlessly integrated into the development workflow, being automatically created for new pull requests, updated with each git push, and deleted upon merges. This automation eliminates the need for manual setup and teardown of test environments.
+
+Uffizzi supports ephemeral staging environments within both trunk-based and GitFlow branching strategies, recommending trunk-based for its speed. When multiple feature branches contribute to a major release, they are combined into a topic branch for collective testing, ensuring that the entire epic functions correctly before merging into the development branch.
+
+As development teams grow and testing processes mature, Uffizzi's ephemeral environments allow for scalability and efficiency, avoiding the diminishing returns often seen with persistent environments. The system also serves as a quality gate, preventing flawed code from moving downstream. The implementation of a risk-based tagging system further refines the testing process, categorizing tests into fast, routine, and deliberate tracks based on the level of risk and the project's stage.
+
+Adopting dynamic, ephemeral staging environments transforms the software testing and release workflow. Once integrated, the benefits become so apparent that there's no going back to the old, slower ways of testing and releasing software.

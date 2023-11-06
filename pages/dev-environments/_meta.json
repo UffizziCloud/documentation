@@ -1,5 +1,4 @@
 {
     "dev-clusters": "Using Dev Clusters",
-    "skaffold": "Skaffold",
-    "ingress": "Configure Dev Ingress"
+    "skaffold": "Skaffold"
 }

@@ -1,21 +1,95 @@
 import Image from 'next/image'
 import { Callout, Cards } from 'nextra/components'
+import { Group, Container, ChefHat } from 'lucide-react';
 
 # Continuous Integration Guides
 
 Follow these recipes to add Uffizzi to your CI pipeline to create ephemeral environments for your pull requests/merge requests.
 
+## GitHub Actions
+
+### Examples  
+
+Before you add Uffizzi to your own project, you might want to first try one of the examples below. These examples use a pre-configured repo that will create an **ephemeral environment when you open a PR**.
+
 <Cards num={2}>
   <Cards.Card
     arrow
-    title="GitHub Actions (Monorepo)"
-    href="/ci/github-actions"
+    icon={<Group />}
+    title="Virtual Cluster Example"
+    href="/ci/github-actions/virtual-cluster/example"
   >
   </Cards.Card>
   <Cards.Card
     arrow
-    title="GitLab CI "
-    href="/ci/gitlab-ci"
+    icon={<Container />}
+    title="Compose Example"
+    href="/ci/github-actions/compose/example"
+  >
+  </Cards.Card>
+</Cards>
+
+### Recipes
+
+Once you understand the process end-to-end, check out these recipes for step-by-step instructions of how to add Uffizzi to your GitHub Actions pipeline.
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<ChefHat />}
+    title="Virtual Cluster Recipe"
+    href="/ci/github-actions/virtual-cluster/recipe"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    icon={<ChefHat />}
+    title="Compose Recipe"
+    href="/ci/github-actions/compose/recipe"
+  >
+  </Cards.Card>
+</Cards>
+
+## GitLab CI
+
+### Examples
+
+Before you add Uffizzi to your own project, you might want to first try one of the examples below. These examples use a pre-configured repo that will create an **ephemeral environment when you open a merge request**.
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<Group />}
+    title="Virtual Cluster Example"
+    href="/ci/gitlab-ci/virtual-cluster/example"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    icon={<Container />}
+    title="Compose Example"
+    href="/ci/gitlab-ci/compose/examples"
+  >
+  </Cards.Card>
+</Cards>
+
+### Recipes
+
+Once you understand the process end-to-end, check out these recipes for step-by-step instructions of how to add Uffizzi to your GitLab CI pipeline.
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<ChefHat />}
+    title="Virtual Cluster Recipe"
+    href="/ci/gitlab-ci/virtual-cluster/recipe"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    icon={<ChefHat />}
+    title="Compose Recipe"
+    href="/ci/gitlab-ci/compose/recipe"
   >
   </Cards.Card>
 </Cards>
