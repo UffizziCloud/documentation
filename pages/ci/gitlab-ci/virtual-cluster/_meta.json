@@ -1,4 +1,7 @@
 {
     "example": "Example",
-    "recipe": "Recipe"
+    "recipe": {
+        "title": "Recipe",
+        "display": "hidden"
+    }
 }
