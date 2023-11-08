@@ -85,5 +85,9 @@
     "virtual-cluster-environment": {
         "type": "page",
         "display": "hidden"
+    },
+    "installation": {
+        "type": "page",
+        "display": "hidden"
     }
 }
