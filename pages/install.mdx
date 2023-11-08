@@ -23,26 +23,26 @@ import { Tabs } from 'nextra/components'
 
 <Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
     <Tabs.Tab>
-        ```bash {10}
+        ```bash copy
 		brew tap uffizzicloud/tap && \
 		brew install uffizzicloud/tap/uffizzi
 		```
     </Tabs.Tab>
     <Tabs.Tab>
-        ```bash {10}
+        ```bash copy
 		gem install uffizzi-cli
 		```
     If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
     </Tabs.Tab>
     <Tabs.Tab>
 
-        #### macOS
-        ```bash
+        ##### macOS
+        ``` bash copy
         curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
         ```
 
-        #### Linux
-        ```bash
+        ##### Linux
+        ``` bash copy
         curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
         ```
 
@@ -55,7 +55,7 @@ import { Tabs } from 'nextra/components'
 
 Select the Uffizzi Cloud default server `app.uffizzi.com`:
 
-```bash {10}
+```bash copy
 uffizzi config
 # ...
 # Server: (app.uffizzi.com)
@@ -65,7 +65,7 @@ uffizzi config
 
 Running this command will open a browser window where you can create an account or login to an existing account:
 
-```bash {10}
+```bash copy
 uffizzi login
 # Login successful
 # Select an account: (Press ↑/↓/←/→ arrow to move and Enter to select)
@@ -82,18 +82,24 @@ It's a good idea to regularly check for updates to the Uffizzi CLI. You can upda
 
 <Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
     <Tabs.Tab>
-        ```bash {10}
+        ```bash copy
 		brew upgrade uffizzicloud/tap/uffizzi
 		```
     </Tabs.Tab>
     <Tabs.Tab>
-        ```bash {10}
+        ```bash copy
 		gem update uffizzi-cli
 		```
     </Tabs.Tab>
     <Tabs.Tab>
-        ```bash
+        ##### macOS
+        ``` bash copy
         curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+
+        ##### Linux
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
         ```
     </Tabs.Tab>
 </Tabs>
