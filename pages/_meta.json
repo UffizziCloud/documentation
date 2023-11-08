@@ -21,6 +21,7 @@
     },
     "dev-environments": "Dev Environments",
     "testing": "Test Environments",
+    "kubernetes-version-testing": "Kubernetes Version Testing",
     "ci": "CI Recipes",
     "staging": "Staging Environments",
     "-- Resources": {
@@ -69,6 +70,14 @@
             "ingress-nginx": {
                 "title": "Ingress Nginx",
                 "href": "/testing/ingress-nginx"
+            },
+            "kubernetes-version-testing": {
+                "title": "K8s Version Testing",
+                "theme": {
+                    "toc": false,
+                    "sidebar": false
+                },
+                "href": "/kubernetes-version-testing"
             }
         }
     },
@@ -83,6 +92,10 @@
         "display": "hidden"
     },
     "virtual-cluster-environment": {
+        "type": "page",
+        "display": "hidden"
+    },
+    "installation": {
         "type": "page",
         "display": "hidden"
     }

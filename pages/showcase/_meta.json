@@ -13,14 +13,6 @@
             "sidebar": false
         }
     },
-    "harbor": {
-        "title": "Harbor",
-        "theme": {
-            "typesetting": "article",
-            "toc": false,
-            "sidebar": false
-        }
-    },
     "ingress-nginx": {
         "title": "Ingress Nginx",
         "theme": {
