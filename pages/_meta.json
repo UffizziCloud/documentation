@@ -73,10 +73,6 @@
             },
             "kubernetes-version-testing": {
                 "title": "K8s Version Testing",
-                "theme": {
-                    "toc": false,
-                    "sidebar": false
-                },
                 "href": "/kubernetes-version-testing"
             }
         }
