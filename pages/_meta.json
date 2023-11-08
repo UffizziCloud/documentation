@@ -21,6 +21,7 @@
     },
     "dev-environments": "Dev Environments",
     "testing": "Test Environments",
+    "kubernetes-version-testing": "Kubernetes Version Testing",
     "ci": "CI Recipes",
     "staging": "Staging Environments",
     "-- Resources": {
@@ -76,7 +77,7 @@
                     "toc": false,
                     "sidebar": false
                 },
-                "href": "/testing/kubernetes-version-testing"
+                "href": "/kubernetes-version-testing"
             }
         }
     },
