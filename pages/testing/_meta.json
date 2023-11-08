@@ -7,6 +7,6 @@
         "title": "TestKube",
         "display": "hidden"
     },
-    "kubernetes-versions": "Kubernetes Version Testing",
+    "kubernetes-version": "Kubernetes Version Testing",
     "ingress-nginx": "6x Faster Tests (Case Study)"
 }
