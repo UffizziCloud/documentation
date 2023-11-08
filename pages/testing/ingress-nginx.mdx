@@ -34,7 +34,7 @@ Prior to parallelization, the first e2e tests on Uffizzi initially took roughly 
 
 My testing showed SQLite was the bottleneck blocking more parallelization. When it became saturated, the Kubernetes API returned errors like "database is locked". Fortunately, external database options are available.
 
-ETCD with Uffizzi Virtual Clusters
+## `etcd` with Uffizzi Virtual Clusters
 
 Backing `k3s` with PostgreSQL did allow more parallel tests to execute, but it consumed much more resources. When we tested `etcd`, its performance was remarkable. With 42 parallel test runners, the full suite finished in just 25 minutes. This was a significant improvement, but more opportunities remained.
 
