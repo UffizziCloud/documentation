@@ -69,6 +69,14 @@
             "ingress-nginx": {
                 "title": "Ingress Nginx",
                 "href": "/testing/ingress-nginx"
+            },
+            "kubernetes-version-testing": {
+                "title": "K8s Version Testing",
+                "theme": {
+                    "toc": false,
+                    "sidebar": false
+                },
+                "href": "/testing/kubernetes-version-testing"
             }
         }
     },
