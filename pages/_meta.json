@@ -92,5 +92,9 @@
     "compose-spec": {
         "type": "page",
         "display": "hidden"
+    },
+    "kubernetes-version": {
+        "type": "page",
+        "display": "hidden"
     }
 }
