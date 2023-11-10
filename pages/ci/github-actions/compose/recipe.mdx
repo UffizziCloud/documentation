@@ -1,0 +1,512 @@
+import { Steps, Callout, Cards } from 'nextra/components'
+import Image from 'next/image'
+import { Library } from 'lucide-react'
+
+# GitHub Actions Compose Environment Recipe
+
+This recipe will walk your through how to add Uffizzi to your GitHub Actions workflow to create on-demand test environments for your Docker Compose application. The guide covers:  
+1. [Creating a Uffizzi Compose template](#uffizzi-compose-template)  
+2. [Integrating Uffizzi with your GitHub Actions workflow](#github-actions-workflow)
+
+You can find a full working example of this recipe [here](https://github.com/UffizziCloud/quickstart-compose/tree/main).  
+
+## Uffizzi Compose Template
+
+In this section, we'll create a template using [Uffizzi Compose](/compose/reference) that describes our application configuration.  
+
+<Callout>
+    Uffizzi supports a subset of the [Compose specification](https://github.com/compose-spec/compose-spec/blob/master/spec.md). For a full list of supported keywords, see the [Uffizzi Compose file reference](/compose/reference). 
+</Callout>
+
+<Steps>
+
+### Dynamically update images
+
+The Uffizzi environment creation step typically executes at the end of a GitHub Actions workflow after a series of steps that are triggered by an event, such as a pull request or new commit. To achieve this, you will first need to tell Uffizzi where your images are stored and how to access them.  
+
+Each time your pipeline builds and pushes new images, Uffizzi needs access to them. This means that we need to dynamically update our compose file `service` definitions with the new image names and tags each time our pipeline runs. To do this, you can use variable substitution to pass the output from your workflow build step, i.e. `image:tag`, to your Compose file `image` definition (See highlighted example below). This solution is discussed in detail in the next section.  
+
+``` yaml filename="docker-compose.uffizzi.yml" {3}
+services:
+  app:
+    image: "${APP_IMAGE}"    # Output of build step stored as environment variable
+    environment:
+        PGUSER: "${PGUSER}"
+        PGPASSWORD: "${PGPASSWORD}"
+    deploy:
+        resources:
+        limits:
+            memory: 250M
+
+  db:
+    image: postgres:9.6
+    environment:
+        POSTGRES_USER: "${PGUSER}"
+        POSTGRES_PASSWORD: "${PGPASSWORD}"
+```
+
+### Define an Ingress
+
+Uffizzi needs to know which of your application services will receive incoming traffic. This "Ingress" is an HTTPS load balancer that will forward HTTP traffic to one of the defined `services`. Along with the service name, you must indicate on which port the target container is listening. The `ingress` must be defined within an `x-uffizzi` [extension field](https://docs.docker.com/compose/compose-file/compose-file-v3/#extension-fields) as shown in the example below:
+
+``` yaml filename="docker-compose.uffizzi.yml" {1-5}
+# This block tells Uffizzi which service should receive HTTP traffic.
+x-uffizzi:
+  ingress:
+    service: app
+    port: 80
+
+# My application
+services:
+  app:
+    image: "${APP_IMAGE}"    # Output of build step stored as environment variable
+    environment:
+      PGUSER: "${PGUSER}"
+      PGPASSWORD: "${PGPASSWORD}"
+    deploy:
+      resources:
+        limits:
+          memory: 250M
+
+  db:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: "${PGUSER}"
+      POSTGRES_PASSWORD: "${PGPASSWORD}"
+```
+
+<Callout type="info"> 
+    If you need to expose multiple public routes for your application, see this article [Exposing multiple routes](/compose/expose-multiple-routes).
+</Callout>
+
+### Add secrets  
+
+You may also want to move sensitive information like credentials out of your Docker Compose file before commiting it to a remote repository. GitHub Actions provides a way to store secrets and then reference them in the steps of your pipeline via variable substitution within an `environment` definition (See highlighted example below). This solution is discussed in detail in the next section.  
+
+In GitHub, navigate to your repository, then select **Settings** > **Secrets** > **Actions** > **New repository secret**. Alternatively, you can [use the GitHub CLI](https://cli.github.com/manual/gh_secret).  
+<br />
+<Image
+    src="/images/github-actions-secrets.webp"
+    width={640}
+    height={433}
+    alt="GitHub Actions Secrets"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+<Image
+    src="/images/add-database-secrets.png"
+    width={640}
+    height={433}
+    alt="Add Database Secrets"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+``` yaml filename="docker-compose.uffizzi.yml" {20-22}
+# This block tells Uffizzi which service should receive HTTPS traffic
+x-uffizzi:
+    ingress:
+    service: app
+    port: 80
+
+services:
+    app:
+    image: "${APP_IMAGE}"    # Output of build step stored as environment variable
+    environment:
+        PGUSER: "${PGUSER}"
+        PGPASSWORD: "${PGPASSWORD}"
+    deploy:
+        resources:
+        limits:
+            memory: 250M
+
+    db:
+    image: postgres:9.6
+    environment:
+        POSTGRES_USER: "${PGUSER}"
+        POSTGRES_PASSWORD: "${PGPASSWORD}"
+```
+
+### Commit your template to your repository
+
+Once you're finished creating your Uffizzi Compose template, commit it to your repository and push.
+
+</Steps>
+
+## GitHub Actions Workflow
+
+In this section, we'll discuss how to integrate the Uffizzi Compose template you created in the previous section with your GitHub Actions workflow.  You can see a complete example workflow using GitHub Actions [here](https://github.com/UffizziCloud/quickstart-compose/blob/main/.github/workflows/uffizzi-preview.yaml).  
+
+<Steps>
+
+### Trigger on `pull_request`
+
+Start by creating an new workflow file called `.github/workflows/uffizzi-preview.yaml`.  
+
+Configure the workflow to trigger on `pull_request` events targeting the `main` branch (or whatever you use as default). These events include types `opened`, `closed`, and `reopened` and subsequent push events (`synchronized`):
+
+``` yaml filename=".github/workflows/uffizzi-preview.yaml"
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened,reopened,synchronize,closed]
+# ...
+```
+
+### Build Images
+
+In this step, we'll add a few lines to the build job of our workflow to output the tags of our container images. Later, we'll use these tags in our compose file. In GitHub Actions, this can be done with [`outputs`](https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#outputs-for-docker-container-and-javascript-actions), as highlighted below.
+
+#### Output tags from your build step
+
+``` yaml filename=".github/workflows/uffizzi-preview.yaml" {6-7}
+# ... 
+  jobs:
+    build-vote:
+      name: Build and Push `app`
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+#    ...
+```  
+#### Build and push
+
+The `build-app` job dynamically creates a random image name and pushes the images to GitHub Container Registry (`ghcr.io`). Alternatively, you can replace this with a different registry.
+
+<Callout>
+    If you're using `ghcr.io`, be sure to first create a `GITHUB_TOKEN` secret in your repository settings. This token will be used to authenticate with GitHub Container Registry. See [Github Documentation](https://docs.github.com/en/actions/security-guides/automatic-token-authentication) for more information.
+</Callout>
+
+``` yaml filename=".github/workflows/uffizzi-preview.yaml" {9-14}
+# ...
+  jobs:
+    build-app:
+      name: Build and Push `app`
+    runs-on: ubuntu-latest
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Login to Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/example-app
+      - name: Build and Push Image to GitHub Container Registry
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          context: ./app
+# ...
+```
+
+### Render and cache a new compose file
+
+Recall that in the previous section, we created a Docker Compose template (`docker-compose.uffizzi.yml`) that replaced our static image name with a variable, denoted in the example as `image: "${APP_IMAGE}"`. In this step, we'll set and export that variable using the `outputs` of the previous job. Additionally, we'll set and export our database secrets that we configured in the preview section. 
+
+Next, we'll use the common utility `envsubst` and shell I/O redirection (`<`, `>`) to render a new compose file that includes the image name literal. Finally, we store this rendered compose file in the [GitHub Actions cache](https://github.com/marketplace/actions/cache).
+
+
+``` yaml filename=".github/workflows/uffizzi-preview.yml" hl_lines="42-70"
+#   ...
+    render-compose-file:
+      name: Render Docker Compose File
+      runs-on: ubuntu-latest
+      needs: 
+        - build-app
+      outputs:
+        compose-file-cache-key: ${{ steps.hash.outputs.hash }}
+      steps:
+        - name: Checkout git repo
+          uses: actions/checkout@v3
+        - name: Render Compose File
+          run: |
+            APP_IMAGE=$(echo ${{ needs.build-app.outputs.tags }})
+            export APP_IMAGE
+            PGUSER=${{ secrets.PGUSER }}
+            export PGUSER
+            PGPASSWORD=${{ secrets.PGPASSWORD }}
+            export PGPASSWORD
+            # Render simple template from environment variables.
+            envsubst < docker-compose.template.yml > docker-compose.rendered.yml
+            cat docker-compose.rendered.yml
+        - name: Hash Rendered Compose File
+          id: hash
+          run: echo "::set-output name=hash::$(md5sum docker-compose.rendered.yml | awk '{ print $1 }')"
+        - name: Cache Rendered Compose File
+          uses: actions/cache@v3
+          with:
+            path: docker-compose.rendered.yml
+            key: ${{ steps.hash.outputs.hash }}
+#      ...
+```
+
+### Pass rendered compose file from cache to the reusable workflow
+
+Uffizzi publishes a GitHub Actions [reusable workflow](https://github.com/UffizziCloud/preview-action/blob/master/.github/workflows/reusable.yaml) that can be used to create, update, and delete on-demand test environments given a rendered compose file. This reusable workflow will spin up the Uffizzi CLI on a GitHub Actions runner, which then opens a connection to the Uffizzi platform. 
+
+In this final step, we'll pass the cached compose file from the previous step to this reusable workflow. In response, Uffizzi will create a test environment, and post the environment URL as a comment to your pull request issue. This URL will also be available in your environment's containers as the [`UFFIZZI_URL`](/compose/uffizzi-url) environment variable.
+
+This workflow takes as input the following **required** parameters:  
+
+  * `compose-file-cache-key`  
+  * `compose-file-cache-path`  
+  * `server` - `https://app.uffizzi.com` or your own Uffizzi API endpoint if you are self-hosting    
+
+Additionally, this workflow has a few **optional** parameters if you have configured password protection for your Uffizzi test environments. For instructions on configuring passwords, follow [this guide](/compose/password-protection).  
+
+  * `url-username` - An HTTP username  
+  * `url-password` - An HTTP password stored as a GitHub Actions secret  
+  * `personal-access-token` - [Github personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token) with access to the `read:packages` scope. This parameter is required only if you use GitHub Container Registry (ghcr.io) to store images.  
+
+
+
+``` yaml filename=".github/workflows/uffizzi-preview.yml"
+#   ...
+    deploy-uffizzi-preview:
+      name: Use Remote Workflow to Preview on Uffizzi
+      needs: render-compose-file
+      uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v2.1.0
+      if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+      with:
+        compose-file-cache-key: ${{ needs.render-compose-file.outputs.compose-file-cache-key }}
+        compose-file-cache-path: docker-compose.rendered.yml
+        server: https://app.uffizzi.com
+      secrets:
+        personal-access-token: ${{ secrets.GHCR_ACCESS_TOKEN }}
+        url-username: admin
+        url-password: ${{ secrets.URL_PASSWORD }}
+      permissions:
+        contents: read
+        pull-requests: write
+
+    delete-uffizzi-preview:
+      name: Use Remote Workflow to Delete an Existing Preview
+      uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v2.1.0
+      if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+      with:
+        compose-file-cache-key: ''
+        compose-file-cache-path: docker-compose.rendered.yml
+        server: https://app.uffizzi.com
+    permissions:
+      contents: read
+      pull-requests: write
+```
+
+See [the full documentation for this reusable workflow](https://github.com/UffizziCloud/preview-action/blob/master/README.md#workflow-inputs).  
+
+</Steps>
+
+### Putting It All Together  
+
+Your final workflow should look something like this [example voting app](https://github.com/UffizziCloud/quickstart-compose/tree/main):
+
+``` yaml filename=".github/workflows/uffizzi-preview.yaml"
+name: Build Images and Deploy Preview Environment
+
+on:
+  pull_request:
+    types: [opened,reopened,synchronize,closed]
+
+jobs:
+  build-vote:
+    name: Build and Push `vote`
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'closed' }}
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Generate UUID image name
+        id: uuid
+        run: echo "UUID_VOTE=$(uuidgen)" >> $GITHUB_ENV
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # An anonymous, emphemeral registry built on ttl.sh
+          images: registry.uffizzi.com/${{ env.UUID_VOTE }}
+          tags: type=raw,value=24h
+      - name: Build and Push Image to Uffizzi Ephemeral Registry
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          context: ./vote
+
+  build-worker:
+    name: Build and Push `worker`
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'closed' }}
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Generate UUID image name
+        id: uuid
+        run: echo "UUID_WORKER=$(uuidgen)" >> $GITHUB_ENV
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # An anonymous, emphemeral registry built on ttl.sh
+          images: registry.uffizzi.com/${{ env.UUID_WORKER }}
+          tags: type=raw,value=24h
+      - name: Build and Push Image to Uffizzi Ephemeral Registry
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          context: ./worker
+          
+  build-result:
+    name: Build and Push `result`
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'closed' }}
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Generate UUID image name
+        id: uuid
+        run: echo "UUID_RESULT=$(uuidgen)" >> $GITHUB_ENV
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # An anonymous, emphemeral registry built on ttl.sh
+          images: registry.uffizzi.com/${{ env.UUID_RESULT }}
+          tags: type=raw,value=24h
+      - name: Build and Push Image to Uffizzi Ephemeral Registry
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          context: ./result
+          
+  build-loadbalancer:
+    name: Build and Push `loadbalancer`
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' || github.event.action != 'closed' }}
+    outputs:
+      tags: ${{ steps.meta.outputs.tags }}
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Generate UUID image name
+        id: uuid
+        run: echo "UUID_LOADBALANCER=$(uuidgen)" >> $GITHUB_ENV
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          # An anonymous, emphemeral registry built on ttl.sh
+          images: registry.uffizzi.com/${{ env.UUID_LOADBALANCER }}
+          tags: type=raw,value=24h
+      - name: Build and Push Image to Uffizzi Ephemeral Registry
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          context: ./loadbalancer
+          
+  render-compose-file:
+    name: Render Docker Compose File
+    runs-on: ubuntu-latest
+    needs:
+      - build-vote
+      - build-worker
+      - build-result
+      - build-loadbalancer
+    outputs:
+      compose-file-cache-key: ${{ env.COMPOSE_FILE_HASH }}
+      compose-file-cache-path: docker-compose.rendered.yml
+    steps:
+      - name: Checkout git repo
+        uses: actions/checkout@v3
+      - name: Render Compose File
+        run: |
+          VOTE_IMAGE=$(echo ${{ needs.build-vote.outputs.tags }})
+          export VOTE_IMAGE
+          WORKER_IMAGE=$(echo ${{ needs.build-worker.outputs.tags }})
+          export WORKER_IMAGE
+          RESULT_IMAGE=$(echo ${{ needs.build-result.outputs.tags }})
+          export RESULT_IMAGE
+          LOADBALANCER_IMAGE=$(echo ${{ needs.build-loadbalancer.outputs.tags }})
+          export LOADBALANCER_IMAGE
+          PGUSER=${{ secrets.PGUSER }}
+          export PGUSER
+          PGPASSWORD=${{ secrets.PGPASSWORD }}
+          export PGPASSWORD
+          # Render simple template from environment variables.
+          envsubst < docker-compose.uffizzi.yml > docker-compose.rendered.yml
+          cat docker-compose.rendered.yml
+      - name: Hash Rendered Compose File
+        id: hash
+        run: echo "COMPOSE_FILE_HASH=$(md5sum docker-compose.rendered.yml | awk '{ print $1 }')" >> $GITHUB_ENV
+      - name: Cache Rendered Compose File
+        uses: actions/cache@v3
+        with:
+          path: docker-compose.rendered.yml
+          key: ${{ env.COMPOSE_FILE_HASH }}
+
+  deploy-uffizzi-preview:
+    name: Use Remote Workflow to Preview on Uffizzi
+    needs: render-compose-file
+    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v3
+    with:
+      compose-file-cache-key: ${{ needs.render-compose-file.outputs.compose-file-cache-key }}
+      compose-file-cache-path: ${{ needs.render-compose-file.outputs.compose-file-cache-path }}
+      server: https://app.uffizzi.com
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+      
+  delete-uffizzi-preview:
+    name: Use Remote Workflow to Delete an Existing Preview
+    uses: UffizziCloud/preview-action/.github/workflows/reusable.yaml@v3
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' }}
+    with:
+      compose-file-cache-key: ''
+      compose-file-cache-path: docker-compose.rendered.yml
+      server: https://app.uffizzi.com
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+```
+
+## Next Steps
+
+You project repository should now be configured to automatically create and delete Uffizzi preview environments for your application on every pull request.  
+
+## Suggested Reading
+
+Learn how Uffizzi is **accelerating development velocity by 20%** for the Backstage project:  
+
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<Library />}
+    title="Read the Backstage Case Study"
+    href="/showcase/backstage"
+  >
+  </Cards.Card>
+</Cards>

@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/UffizziCloud/docs.git"
+    "url": "git+https://github.com/UffizziCloud/documentation.git"
   },
   "author": "Shu Ding <g@shud.in>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/UffizziCloud/docs/issues"
+    "url": "https://github.com/UffizziCloud/documentaion/issues"
   },
-  "homepage": "https://github.com/UffizziCloud/docs#readme",
+  "homepage": "https://github.com/UffizziCloud/documentation#readme",
   "dependencies": {
     "@icons-pack/react-simple-icons": "^9.1.0",
     "@radix-ui/react-accordion": "^1.1.2",
