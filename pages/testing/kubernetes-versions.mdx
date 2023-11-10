@@ -98,16 +98,114 @@ To mitigate these risks, it is important to have a robust testing strategy that 
 
 As you can see in [this](https://kubernetes.io/blog/2023/03/17/upcoming-changes-in-kubernetes-v1-27/#removal-of-storage-k8s-io-v1beta1-from-csistoragecapacity) piece of documentation which outlines the major changes and removals for Kubernetes version 1.27, the `storage.k8s.io/v1beta1` was deprecated. If you are someone who has a smaller team and hasn’t noticed this change and your application depends on this API, moving to Kubernetes versions 1.27 would now be a hassle and you wouldn’t know until you start seeing failures on your customer’s clusters with your application. It would have been better to implement support for the newer APIs earlier than later.
 
+## How to Test an Application on Multiple Kubernetes Versions 
+
+When testing against multiple Kubernetes versions we first have to figure out how many versions we are going to test against. It’s usually good to support at least 2 more versions of Kubernetes in this case. The easiest way to do this is to keep supporting the version you already are and then support the next two versions which come after and then it is up to you to decide when you want to stop supporting the older versions. 
+
+If we check the [Kubernetes LTS (Long Term Support) releases](https://kubernetes.io/releases/) we can see that there are only 3 minor versions one can support at once.  
+
+Let’s take these three releases listed in the releases page mentioned above and see how Uffizzi can help spin up remote kubernetes virtual clusters. Let’s create three virtual clusters each of a different Kubernetes version to aid in our testing.
+
+### The Setup
+
+Consider an application called “web” which needs to be tested before a production release. We need to test this application against multiple kubernetes versions to make sure it works well on all of them. 
+
+#### Kustomize configuration
+
+“Web” can be deployed on Kubernetes and kustomize can be used for this purpose exactly.  
+
+``` yaml filename="kustomization.yaml"
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - ingress.yaml
+  - service.yaml
+```
+
+In the above configuration we have three manifests which will be applied in the cluster for deployment. We have the Deployment itself which runs the container of the application. Then we have the Service through which we can access the endpoints on the pods created by the deployment and the Ingress which helps expose the Service to the outside world.  
+
+#### Github actions configuration  
+
+All the above configurations can be used together to create a github actions pipeline for testing as below. The snippet below can be found in the repo ​​https://github.com/UffizziCloud/quickstart-k8s-version-testing   
+
+``` filename=".github/workflows/e2e.yaml"
+name: k8s version testing e2e
+
+on:
+  pull_request:
+	branches: [ main ]
+	types: [opened,reopened,synchronize,closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  build-image:
+	...
+
+  uffizzi-cluster:
+	name: Kustomize apply to k8s clusters of multiple versions
+	needs:
+  	- build-image
+	if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+	runs-on: ubuntu-latest
+	steps:
+  	- name: Checkout
+    	  uses: actions/checkout@v3
+
+  	- name: Create and connect to vcluster
+    	  uses: UffizziCloud/cluster-action@main
+    	  with:
+      	    cluster-name: pr-${{ github.event.pull_request.number }}-1276
+      	    server: https://app.uffizzi.com
+      	    k8s-version: 1.27
+      	    kubeconfig: kubeconfig-1276
+
+  	- name: Create and connect to vcluster
+    	  uses: UffizziCloud/cluster-action@main
+    	  with:
+      	    cluster-name: pr-${{ github.event.pull_request.number }}-1282
+      	    server: https://app.uffizzi.com
+      	    k8s-version: 1.28
+      	    kubeconfig: kubeconfig-1282
+
+  	- name: Apply Kustomize to test the new image
+    	  id: prev
+    	  run: |
+      	    if [[ ${RUNNER_DEBUG} == 1 ]]; then
+          	pwd
+        	ls -la
+      	    fi
+      	    (
+        	cp ./kubeconfig-1276 ./kubeconfig-1282 ./.github/k8s
+        	cd .github/k8s
+        	# Change the image name to those just built and pushed.
+        	kustomize edit set image uffizzi/hello-world-k8s=${{ needs.build-image.outputs.tags }}
+       	 
+       	 
+        	# Apply kustomized manifests to virtual cluster.
+        	kubectl apply --kustomize . --kubeconfig ./kubeconfig-1276
+        	kubectl apply --kustomize . --kubeconfig ./kubeconfig-1282
+      	)
+```
+
+The above is a snippet from the Github actions workflow in the quickstart repository from where you can run a pipeline which will create Uffizzi clusters of version 1.27 and 1.28. Then we are deploying the “web” application on each cluster. 
+
+#### `build-image`  
+
+This job creates a new image from the Dockerfile provided in the repo. The image is pushed from here to a remote repository. The tag of the image is set as output and used in the next job.
+
+#### `uffizzi-cluster`  
+
+The Uffizzi [`cluster-action`](https://github.com/UffizziCloud/cluster-action) is used to create a virtual cluster in Uffizzi Cloud. Here we are creating two clusters and returning two kubeconfigs which will be used by kubectl/kustomize to apply resources on the individual clusters and deploy the applications.
+
 ## Next Steps
 
-Now that you why, let's see how you can test your application against multiple versions of Kubernetes with Uffizzi.
+Now it's time to run E2E tests against the deployed application.   
 
-<Cards>
-<Cards.Card
-    arrow
-    icon={<Book />}
-    title="Follow the K8s version testing guide"
-    href="/testing/kubernetes-versions/guide"
-  >
-  </Cards.Card>
-</Cards>
+The above steps also creates an ingress for the application which can be used for run e2e tests.  
+
+Checkout the [`quickstart-k8s-version-testing`](https://github.com/UffizziCloud/quickstart-k8s-version-testing) repo that contains a working example of spinning up kubernetes clusters of multiple versions. If there are issues regarding setting this pipeline up, [reach out to Uffizzi](https://www.uffizzi.com/contact) repo, we are always here to help you out! 

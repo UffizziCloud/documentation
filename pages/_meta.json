@@ -16,8 +16,7 @@
         "title": "Use Cases / Guides"
     },
     "dev-environments": "Dev Environments",
-    "kubernetes-version-testing": "Kubernetes Version Testing",
-    "faster-e2e-tests-for-github-actions": "Faster E2E Tests",
+    "testing": "Test Environments",
     "ci": "CI Recipes",
     "staging": "Staging Environments",
     "-- Resources": {
@@ -64,11 +63,11 @@
             },
             "ingress-nginx": {
                 "title": "Ingress Nginx",
-                "href": "/faster-e2e-tests-for-github-actions"
+                "href": "/testing/ingress-nginx"
             },
             "kubernetes-version-testing": {
                 "title": "K8s Version Testing",
-                "href": "/kubernetes-version-testing"
+                "href": "/testing/kubernetes-versions"
             }
         }
     },
