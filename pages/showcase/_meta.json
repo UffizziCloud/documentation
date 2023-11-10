@@ -13,6 +13,14 @@
             "sidebar": false
         }
     },
+    "ingress-nginx": {
+        "title": "Ingress Nginx",
+        "theme": {
+            "typesetting": "article",
+            "toc": false,
+            "sidebar": false
+        }
+    },
     "kubernetes-version-testing": {
         "title": "Kubernetes Version Testing",
         "theme": {

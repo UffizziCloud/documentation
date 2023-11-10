@@ -17,6 +17,7 @@
     },
     "dev-environments": "Dev Environments",
     "kubernetes-version-testing": "Kubernetes Version Testing",
+    "faster-e2e-tests-for-github-actions": "Faster E2E Tests",
     "ci": "CI Recipes",
     "staging": "Staging Environments",
     "-- Resources": {
@@ -60,6 +61,10 @@
             "backstage": {
                 "title": "Backstage",
                 "href": "/showcase/backstage"
+            },
+            "ingress-nginx": {
+                "title": "Ingress Nginx",
+                "href": "/faster-e2e-tests-for-github-actions"
             },
             "kubernetes-version-testing": {
                 "title": "K8s Version Testing",
