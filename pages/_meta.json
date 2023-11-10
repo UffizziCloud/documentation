@@ -61,10 +61,6 @@
                 "title": "Backstage",
                 "href": "/showcase/backstage"
             },
-            "ingress-nginx": {
-                "title": "Ingress Nginx",
-                "href": "/testing/ingress-nginx"
-            },
             "kubernetes-version-testing": {
                 "title": "K8s Version Testing",
                 "href": "/kubernetes-version-testing"
