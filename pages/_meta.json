@@ -16,6 +16,8 @@
         "title": "Use Cases / Guides"
     },
     "dev-environments": "Dev Environments",
+    "testing": "Test Environments",
+    "end-to-end-testing": "End-to-End Testing",
     "kubernetes-version-testing": "Kubernetes Version Testing",
     "ci": "CI Recipes",
     "staging": "Staging Environments",
