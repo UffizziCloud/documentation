@@ -1,5 +1,6 @@
 {
     "resource-quotas": "Resource Quotas",
     "teams-and-accounts": "Teams and Accounts",
-    "rbac": "Role-based Access"
+    "rbac": "Role-based Access",
+    "sso": "Single Sign-On"
 }
