@@ -89,5 +89,9 @@
     "installation": {
         "type": "page",
         "display": "hidden"
+    },
+    "compose-spec": {
+        "type": "page",
+        "display": "hidden"
     }
 }
