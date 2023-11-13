@@ -6,15 +6,15 @@ import {
 	AccordionContent,
 } from '@/components/ui/accordion'
 
-import { 
+import {
 	Cards,
 	Steps,
-	Tabs, 
+	Tabs,
 } from 'nextra/components'
 
 # Uffizzi
 
-Uffizzi helps teams build internal developer platforms (IDPs) in minutes, not months, by providing out-of-the-box [Kubernetes multi-tenancy](https://www.uffizzi.com/kubernetes-multi-tenancy), [cluster virtualization](/core-concepts/ephemeral-environments/virtual-clusters), cloud-based dev environments, customizable templating, and more. 
+Uffizzi helps teams build [internal developer platforms (IDPs)](https://internaldeveloperplatform.org/what-is-an-internal-developer-platform/) in minutes, not months, by providing out-of-the-box [Kubernetes multi-tenancy](https://www.uffizzi.com/kubernetes-multi-tenancy), [cluster virtualization](/core-concepts/ephemeral-environments/virtual-clusters), cloud-based dev environments, customizable templating, and more.
 
 Uffizzi provides a foundation for building IDPs, so platform teams can build end-to-end workflows, giving every developer access to self-service, [ephemeral environments](/core-concepts/ephemeral-environments) for development, testing, PRs, staging and more.
 
@@ -30,18 +30,18 @@ Choose a quickstart guide to get started:
     href="/quickstart/virtual-clusters"
   >
   </Cards.Card>
-  <Cards.Card 
-  arrow 
+  <Cards.Card
+  arrow
   icon={<ChevronRightSquare />}
-  title="Create a dev cluster" 
+  title="Create a dev cluster"
   href="/quickstart/dev-clusters">
   </Cards.Card>
 </Cards>
 
 ## Features
 
-In addition to enabling Kubernetes [virtual clusters](/core-concepts/ephemeral-environments/virtual-clusters) and [dev clusters](/core-concepts/ephemeral-environments/dev-clusters), it also provides:  
-- Environment sandboxing  
+In addition to enabling Kubernetes [virtual clusters](/core-concepts/ephemeral-environments/virtual-clusters) and [dev clusters](/core-concepts/ephemeral-environments/dev-clusters), Uffizzi also provides:
+- Environment sandboxing
 - Fair sharing of resources
 - Environment lifecycle management
 - Access control
@@ -56,10 +56,10 @@ In addition to enabling Kubernetes [virtual clusters](/core-concepts/ephemeral-e
                 Why build an internal developer platform (IDP)?
         </AccordionTrigger>
         <AccordionContent>
-                IDPs enforce standardization, increase developer productivity, and improve developer experience—not to mention elimintating piles of bash scripts, manual processes, and the maintenance headaches that come with them. 
+                IDPs enforce standardization, increase developer productivity, and improve developer experience—not to mention elimintating piles of bash scripts, manual processes, and the maintenance headaches that come with them.
 
 
-                IDPs are maintainable and scalable systems that can reduce hours spent: 
+                IDPs are maintainable and scalable systems that can reduce hours spent:
 
 
                 - On-boarding developers
@@ -90,7 +90,8 @@ In addition to enabling Kubernetes [virtual clusters](/core-concepts/ephemeral-e
                 - Testing environments
                 - Debugging / hotfix environments
                 - Release candidate environments
-                - Staging environments  
+                - Staging environments
+                - Demonstration / Trial environments
 
 
                 In addition to their ephemeral nature, they are also provide isolation from other ephemeral development and test environments, making them a perfect companion to IDPs.
@@ -103,15 +104,10 @@ In addition to enabling Kubernetes [virtual clusters](/core-concepts/ephemeral-e
                 What do you mean by "virtual clusters"?
         </AccordionTrigger>
         <AccordionContent>
+        Similar to the concept of virtual machines, Uffizzi virtual clusters are isolated Kubernetes clusters running on top of a host cluster. Uffizzi virtual clusters provide all the same functionality of real Kubernetes clusters, while being more convenient and lightweight, provisioning on-demand in a couple minutes.
 
 
-        **What exactly do you mean by virtual clusters?**
-
-
-        Similar to the concept of virtual machines, Uffizzi virtual clusters are virtualized instances of Kubernetes clusters running on top of a host cluster. Uffizzi virtual clusters provide all the same functionality of real Kubernetes clusters, while being more convenient and efficient. 
-
-
-        Inside each virtual cluster is a **_full copy of the Kubernetes API_**—i.e. each developer can query his or her own instance of the K8s control plane. This means Uffizzi virtual clusters can safely support custom resource definitions (CRD) and other components that require cluster-wide access.
+        Each virtual cluster is a **_full implementation of the Kubernetes API_**, not just a namespace, so each developer can query his or her own instance of the K8s control plane. This means Uffizzi virtual clusters can safely support custom resource definitions (CRD), multiple namespaces, and other [low-level resources that are not within namespaces](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/#not-all-objects-are-in-a-namespace).
 
 
         </AccordionContent>
@@ -123,7 +119,7 @@ In addition to enabling Kubernetes [virtual clusters](/core-concepts/ephemeral-e
                 Can I bring my own manifests / Helm Charts / kustomizations?
         </AccordionTrigger>
         <AccordionContent>
-        
+
                 Yes! By providing a virtualization layer on top of Kubernetes, Uffizzi let's teams reuse their templates of choice, while providing a secure, multi-tenant environment for running them.
 
 
@@ -136,7 +132,7 @@ In addition to enabling Kubernetes [virtual clusters](/core-concepts/ephemeral-e
                 What kinds of Kubernetes resources are supported?
         </AccordionTrigger>
 <AccordionContent>
-        In general, any Kubernetes resource that can be created in a regular cluster can be created in a Uffizzi virtual cluster. This includes custom resource definitions (CRDs), which are cluster-wide resources.
+        In general, any Kubernetes resource that can be created in a regular cluster can be created in a Uffizzi virtual cluster. This includes custom resource definitions (CRDs) and namespaces, which are cluster-wide resources.
         The one exception to this is any resources that require node access, such as DaemonSets and hostPath volumes. These resources are not supported in Uffizzi virtual clusters since these they require host-level access.
 </AccordionContent>
 </AccordionItem>
