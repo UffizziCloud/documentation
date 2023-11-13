@@ -24,12 +24,12 @@ The Uffizzi API implements the primary REST API for creating and managing epheme
 
 ### Uffizzi Controller  
 
-The Uffizzi Controller is a smart proxy service that handles requests from Uffizzi API to the host Kubernetes API. The Uffizzi Controller installs on a host cluster in its own namespace.  
+The Uffizzi Controller is a smart proxy service that handles requests from Uffizzi API to the host Kubernetes API. It is a Golang application that installs on a host cluster in its own namespace.  
 [View source code](https://github.com/UffizziCloud/uffizzi_controller)
 
 ### Uffizzi Cluster Operator  
 
-The Uffizzi Cluster Operator is a Kubernetes operator for creating fully managed virtual clusters. It's responsible for:  
+The Uffizzi Cluster Operator is a Kubernetes operator for creating fully managed virtual clusters. It is a Golang application that is responsible for:  
 
  - Creating a virtual cluster  
  - Installing Helm and Source Controller in the virtual cluster  
