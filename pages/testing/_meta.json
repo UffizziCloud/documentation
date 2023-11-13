@@ -1,4 +1,11 @@
 {
-    "ingress-nginx": "Faster E2E Tests (Case Study)",
-    "kubernetes-versions": "Kubernetes Version Testing"
+    "ingress-nginx": {
+        "display": "hidden"
+    },
+    "kubernetes-versions": {
+        "display": "hidden"
+    },
+    "kubernetes-version": {
+        "display": "hidden"
+    }
 }

@@ -1,0 +1,17 @@
+# Environment Isolation
+
+Uffizzi enforces isolation of [ephemeral environments](/core-concepts/ephemeral-environments/) at three levels: [network](#network-level-isolation), [namespace](#namespace-level-isolation), and [process](#process-level-isolation). This ensures that each environment is isolated from other environments running on the same cluster. This is important for security and reliability, such as fair sharing of resources.    
+
+## Network-level Isolation
+
+Each environment created by Uffizzi enforces Kubernetes [Network Policies](https://kubernetes.io/docs/concepts/services-networking/network-policies/) that restrict network traffic that disallows traffic between Uffizzi enviroments. This means that pods in one environment cannot communicate with, nor are discoverable by, pods in another environment.
+
+## Namespace-level Isolation
+
+Each Uffizzi ephemeral environments exists in its own [Namespace](https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/). This includes [virtual clusters](/core-concepts/virtual-clusters) and [dev clusters](/core-concepts/dev-clusters), which are full installations of the Kubernetes API inside a namespace.  
+
+When you delete an environment on Uffizzi, the entire namespaces gets deleted. The result is that everyting, including any persistent volumes, are deleted as well. 
+
+## Process-level Isolation
+
+Uffizzi Cloud customers also benefit from process-level isolation via [gVisor](https://gvisor.dev). Originally developed by Google, gVisor is acts as a container runtime to provide a secure isolation boundary between the host operating system and the application running inside the container. This isolation boundary prevents the application from escaping the container and interfering with other applications running on the host.

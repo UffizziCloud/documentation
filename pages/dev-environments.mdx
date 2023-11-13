@@ -39,3 +39,20 @@ and can greatly reduce the time it takes to onboard new developers.
   >
   </Cards.Card>
 </Cards>
+
+## Benefits
+
+### Standarize Developer Configurations 
+
+An common issue for many development teams is configuration drift, whereby slowly over time developers on a team start customizing their configurations, often as workarounds for various issues they encounter. This practice often leads to two problems:  
+1. **Difficult to onboard new developers** - A lot of time can be wasted debugging issues that are caused by configuration drift.  
+2. **"Works on my machine"** - It might work in the developer's local environment but not when it's deployed to Staging or Production.  
+
+To solve configuration drift, Uffizzi allows teams to standardize on Kubernetes for their application configuration.  
+
+For example, teams can take their Staging or Production configurations written as Helm Charts or Kustomizations and use them in Uffizzi [dev clusters](/dev-environments). This means teams standardize on a single source of truth for your application's configuration.  
+
+### Access to More Compute Power
+
+By using a cloud-based development environment, you can leverage the extra power of remote cloud servers to provide more compute resources to your developers. Uffizzi dev environments are particularly useful for microservices architectures or resource-intensive applications, where the alternative is running a subset of your application services, connecting to externally running services, or emulating services locally.
+

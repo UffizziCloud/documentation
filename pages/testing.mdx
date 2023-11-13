@@ -1,12 +1,13 @@
 # Ephemeral Test Environments on Uffizzi
 
-Uffizzi Test Environments help alleviate three problems that commonly plague software development teams:  
+Uffizzi Test Environments help alleviate four problems that commonly plague software development teams:  
 
-1. **Dirty code in your `main` branch**: Uffizzi provides Dev and QA teams with the ability to rapidly share and review new features before they're merged—catching bugs early and keeping them out of a team's `main` git branch. This capability also empowers a team to simplify their testing process by separating functional testing from integration testing - an individual developer's topic branch can be tested in isolation before merging it with the rest of the team's contributions.
 
-2. **Limited Dev/QA environments**: Uffizzi eliminates problems associated with multiple developers sharing a single or limited number of test environments. With Uffizzi, previews are isolated (one developer's preview won't clobber another's) and ephemeral (they exist only as long as they are needed). New previews can be triggered when important events occur, like when a new PR is opened or a new image tag is created. Then previews environments are destroyed when the PR is closed or on a preset time-based deletion.  If an on-demand environment is broken you can throw it away and create a new one without impacting your teammates.
+2. **Limited Test/QA environments**: Uffizzi eliminates problems associated with multiple developers sharing a single or limited number of test environments. With Uffizzi, test environments are isolated and [ephemeral](/core-concepts/ephemeral-environments), so one developer's changes never affect another's.  
 
 3. **Differences in Kubernetes Versions**: With Uffizzi, you can test your application on the same version of Kubernetes that you'll be deploying to. This helps you catch issues that might arise from differences in Kubernetes versions. See our guide on [Kubernetes Version Testing](https://github.com/UffizziCloud/quickstart-k8s-version-testing).  
+
+4. **Dirty code in your `main` or `development` branch**: Uffizzi provides software teams with the ability to rapidly share and review new features before they're merged—catching bugs early and keeping them out of a team's `main`, `development`, or other shared git branch. This capability also empowers a team to simplify their testing process by separating functional testing from integration testing - an individual developer's topic branch can be tested in isolation before merging it with the rest of the team's contributions.
 
 Uffizzi supports *configuration-as-code*. To configure Uffizzi, you provide a Kubernetes manifests, Helm Charts, or a [`docker-compose.uffizzi.yml`](/compose) file that defines your application stack and how it should be deployed.
 

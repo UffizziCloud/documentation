@@ -1,0 +1,211 @@
+import Image from 'next/image'
+import { Callout, Cards } from 'nextra/components'
+import { Book } from 'lucide-react'
+
+# Better Production Readiness with Kubernetes Version Testing
+
+<Callout>
+    **Did you know?**  
+    You can test against different version of Kubernetes by passing the `--k8s-version` flag to `uffizzi cluster create` command.
+</Callout>  
+
+---
+
+Even in the best of times, the systems we create might fail due to external factors. Let’s take a look at how we can safeguard our applications before release, by testing them against multiple versions of Kubernetes. 
+
+<br />
+<Image
+    src="/images/dilbert-cartoon-quality.png"
+    width={320}
+    height={215}
+    alt="Dilbert cartoon on quality"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+## What is Kuberentes version testing ?
+> In God we trust, everything else we test 
+
+As developers and project leads we can always want to make sure that we get 100% coverage on our projects to make sure that nothing goes awry. There are different kinds of tests we have to implement to ensure that no one is merging code with unintended mistakes which might call long term issues or short term panics. What are the different kinds of tests that can be implemented to build a robust codebase ? Let’s take a look :- 
+
+### Testing the core functionality given external systems work as expected
+
+- **Happy Path Tests**: These ensure that the unit behaves as expected when it receives expected and valid input. Then to make sure that the opposite of this works well we have...  
+
+- **Negative Tests**: They ensure that the unit behaves correctly when it receives bad input or experiences an unexpected situation. These tests can also be called "sad path tests." Now that we know the +ve and -ve side of things, let’s see how far we can go on either side. For this we have...  
+
+- **Boundary Tests**: They focus on the boundary conditions of the input domain, such as the maximum, minimum, just inside/outside boundaries, typical values, and error values. Once we have covered the input and output boundaries of testing, we can consider the prerequisites for the systems and test for that  
+
+- **Failing Tests**: A failing test is one that is expected to fail before the functionality it covers is implemented. In test-driven development (TDD), these tests are written first to fail, and then code is written to make the tests pass. As we start ironing these out, these tests can now be paired with the ones below to make a more robust testing environment  
+
+### Testing core functionality, with volatile external variables
+
+- **Exception Tests**: They determine how a unit responds to exceptional conditions, such as passing null or invalid arguments, or when a resource it depends on is unavailable. This helps the system be resilient to edge cases that might arise from external sources.  
+
+- **Performance Tests**: These assess whether the unit performs its tasks within an acceptable time frame under certain conditions. Not getting expected performance in one part of the system can also hurt the total quality of service. The expected performance of these tests rely heavily on the resources available to the system so it helps adjust the resource available to the system in case of any changes in functionality.  
+
+- **Integration Tests**: These are often included in the unit testing phase to ensure that the interfaces between units work correctly.   
+
+- **Regression Tests**: These are a suite of tests that, once written, are repeatedly run every time a change is made to the code to ensure that the change doesn’t break anything that was previously working.  
+
+- **Smoke Tests**: A subset of the entire test suite that is intended to quickly check whether the unit has any glaring issues. These are usually easy to implement and also one of the first tests which are written.  
+
+- **Production Readiness Tests**: If your application runs and relies on Kubernetes, doing a smoke test for testing against multiple k8s versions will ensure the robustness of the codebase further. Especially for production usage.  
+
+Without any testing implemented, you will probably have to give instructions for developers to not make certain mistakes while coding. These instructions would probably be in the documentation which is not a sustainable way of building a codebase.  
+
+To help alleviate this problem, this blog post will present how one can use Uffizzi to test their application against multiple k8s versions with a few easy steps. But first, let’s look at what are the issues one might face if they don’t test against multiple versions of kubernetes in their development cycle.  
+
+## Implications of not running E2E tests against more than one version of Kubernetes  
+
+Not testing your against multiple Kubernetes versions can lead to several potential issues and implications in both development and production:
+
+### Security 
+
+Kubernetes versions are regularly patched for security vulnerabilities. Not testing against the latest versions could mean that your application may not be secure when deployed on these updated clusters, potentially exposing your application and data to risks.
+
+### Compatibility Issues
+
+Kubernetes is rapidly evolving, with new versions released regularly and these updates can introduce changes to APIs, deprecated features, or altered behaviors. If you don't test against multiple versions, you may not catch compatibility issues that could prevent your application from functioning correctly in different environments.
+
+- **Lack of Forward Compatibility**: Your application might run well on the current version of Kubernetes you are using, but if you do not test on newer versions, you can't be sure if it will work on future releases. This can hinder the ability to upgrade your infrastructure or adopt new features.  
+
+- **Lack of Backward Compatibility**: Similarly, if your application is not tested on older versions of Kubernetes, you cannot guarantee that it will work for users who are running your application on older, albeit supported, Kubernetes clusters.
+
+### Progressive Versioning Challenges 
+
+Complexities and obstacles are introduced as these applications undergo iterative updates and enhancements and keeping them up to date with multiple versions can make all the difference in ensuring that these challenges aren’t faced by the stakeholders. The following are some of the challenges faced :  
+
+- **Upgrade Challenges**: When the time comes to upgrade your Kubernetes clusters, lack of prior testing can lead to a difficult and risky upgrade process. You might encounter unexpected behaviors or downtime, which can affect your users and your reputation.  
+
+- **Reduced Portability**: Kubernetes aims to provide a consistent deployment environment. However, specific configurations and custom resource definitions may behave differently across versions. Without testing across versions, you can't ensure that your application is as portable as you may need it to be.  
+
+### Business Obstacles
+
+Businesses can face potential revenue loss and decreased market competitiveness, emphasizing the need for robust version management and support strategies.  
+
+- **Increased Support Costs**: If customers encounter issues due to incompatibility with their version of Kubernetes, you may face increased support costs. Troubleshooting and fixing these issues post-deployment can be more expensive and time-consuming than proactive testing.  
+
+- **Limited User Base**: If your application only works with specific Kubernetes versions, you limit your potential user base to only those who are on those versions, which can be a small segment if the version is very new or very old.  
+
+- **Lack of Feature Utilization**: New Kubernetes versions often come with new features and enhancements. By not testing against these, you might miss out on opportunities to improve your application by leveraging these new capabilities.  
+
+- **Compliance and Policy Issues**: In some regulated industries, running on supported and compliant infrastructure is mandatory. Not testing on supported Kubernetes versions could put you at odds with compliance requirements.  
+
+To mitigate these risks, it is important to have a robust testing strategy that includes compatibility testing across multiple Kubernetes versions, especially those that are widely adopted and supported by the Kubernetes community. Additionally, keeping an eye on the Kubernetes release notes and deprecation policy will help in planning and maintaining compatibility over time.  
+
+### Example of breaking changes in Kubernetes in the past
+
+As you can see in [this](https://kubernetes.io/blog/2023/03/17/upcoming-changes-in-kubernetes-v1-27/#removal-of-storage-k8s-io-v1beta1-from-csistoragecapacity) piece of documentation which outlines the major changes and removals for Kubernetes version 1.27, the `storage.k8s.io/v1beta1` was deprecated. If you are someone who has a smaller team and hasn’t noticed this change and your application depends on this API, moving to Kubernetes versions 1.27 would now be a hassle and you wouldn’t know until you start seeing failures on your customer’s clusters with your application. It would have been better to implement support for the newer APIs earlier than later.
+
+## How to Test an Application on Multiple Kubernetes Versions 
+
+When testing against multiple Kubernetes versions we first have to figure out how many versions we are going to test against. It’s usually good to support at least 2 more versions of Kubernetes in this case. The easiest way to do this is to keep supporting the version you already are and then support the next two versions which come after and then it is up to you to decide when you want to stop supporting the older versions. 
+
+If we check the [Kubernetes LTS (Long Term Support) releases](https://kubernetes.io/releases/) we can see that there are only 3 minor versions one can support at once.  
+
+Let’s take these three releases listed in the releases page mentioned above and see how Uffizzi can help spin up remote kubernetes virtual clusters. Let’s create three virtual clusters each of a different Kubernetes version to aid in our testing.
+
+### The Setup
+
+Consider an application called “web” which needs to be tested before a production release. We need to test this application against multiple kubernetes versions to make sure it works well on all of them. 
+
+#### Kustomize configuration
+
+“Web” can be deployed on Kubernetes and kustomize can be used for this purpose exactly.  
+
+``` yaml filename="kustomization.yaml"
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - deployment.yaml
+  - ingress.yaml
+  - service.yaml
+```
+
+In the above configuration we have three manifests which will be applied in the cluster for deployment. We have the Deployment itself which runs the container of the application. Then we have the Service through which we can access the endpoints on the pods created by the deployment and the Ingress which helps expose the Service to the outside world.  
+
+#### Github actions configuration  
+
+All the above configurations can be used together to create a github actions pipeline for testing as below. The snippet below can be found in the repo ​​https://github.com/UffizziCloud/quickstart-k8s-version-testing   
+
+``` filename=".github/workflows/e2e.yaml"
+name: k8s version testing e2e
+
+on:
+  pull_request:
+	branches: [ main ]
+	types: [opened,reopened,synchronize,closed]
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  build-image:
+	...
+
+  uffizzi-cluster:
+	name: Kustomize apply to k8s clusters of multiple versions
+	needs:
+  	- build-image
+	if: ${{ github.event_name == 'pull_request' && github.event.action != 'closed' }}
+	runs-on: ubuntu-latest
+	steps:
+  	- name: Checkout
+    	  uses: actions/checkout@v3
+
+  	- name: Create and connect to vcluster
+    	  uses: UffizziCloud/cluster-action@main
+    	  with:
+      	    cluster-name: pr-${{ github.event.pull_request.number }}-1276
+      	    server: https://app.uffizzi.com
+      	    k8s-version: 1.27
+      	    kubeconfig: kubeconfig-1276
+
+  	- name: Create and connect to vcluster
+    	  uses: UffizziCloud/cluster-action@main
+    	  with:
+      	    cluster-name: pr-${{ github.event.pull_request.number }}-1282
+      	    server: https://app.uffizzi.com
+      	    k8s-version: 1.28
+      	    kubeconfig: kubeconfig-1282
+
+  	- name: Apply Kustomize to test the new image
+    	  id: prev
+    	  run: |
+      	    if [[ ${RUNNER_DEBUG} == 1 ]]; then
+          	pwd
+        	ls -la
+      	    fi
+      	    (
+        	cp ./kubeconfig-1276 ./kubeconfig-1282 ./.github/k8s
+        	cd .github/k8s
+        	# Change the image name to those just built and pushed.
+        	kustomize edit set image uffizzi/hello-world-k8s=${{ needs.build-image.outputs.tags }}
+       	 
+       	 
+        	# Apply kustomized manifests to virtual cluster.
+        	kubectl apply --kustomize . --kubeconfig ./kubeconfig-1276
+        	kubectl apply --kustomize . --kubeconfig ./kubeconfig-1282
+      	)
+```
+
+The above is a snippet from the Github actions workflow in the quickstart repository from where you can run a pipeline which will create Uffizzi clusters of version 1.27 and 1.28. Then we are deploying the “web” application on each cluster. 
+
+#### `build-image`  
+
+This job creates a new image from the Dockerfile provided in the repo. The image is pushed from here to a remote repository. The tag of the image is set as output and used in the next job.
+
+#### `uffizzi-cluster`  
+
+The Uffizzi [`cluster-action`](https://github.com/UffizziCloud/cluster-action) is used to create a virtual cluster in Uffizzi Cloud. Here we are creating two clusters and returning two kubeconfigs which will be used by kubectl/kustomize to apply resources on the individual clusters and deploy the applications.
+
+## Next Steps
+
+Now it's time to run E2E tests against the deployed application.   
+
+The above steps also creates an ingress for the application which can be used for run e2e tests.  
+
+Checkout the [`quickstart-k8s-version-testing`](https://github.com/UffizziCloud/quickstart-k8s-version-testing) repo that contains a working example of spinning up kubernetes clusters of multiple versions. If there are issues regarding setting this pipeline up, [reach out to Uffizzi](https://www.uffizzi.com/contact) repo, we are always here to help you out! 
