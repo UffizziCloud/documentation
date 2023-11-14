@@ -11,8 +11,8 @@
     "type": "git",
     "url": "git+https://github.com/UffizziCloud/documentation.git"
   },
-  "author": "Shu Ding <g@shud.in>",
-  "license": "MIT",
+  "author": "Uffizzi Cloud",
+  "license": "Apache 2.0",
   "bugs": {
     "url": "https://github.com/UffizziCloud/documentaion/issues"
   },
