@@ -64,7 +64,7 @@ Open a pull request for `try-uffizzi` branch against `main` in your fork.
 
 ## What To Expect
 
-The PR will trigger a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart/blob/main/.github/workflows/uffizzi-preview.yaml) that creates a Uffizzi Ephemeral Environment for the [microservices application](https://github.com/UffizziCloud/quickstart#architecture-of-this-example-app) defined by the repo. The environment URL will be posted as a comment in your PR issue when the workflow completes, along with a link to the Uffizzi Dashboard where you can view application logs. The environment and comment is deleted when the PR is merged/closed or after 1 hour (configurable).  
+The PR will trigger a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart/blob/main/.github/workflows/uffizzi-cluster.yaml) that creates a Uffizzi Ephemeral Environment for the [microservices application](https://github.com/UffizziCloud/quickstart#architecture-of-this-example-app) defined by the repo. The environment URL will be posted as a comment in your PR issue when the workflow completes, along with a link to the Uffizzi Dashboard where you can view application logs. The environment and comment is deleted when the PR is merged/closed or after 1 hour (configurable).  
 
 <Callout>
     Each ephemeral environment is available at a predictable URL which consists of `https://app.uffizzi.com/` appended with the GitHub pull request domain. For example:  
@@ -77,7 +77,7 @@ The PR will trigger a [GitHub Actions workflow](https://github.com/UffizziCloud/
 
 ## How It Works
 
-Previews are configured with a [Docker Compose template](https://github.com/UffizziCloud/quickstart/blob/main/docker-compose.uffizzi.yml) that describes the application configuration and a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart/blob/main/.github/workflows/uffizzi-preview.yaml) that includes a series of jobs triggered by a `pull_request` event and subsequent `push` events:  
+Previews are configured with a [Docker Compose template](https://github.com/UffizziCloud/quickstart-compose/blob/main/docker-compose.uffizzi.yml) that describes the application configuration and a [GitHub Actions workflow](https://github.com/UffizziCloud/quickstart/blob/main/.github/workflows/uffizzi-cluster.yaml) that includes a series of jobs triggered by a `pull_request` event and subsequent `push` events:  
 
 1. [Build and push images to a container registry](https://github.com/UffizziCloud/quickstart/blob/5699f461f752b0bd787d69abc2cfad3b79e0308b/.github/workflows/uffizzi-preview.yaml#L14-L116)  
 2. [Render a Docker Compose file](https://github.com/UffizziCloud/quickstart/blob/5699f461f752b0bd787d69abc2cfad3b79e0308b/.github/workflows/uffizzi-preview.yaml#L118-L156) from the Docker Compose template and the built images  
