@@ -77,7 +77,7 @@ To connect to an existing Uffizzi cluster, you can run the `update-kubeconfig` c
 ``` bash
 uffizzi cluster update-kubeconfig my-cluster -k ~/.kube/config
 ```
-See the [CLI Reference](references/cli.md#cluster-update-kubeconfig) for how Uffizzi handles kubeconfig updates.
+See the [CLI Reference](/cli/commands/cluster#cluster-update-kubeconfig) for how Uffizzi handles kubeconfig updates.
 
 #### Acessing services created inside the cluster
 
