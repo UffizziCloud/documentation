@@ -4,17 +4,26 @@ Uffizzi CLI is a command line interface for the Uffizzi platform. It allows you 
 
 The Uffizzi CLI allows you to easily interact with the Uffizzi API. To list available commands, you can run `uffizzi` or `uffizzi help`, or to get help on a specific group or subcommand run `uffizzi [GROUP] help` or `uffizzi [GROUP] [SUBCOMMAND] help`.
 
-## Groups and Subcommands
+## Command groups and Subcommands
 
-| Group or Command                     | Subcommands                                         | Description                                   |
+The following are the different commands provided by the Uffizzi CLI divided between the different commands based on the products we support and the ones for managing your uffizzi account.
+
+### Resource Management
+
+| Command                     | Subcommands                                         | Description                                   |
+| ------------------------------------ | --------------------------------------------------- | --------------------------------------------- |
+| [**`compose`**](/cli/commands/compose)      | `create`, `delete`, `describe`, `events`, `list`, `update`      | Manage Docker Compose environments            |
+| [**`cluster`**](/cli/commands/cluster)      | `create`, `delete`, `list`, `update-kubeconfig`             | Manage virtual clusters                       |
+| [**`dev`**](/cli/commands/dev)          | `start`, `stop`                                         | Manage dev clusters                           |
+| [**`connect`**](/cli/commands/connect-deprecated)      | `acr`, `docker_hub`, `docker_registry`, `ecr`, `gcr`, `ghcr`    | Manage connections to external services       |
+| [**`disconnect`**](/cli/commands/disconnect-deprecated)| `acr`, `docker_hub`, `docker_registry`, `ecr`, `gcr`, `ghcr`    | Disconnect account from external services     |
+
+### Administration
+
+| Command                     | Subcommands                                         | Description                                   |
 | ------------------------------------ | --------------------------------------------------- | --------------------------------------------- |
 | [**`account`**](/cli/commands/account)      | `list`, `set-default`                               | Manage your Uffizzi accounts                  |
-| [**`compose`**](/cli/commands/compose)      | `create`, `delete`, `describe`, `events`, `list`, `update`      | Manage Docker Compose environments            |
 | [**`config`**](/cli/commands/config)        | `get-value`, `list`, `set`, `unset`                         | Manage the CLI's configuration                |
-| [**`connect`**](/cli/commands/connect-deprecated)      | `acr`, `docker_hub`, `docker_registry`, `ecr`, `gcr`, `ghcr`    | Manage connections to external services       |
-| [**`cluster`**](/cli/commands/cluster)      | `create`, `delete`, `list`, `update-kubeconfig`             | Manage virtual clusters                       |
-| [**`dev`**](/cli/commands/dev)              | `start`, `stop`                                         | Manage dev clusters                           |
-| [**`disconnect`**](/cli/commands/disconnect-deprecated)| `acr`, `docker_hub`, `docker_registry`, `ecr`, `gcr`, `ghcr`    | Disconnect account from external services     |
 | [**`login`**](/cli/commands/login)          |                                                     | Login to Uffizzi                              |
 | [**`logout`**](/cli/commands/logout)        |                                                     | Logout of Uffizzi                             |
 | [**`project`**](/cli/commands/project)      | `create`, `delete`, `describe`, `list`, `secret`, `set-default` | Manage projects                               |
