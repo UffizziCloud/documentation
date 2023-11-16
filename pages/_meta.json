@@ -27,7 +27,7 @@
     },
     "handbook": "Ephemeral Environments Handbook",
     "architecture": "Architecture",
-    "ingress": "Uffizzi Ingress",
+    "ingress": "Uffizzi Cluster Ingress",
     "compose": "Uffizzi Compose",
     "troubleshooting": "Troubleshooting",
     "-- Products": {

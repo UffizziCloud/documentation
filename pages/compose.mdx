@@ -8,7 +8,7 @@ applications on Uffizzi.
 
 Docker Compose, primarily aimed at local development, encounters certain challenges when adapted for cloud environments, particularly regarding Ingress concepts. To address this, Uffizzi introduces its specialized version, known as Uffizzi Compose.
 
-An Uffizzi Compose file is used for defining and demonstrating multi-container applications on Uffizzi's platform. It's a YAML file structured similarly to Docker Compose, but with specific configurations for Uffizzi's application previews. Uffizzi Compose leverages the Docker Compose custom extension field, [`x-uffizzi`](/compose/reference#uffizzi-extension), for unique configuration needs. While every Uffizzi Compose file aligns with Docker Compose v3.9 standards, the inverse isn't always true. Uffizzi Compose supports only a portion of the broader Docker Compose specifications.  
+An Uffizzi Compose file is a YAML file structured similarly to Docker Compose, but with specific configurations for Uffizzi's application previews. Uffizzi Compose leverages the Docker Compose custom extension field, [`x-uffizzi`](/compose/reference#uffizzi-extension), for unique configuration needs. While every Uffizzi Compose file aligns with Docker Compose v3.9 standards, the inverse isn't always true. Uffizzi Compose supports only a portion of the broader Docker Compose specifications.  
 
 <Cards num={2}>
   <Cards.Card
