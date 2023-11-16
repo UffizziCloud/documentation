@@ -1,0 +1,31 @@
+import { Callout } from 'nextra/components'
+
+# `disconnect` (deprecated)  
+
+<Callout type="warning">
+  This command has been deprecated and will be removed in a future release.
+</Callout>
+
+### SYNOPSIS
+    uffizzi disconnect COMMAND
+
+### DESCRIPTION
+    Revokes a Uffizzi user account access to external services
+
+### COMMANDS
+    COMMAND is one of the following:
+
+    `acr`  
+        Disonnect from Azure Container Registry (azurecr.io).
+
+    `docker-hub`  
+        Disonnect from Docker Hub (hub.docker.com).
+
+    `ecr`  
+        Disonnect from Amazon Elastic Container Registry (amazonaws.com).
+
+    `gcr`  
+        Disonnect from Google Container Registry (gcr.io).
+
+    `ghcr`  
+        Disonnect from GitHub Container Registry (ghcr.io).

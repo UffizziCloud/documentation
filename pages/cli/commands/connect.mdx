@@ -1,0 +1,46 @@
+import { Callout } from 'nextra/components'
+
+# `connect` (deprecated)  
+
+<Callout type="warning">
+  This command has been deprecated and will be removed in a future release.
+</Callout>
+
+### SYNOPSIS
+
+`uffizzi connect` COMMAND [--skip-raise-existence-error] [--update-credential-if-exists]
+
+### DESCRIPTION
+
+Grants a Uffizzi user account access to external services.
+
+### COMMANDS
+
+COMMAND is one of the following:
+
+* `acr`:
+  Connect to Azure Container Registry (azurecr.io).
+
+* `docker-hub`:
+  Connect to Docker Hub (hub.docker.com).
+
+* `docker-registry`:
+  Connect to any registry implementing the Docker Registry HTTP API protocol
+
+* `ecr`:
+  Connect to Amazon Elastic Container Registry (amazonaws.com).
+
+* `gcr`:
+  Connect to Google Container Registry (gcr.io).
+
+* `ghcr`:
+  Connect to GitHub Container Registry (ghcr.io).
+
+
+### FLAGS
+
+* `--skip-raise-existence-error`:
+  If credential exists, do not raise an exception, just print a message.
+
+* `--update-credential-if-exists`:
+  Update credential if it exists.

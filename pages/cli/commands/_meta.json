@@ -9,5 +9,7 @@
     "logout": "logout",
     "preview": "preview",
     "project": "project",
-    "version": "version"
+    "version": "version",
+    "connect": "connect (deprecated)",
+    "disconnect": "disconnect (deprecated)"
 }
