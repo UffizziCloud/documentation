@@ -1,23 +1,76 @@
-# Uffizzi Ingress
+# Uffizzi Cluster Ingress
 
-There are two ingress options on Uffizzi: **`uffizzi`** (default) and **custom**.
+When you create an Ingress within your Virtual Cluster, you may choose for Uffizzi's load balancer to implement it, or you may implement it with your own load balancer. These options are specified with the [`spec.ingressClassName` attribute](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class).
 
 ## Default IngressClass `uffizzi`
 
-The default IngressClass for any ingress created in a virtual cluster or dev cluster is `uffizzi`. If a cluster with this `uffizzi` IngressClass is detected, the Uffizzi Ingress service will automatically generate a hostname and provision a Ingress controller with TLS certificate. 
+If your Ingress does not specify an `ingressClassName`, or it explicitly specifies `ingressClassName: uffizzi`, then Uffizzi's load balancer will implement it using a generated hostname and a trusted HTTPS certificate.
 
-The Ingress service works by overriding any existing hostnames with the following format:
+Any `host` values will be replaced by unique hostnames with the following format:
+```
+<ingress-name>-<virtual-namespace>-<ucluster-name>-<ucluster-id>.uclusters.app.uffizzi.com
+```
 
-`https://<ingress-name>-<virtual-namespace>-<ucluster-name>-<ucluster-id>.uclusters.app.uffizzi.com `
-
-This allows cluster users to quickly start testing their serivces and routing traffic from the outside world without having to configure hostnames manually or provisioning their own Ingress controller. 
+This allows cluster users to quickly start testing their serivces and routing traffic from the outside world without having to configure hostnames manually or provisioning their own Ingress controller.
 
 If you're using [dev clusters](/dev-environments/dev-clusters) with the `uffizzi` IngressClass, you can easily find and open the provisioned hostname with the `uffizzi dev ingress open` command.
+
+### Example: Uffizzi-implemented Ingress
+
+This minimal Ingress does not specify an `ingressClassName`, nor does it specify any `host` within its `rules`. That's fine! Uffizzi will configure the rest:
+
+```yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-example
+  namespace: default
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: service-nginx-example
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+```
+
+After you create this Ingress, look again and see that Uffizzi has updated it:
+
+```yaml {7,9,22}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-example
+  namespace: default
+spec:
+  ingressClassName: uffizzi
+  rules:
+  - host: ingress-example-default-k8s-1-27.uclusters.app.uffizzi.com
+    http:
+      paths:
+      - backend:
+          service:
+            name: service-nginx-example
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+status:
+  loadBalancer:
+    ingress:
+    - ip: 34.71.28.140
+```
+
+HTTP requests to that hostname will be redirected to HTTPS and secured with Uffizzi's trusted certificate. DNS records are already in place. It's ready to serve traffic!
 
 If you wish to define a custom IngressClass, instead, you still can, as described below.
 
 ## Custom IngressClass
 
-You can also bring your own IngressClass, and install the necessary controller on your virtual cluster. Custom IngressClasses on Uffizzi virtual clusters and dev clusters are configured just like they are for a standard Kubernetes cluster.
+You can also bring your own IngressClass, and install the necessary controller and load balancer on your virtual cluster. Custom IngressClasses on Uffizzi virtual clusters and dev clusters are configured just like they are for a standard Kubernetes cluster.
 
-Follow the official Kubernetes documentation for understanding what an IngressClass is and how you can back it up by deploying your own Ingress controller of choice.
+Follow [the official Kubernetes documentation](https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class) for understanding what an IngressClass is and how you can implement it with your chosen Ingress controller. You'll need to specify `spec.ingressClassName` for all your Ingresses implemented by this controller.
