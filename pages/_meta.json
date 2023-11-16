@@ -8,15 +8,15 @@
     },
     "install": "Installing Uffizzi",
     "quickstart": "Quickstart",
-    "core-concepts": "Core Concepts",
-    "cli": "CLI",
     "usage": "Using Uffizzi",
+    "core-concepts": "Core Concepts",
+    "cli": "Uffizzi CLI",
     "-- Use Cases": {
         "type": "separator",
         "title": "Use Cases / Guides"
     },
     "dev-environments": "Dev Environments",
-    "testing": "Test Environments",
+    "testing": "Ephemeral Test Environments",
     "ci": "CI Recipes",
     "staging": "Staging Environments",
     "kubernetes-end-to-end-testing": "Kubernetes E2E Testing",
