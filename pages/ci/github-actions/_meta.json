@@ -1,5 +1,8 @@
 {
     "virtual-cluster": "Virtual Cluster",
     "compose": "Compose",
+    "examples": {
+        "display": "hidden"
+    },
     "oidc": "OIDC"
 }

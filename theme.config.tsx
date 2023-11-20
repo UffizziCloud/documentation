@@ -4,6 +4,8 @@ import { useConfig } from 'nextra-theme-docs'
 
 import * as React from "react"
 import { SVGProps } from "react"
+import { SearchDialog } from "@/components/SearchDialog"
+
 const Logo = (props: SVGProps<SVGSVGElement>) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={80} height={23.11} {...props}>
     <path
@@ -83,6 +85,13 @@ const config: DocsThemeConfig = {
         />
       </>
     )
+  },
+  search: {
+    component: SearchDialog,
+    emptyResult: "No results found",
+    error: "An error occurred",
+    loading: "Loading...",
+    placeholder: "Search..."
   },
   editLink: {
     text: 'Edit this page on GitHub →'
