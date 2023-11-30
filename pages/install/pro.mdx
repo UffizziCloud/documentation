@@ -103,7 +103,41 @@ This command accepts the following options:
 | `--namespace`| The Kubernetes namespace where you want to install Uffizzi                  | `default`            |
 | `--context`  | The Kubernetes context to use when installing Uffizzi                    | Current context      |
 
-After installation, new environments created for account 'gadkins' will be deployed to this host cluster.
+The installation process will take a few minutes to complete. 
+
+### Update DNS
+
+After installation, you will need to update your DNS records.  
+
+To configure DNS, create a record for the Controller hostname (e.g. `*.controller.example.com`) pointing to the IP address or hostname output by the `uffizzi install` command (i.e. the IP or hostname of the Controller service on your host cluster). 
+
+- If the output of the `uffizzi install` command is an IP address, create an `A` record:  
+
+```
+| Type     | Name                             | Data          | TTL    | 
+|----------|----------------------------------|---------------|--------|
+| A        | *.controller.uffizzi.example.com | 34.132.250.26 | 1 hour |
+```
+
+- If the output is a hostname, create a `CNAME` record:    
+
+```
+| Type     | Name                             | Data                                                             | TTL    | 
+|----------|----------------------------------|------------------------------------------------------------------|--------|
+| CNAME    | *.controller.uffizzi.example.com | 9fe86db0368dc670f25a426024e9cbdc.sk1.us-east-1.eks.amazonaws.com | 1 hour |
+```
+
+### Verify installation
+
+Once your DNS records have been updated, you can verify that the Controller and Cluster Operator are working by running the following command:
+
+```bash copy
+uffizzi cluster create
+```
+
+This should create a [virtual cluster](/core-concepts/ephemeral-environments/virtual-clusters) on your host cluster that you can access with `kubectl` or a similar tool.
+
+If you have any issues, reach out on [Slack](https://join.slack.com/t/uffizzi/shared_invite/zt-24toel26u-4JB2pLqdUnrt2qJcWoLcDA) or email [support@uffizzi.com](mailto:support@uffizzi.com).
 
 </Steps>
 
