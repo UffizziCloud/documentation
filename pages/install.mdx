@@ -1,109 +1,35 @@
----
-title: Installation Guide
-description: Install Uffizzi to create ephemeral environments
----
+import { Steps, Cards } from 'nextra/components'
+import { Terminal, Mail } from 'lucide-react';
 
-import { Callout } from 'nextra/components'
-import { Steps } from 'nextra/components'
-import { Tabs } from 'nextra/components'
+# Install Uffizzi
 
-# Installation Guide
+To begin, choose from the following Uffizzi options.
 
- This guide describes how to **install and configure the CLI** for use with [Uffizzi Cloud](/cloud) or a private managed version of [Uffizzi Enterprise](/enterprise).
+## Uffizzi Pro
 
-<Callout className="mt-6" type="info">
-  **Note:** If you want to install the full Uffizzi platform, including the API server, [contact sales](mailto:sales@uffizzi.com) or try the [open-source version](/open-source). You can also reach out on [Slack](https://join.slack.com/t/uffizzi/shared_invite/zt-24toel26u-4JB2pLqdUnrt2qJcWoLcDA) to get help.
-</Callout>
+With Uffizzi Pro you install the Uffizzi **data plane** your own Kubernetes cluster, while Uffizzi Cloud (`app.uffizzi.com`) acts as the control plane. Requests from the CLI are routed through Uffizzi Cloud, while workloads run on your cluster. [Learn more →](/install/pro#architecture)  
 
-## Install
+This option is recommended for most users since it provides the best balance of control and ease of use.  
 
-<Steps>
+<Cards num={2}>
+  <Cards.Card
+    arrow
+    icon={<Terminal />}
+    title="Install Uffizzi Pro"
+    href="/install/pro"
+  >
+  </Cards.Card>
+</Cards>
 
-### Download the Uffizzi CLI
+## Uffizzi Enterprise
 
-<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
-    <Tabs.Tab>
-        ```bash copy
-		brew tap uffizzicloud/tap && \
-		brew install uffizzicloud/tap/uffizzi
-		```
-    </Tabs.Tab>
-    <Tabs.Tab>
-        ```bash copy
-		gem install uffizzi-cli
-		```
-    If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
-    </Tabs.Tab>
-    <Tabs.Tab>
+Uffizzi Enterprise lets you install the Uffizzi **data plane** and **control plane** for a closed-loop configuration. This option is recommended for users who want maximum control or who require an air-gapped configuration. [Learn more →](/install/enterprise#architecture)
 
-        ##### macOS
-        ``` bash copy
-        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
-        ```
-
-        ##### Linux
-        ``` bash copy
-        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
-        ```
-
-        If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
-    </Tabs.Tab>
-</Tabs>
-
-
-### Configure the CLI with the default API server
-
-Select the Uffizzi Cloud default server `app.uffizzi.com`:
-
-```bash copy
-uffizzi config
-# ...
-# Server: (app.uffizzi.com)
-```
-
-### Login or create an account
-
-Running this command will open a browser window where you can create an account or login to an existing account:
-
-```bash copy
-uffizzi login
-# Login successful
-# Select an account: (Press ↑/↓/←/→ arrow to move and Enter to select)
-# ‣ jdoe
-#   Acme Inc
-```
-</Steps>
-
-That's it! You've successfully installed and configured the Uffizzi CLI.
-
-## Update
-
-It's a good idea to regularly check for updates to the Uffizzi CLI. You can update your CLI with the following command:
-
-<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
-    <Tabs.Tab>
-        ```bash copy
-		brew upgrade uffizzicloud/tap/uffizzi
-		```
-    </Tabs.Tab>
-    <Tabs.Tab>
-        ```bash copy
-		gem update uffizzi-cli
-		```
-    </Tabs.Tab>
-    <Tabs.Tab>
-        ##### macOS
-        ``` bash copy
-        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
-        ```
-
-        ##### Linux
-        ``` bash copy
-        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
-        ```
-    </Tabs.Tab>
-</Tabs>
-
-## Next Steps
-
-Checkout the [Qucikstart guides](quickstart), or see the [CLI section](cli) for more information.
+<Cards num={2}>
+  <Cards.Card
+  arrow
+  icon={<Mail />}
+  title="Contact Sales"
+  href="mailto:sales@uffizzi.com">
+  </Cards.Card>
+</Cards>

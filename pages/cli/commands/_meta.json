@@ -5,6 +5,7 @@
     "config": "config",
     "dev": "dev",
     "help": "help",
+    "install": "install",
     "login": "login",
     "logout": "logout",
     "preview": "preview",

@@ -1,0 +1,152 @@
+import { Callout, Steps, Tabs, Cards } from 'nextra/components'
+import Image from 'next/image'
+
+# Install Uffizzi Pro (~ 5 minutes)
+
+Install Uffizzi Pro to create [ephemeral environments](/core-concepts/ephemeral-environments) on your own Kubernetes cluster.  
+
+## Pre-requisites
+
+Items in the following list are required to install Uffizzi:
+
+- [Create a Uffizzi account](https://app.uffizzi.com/sign_up) (to activate your 14-day free trial)  
+- Kubernetes cluster (version 1.19 or greater) with public Internet access
+- A node with at least 1 CPU core and 1GB of memory (2 CPU cores and 2GB of memory recommended)  
+- A domain to use for the Uffizzi Controller hostname (e.g. `uffizzi.example.com`) and permission to update your DNS records  
+- A business email address (required for `letsencrypt` certificate generation)
+
+<Callout type="info">
+    Uffizzi Pro requires that your cluster have public network access, therefore it will **not** install on a local 
+    instance of Kubernetes, such as minikube. To host both the Uffizzi data plane and control plane without the need for over-network communication, email sales@uffizzi.com about [Uffizzi Enterprise](/enterprise).
+</Callout>
+
+## What will be installed? 
+
+- [Uffizzi Controller](/architecture/overview#uffizzi-controller)  
+- [Uffizzi Cluster Operator](/architecture/overview#uffizzi-cluster-operator)  
+- Dependencies: [`cert-manager`](https://cert-manager.io), [`ingress-nginx`](https://github.com/kubernetes/ingress-nginx), [`flux`](https://fluxcd.io)  
+
+### Architecture
+
+Uffizzi CLI requests are sent to the Uffizzi Cloud API (`app.uffizzi.com`), which then forwards the request to your instance of the Uffizzi Controller. The Uffizzi Controller then communicates with your instance of the Uffizzi Cluster Operator to perform the requested action on the host Kubernetes cluster.
+
+<br />
+<Image
+    src="/images/uffizzi-install-architecture.png"
+    width={800}
+    height={540}
+    alt="Uffizzi Installation"
+    className="border rounded-lg overflow-hidden mt-6"
+/>
+<br />
+
+## Get Started
+
+<Steps>
+
+### Download the Uffizzi CLI
+
+<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
+    <Tabs.Tab>
+        ```bash copy
+		brew tap uffizzicloud/tap && \
+		brew install uffizzicloud/tap/uffizzi
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```bash copy
+		gem install uffizzi-cli
+		```
+    If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
+    </Tabs.Tab>
+    <Tabs.Tab>
+
+        ##### macOS
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+
+        ##### Linux
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+
+        If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
+    </Tabs.Tab>
+</Tabs>
+
+### Login or create an account
+
+Running this command will open a browser window where you can create an account or login to an existing account:
+
+```bash
+uffizzi login
+# Login successful
+# Select an account: (Press ↑/↓/←/→ arrow to move and Enter to select)
+# ‣ jdoe
+#   Acme Inc
+```
+
+### Install Uffizzi
+
+```bash copy
+uffizzi install [HOSTNAME] --email [EMAIL] --namespace [NAMESPACE] --context [CONTEXT]
+```
+
+Replace `HOSTNAME` with the hostname to use for the [Uffizzi Controller](/architecture/overview#uffizzi-controller) (e.g. `uffizzi.example.com`).  
+
+This command accepts the following options:  
+
+| Options   | Description                                                                 | Default              |
+|------------|-----------------------------------------------------------------------------|----------------------|
+| `--email` (required)    | A business email address (required for generating `letsencrypt` certificates) | -                  |
+| `--namespace`| The Kubernetes namespace where you want to install Uffizzi                  | `default`            |
+| `--context`  | The Kubernetes context to use when installing Uffizzi                    | Current context      |
+
+After installation, new environments created for account 'gadkins' will be deployed to this host cluster.
+
+</Steps>
+
+After installation, your cluster will be registered with Uffizzi and you will be able to create [ephemeral environments](/core-concepts/ephemeral-environments) from the CLI on your own Kubernetes cluster.
+
+## Update the CLI
+
+It's a good idea to regularly check for updates to the Uffizzi CLI. You can update your CLI with the following command:
+
+<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
+    <Tabs.Tab>
+        ```bash copy
+		brew upgrade uffizzicloud/tap/uffizzi
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```bash copy
+		gem update uffizzi-cli
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ##### macOS
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+
+        ##### Linux
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+## Uninstall Uffizzi
+
+To uninstall Uffizzi, run the following command:
+
+```bash copy
+uffizzi uninstall
+```
+
+This command will remove the Uffizzi Controller and Uffizzi Cluster Operator from your cluster, as well as any other resources created by Uffizzi.
+
+## Next Steps
+
+Checkout the [Qucikstart guides](quickstart), or see the [CLI section](cli) for more information.

@@ -1,0 +1,35 @@
+import { Callout } from 'nextra/components'
+import Image from 'next/image'
+
+# `install`
+
+Install the Uffizzi data plane on a host Kubernetes cluster.
+
+<Callout type="info">
+  This command installs the Uffizzi data plane only, i.e. the [Controller](/architecture/overview#uffizzi-controller), [Cluster Operator](/architecture/overview#uffizzi-cluster-operator), and associated dependencies. 
+  **It does not install the [Uffizzi API](/architecture/overview#uffizzi-api).** Requests from the CLI are routed through Uffizzi Cloud, while workloads run on your cluster.
+</Callout>
+
+
+``` bash
+uffizzi install [HOSTNAME] [OPTIONS]
+```
+
+Replace `HOSTNAME` with the hostname to use for the [Uffizzi Controller](/architecture/overview#uffizzi-controller) (e.g. `uffizzi.example.com`).  
+
+This command accepts the following options:  
+
+| Options   | Description                                                                 | Default              |
+|------------|-----------------------------------------------------------------------------|----------------------|
+| `--email` (required)    | A business email address (required for generating `letsencrypt` certificates) | -                  |
+| `--namespace`| The Kubernetes namespace where you want to install Uffizzi                  | `default`            |
+| `--context`  | The Kubernetes context to use when installing Uffizzi                    | Current context      |
+
+The output of this command is an IP address or hostname where your instance of
+the Uffizzi Controller service is available. Uffizzi expects this service to be publicly
+available at the specified `HOSTNAME`. Before you can create Uffizzi environments
+on your installation, be sure to configure your DNS to point `HOSTNAME` to the IP
+or hostname output by this command.
+
+If you're looking for an air-gapped or local installation of Uffizzi, please contact
+sales@uffizzi.com or try the open-source version (docs.uffizzi.com/open-source).
