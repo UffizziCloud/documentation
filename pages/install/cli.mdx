@@ -1,0 +1,123 @@
+import { Steps, Tabs, Callout } from 'nextra/components'
+
+# Install the Uffizzi CLI
+
+The Uffizzi CLI is the primary interface for interacting with the [Uffizzi platform](/install/platform). It provides a set of commands for managing accounts, projects, and environments.
+
+<Callout type="info">
+    Uffizzi CLI is a standalone tool that works with either [Uffizzi Cloud](/cloud) or a self-hosted installation of [Uffizzi Pro](/pro) or [Uffizzi Enterprise](/enterprise). Alternatively, you can to use the [Dashboard](/usage/dashboard) web UI.
+</Callout>
+
+## Install
+
+<Steps>
+
+### Download the Uffizzi CLI
+
+<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
+    <Tabs.Tab>
+        ```bash copy
+		brew tap uffizzicloud/tap && \
+		brew install uffizzicloud/tap/uffizzi
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```bash copy
+		gem install uffizzi-cli
+		```
+    If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
+    </Tabs.Tab>
+    <Tabs.Tab>
+
+        ##### macOS
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+
+        ##### Linux
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+
+        If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
+    </Tabs.Tab>
+</Tabs>
+
+### Configure the CLI with the default API server
+
+[Uffizzi Cloud](/cloud) and [Uffizzi Pro](/install/pro) users should select `app.uffizzi.com` as the default server:
+
+```bash copy
+uffizzi config
+# ...
+# Server: (app.uffizzi.com)
+```
+
+For [Uffizzi Enterprise](/enterprise) customers, use the API server URL provided by your andminstrator and enter it when prompted.
+
+### Login or create an account
+
+Running this command will open a browser window where you can create an account or login to an existing account:
+
+```bash copy
+uffizzi login
+# Login successful
+# Select an account: (Press ↑/↓/←/→ arrow to move and Enter to select)
+# ‣ jdoe
+#   Acme Inc
+```
+</Steps>
+
+That's it! You've successfully installed and configured the Uffizzi CLI.
+
+## Update
+
+It's a good idea to regularly check for updates to the Uffizzi CLI. You can update your CLI with the following command:
+
+<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
+    <Tabs.Tab>
+        ```bash copy
+		brew upgrade uffizzicloud/tap/uffizzi
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```bash copy
+		gem update uffizzi-cli
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ##### macOS
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+
+        ##### Linux
+        ``` bash copy
+        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
+        ```
+    </Tabs.Tab>
+</Tabs>
+
+## Uninstall
+
+To uninstall the Uffizzi CLI, run:
+
+<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
+    <Tabs.Tab>
+        ```bash copy
+		brew untap uffizzicloud/tap/uffizzi
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ```bash copy
+		gem uninstall uffizzi-cli
+		```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ##### macOS or Linux
+        ``` bash copy
+        rm -rf ~/.config/uffizzi/
+        sudo rm -rf /usr/local/bin/uffizzi
+        ```
+    </Tabs.Tab>
+</Tabs>

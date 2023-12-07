@@ -1,0 +1,42 @@
+import { Steps, Tabs, Cards } from 'nextra/components'
+import { Cloud, Server } from 'lucide-react';
+
+# Uffizzi Platform Options
+
+The Uffizzi platform is a [collection of services](/architecture/overview) that implement ephemeral environments functionality, as well as provide controls for managing accounts, teams, and projects.  
+
+The Uffizzi platform is available as a hosted service via Uffizzi Cloud or for self-hosting via Uffizzi Pro or Uffizzi Enterprise.
+
+<Cards num={3}>
+  <Cards.Card
+    arrow
+    icon={<Cloud />}
+    title="Uffizzi Cloud"
+    href="/install/platform/cloud"
+  >
+  </Cards.Card>
+  <Cards.Card
+    arrow
+    icon={<Server />}
+    title="Uffizzi Pro"
+    href="/install/platform/pro"
+  >
+  </Cards.Card>
+  <Cards.Card
+  arrow
+  icon={<Server />}
+  title="Uffizzi Enterprise"
+  href="/install/platform/enterprise">
+  </Cards.Card>
+</Cards>
+
+## What's the difference?
+
+The following table provides a high-level comparison of the Uffizzi platform options:
+
+
+| Option | Mode | You Install and Manage | Benefits |
+| ------ | ---- | ----------------- | -------- |
+| [Uffizzi Cloud](/cloud) | Hosted (SaaS) | --- | No need to manage infrastructure |
+| [Uffizzi Pro](/install/platform/pro) | Self-hosted | Data plane | Balance of control and ease of use |
+| [Uffizzi Enterprise](/install/platform/enterprise) | Self-hosted | Data plane & control plane | Maximum control |

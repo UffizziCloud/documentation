@@ -3,13 +3,17 @@ import Image from 'next/image'
 
 # Install Uffizzi Pro (~ 5 minutes)
 
-Install Uffizzi Pro to create [ephemeral environments](/core-concepts/ephemeral-environments) on your own Kubernetes cluster.  
+Install Uffizzi Pro to create [ephemeral environments](/core-concepts/ephemeral-environments) on your own infrastructure.  
+
+With Uffizzi Pro you install the Uffizzi data plane on your own Kubernetes cluster, while the Uffizzi Cloud API (app.uffizzi.com) acts as the control plane. Requests from the CLI are routed through Uffizzi Cloud, while workloads run on your cluster. 
+
+Once installed, you'll be able to create and manage ephemeral environments from the [Dashboard](/usage/dashboard) web UI or the [Uffizzi CLI](/cli).
 
 ## Pre-requisites
 
 Items in the following list are required to install Uffizzi:
 
-- [Create a Uffizzi account](https://app.uffizzi.com/sign_up) (to activate your 14-day free trial)  
+- [Create a Uffizzi account](https://app.uffizzi.com/sign_up) (to activate your license and start your 14-day free trial)  
 - Kubernetes cluster (version 1.19 or greater) with public Internet access
 - A node with at least 1 CPU core and 1GB of memory (2 CPU cores and 2GB of memory recommended)  
 - A domain to use for the Uffizzi Controller hostname (e.g. `uffizzi.example.com`) and permission to update your DNS records  
@@ -77,7 +81,7 @@ Uffizzi CLI requests are sent to the Uffizzi Cloud API (`app.uffizzi.com`), whic
 
 ### Login or create an account
 
-Running this command will open a browser window where you can create an account or login to an existing account:
+Running this command will open a browser window where you can create an account or login to an existing account. **This step is required to activate your license.**  
 
 ```bash
 uffizzi login
@@ -87,7 +91,7 @@ uffizzi login
 #   Acme Inc
 ```
 
-### Install Uffizzi
+### Install Uffizzi Pro platform
 
 ```bash copy
 uffizzi install [HOSTNAME] --email [EMAIL] --namespace [NAMESPACE] --context [CONTEXT]
@@ -143,34 +147,6 @@ If you have any issues, reach out on [Slack](https://join.slack.com/t/uffizzi/sh
 
 After installation, your cluster will be registered with Uffizzi and you will be able to create [ephemeral environments](/core-concepts/ephemeral-environments) from the CLI on your own Kubernetes cluster.
 
-## Update the CLI
-
-It's a good idea to regularly check for updates to the Uffizzi CLI. You can update your CLI with the following command:
-
-<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
-    <Tabs.Tab>
-        ```bash copy
-		brew upgrade uffizzicloud/tap/uffizzi
-		```
-    </Tabs.Tab>
-    <Tabs.Tab>
-        ```bash copy
-		gem update uffizzi-cli
-		```
-    </Tabs.Tab>
-    <Tabs.Tab>
-        ##### macOS
-        ``` bash copy
-        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
-        ```
-
-        ##### Linux
-        ``` bash copy
-        curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
-        ```
-    </Tabs.Tab>
-</Tabs>
-
 ## Uninstall Uffizzi
 
 To uninstall Uffizzi, run the following command:
@@ -179,8 +155,9 @@ To uninstall Uffizzi, run the following command:
 uffizzi uninstall
 ```
 
-This command will remove the Uffizzi Controller and Uffizzi Cluster Operator from your cluster, as well as any other resources created by Uffizzi.
+This command will remove the Uffizzi Controller and Uffizzi Cluster Operator from your cluster, as well as any other resources created by Uffizzi. It will also reset your Uffizzi CLI configuration with `app.uffizzi.com` as the default API server.
 
 ## Next Steps
 
-Checkout the [Qucikstart guides](quickstart), or see the [CLI section](cli) for more information.
+Checkout the [Qucikstart guides](/quickstart), or see the [CLI section](/cli) for more information.
+

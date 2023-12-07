@@ -10,12 +10,12 @@
     "quickstart": "Quickstart",
     "usage": "Using Uffizzi",
     "core-concepts": "Core Concepts",
-    "cli": "Uffizzi CLI",
+    "cli": "CLI Reference",
     "-- Use Cases": {
         "type": "separator",
         "title": "Use Cases / Guides"
     },
-    "dev-environments": "Dev Environments",
+    "dev-environments": "Remote Development",
     "testing": "Ephemeral Test Environments",
     "ci": "CI Recipes",
     "staging": "Staging Environments",
@@ -35,26 +35,9 @@
         "title": "Products"
     },
     "cloud": "Uffizzi Cloud",
+    "pro": "Uffizzi Pro",
     "enterprise": "Uffizzi Enterprise",
     "open-source": "Uffizzi Open Source",
-    "products": {
-        "title": "Products",
-        "type": "menu",
-        "items": {
-            "cloud": {
-                "title": "Uffizzi Cloud",
-                "href": "/cloud"
-            },
-            "enterprise": {
-                "title": "Uffizzi Enterprise",
-                "href": "/enterprise"
-            },
-            "open-source": {
-                "title": "Uffizzi Open Source",
-                "href": "/open-source"
-            }
-        }
-    },
     "showcase": {
         "title": "Showcase",
         "type": "menu",

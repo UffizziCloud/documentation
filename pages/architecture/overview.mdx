@@ -23,7 +23,6 @@ The following core components are common to all Uffizzi products, including [Uff
 The Uffizzi API implements the primary REST API for creating and managing ephemeral environments. It is a Ruby on Rails application that is available as a Docker image.  
 [View source code](https://github.com/UffizziCloud/uffizzi)
 
-
 ### Uffizzi Controller  
 
 The Uffizzi Controller is a smart proxy service that handles requests from Uffizzi API to the host Kubernetes API. It is a Golang application that installs on a host cluster in its own namespace.  
@@ -88,3 +87,9 @@ The Uffizzi Cloud Dashboard is a web-based user interface for managing ephemeral
 ### Enterprise Operator
 
 The Uffizzi Enterprise Operator is part of each [Uffizzi Enterprise](/enterprise) installation and includes premium features not included in the open-source [Uffizzi Cluster Operator](#uffizzi-cluster-operator), most notably the ability to customize the cluster sleep / wake funtionality.
+
+## Control Plane vs. Data Plane
+
+The Uffizzi control plane handles the management of ephemeral environments, including creating and destroying ephemeral environments and managing access control. The control plane consists of the Uffizzi API and its dependencies.  
+
+The data plane is responsible for receiving instructions from the control plane and implementing the actual process of creating or destroying ephemeral environments. The data plane is where the actual virtual clusters run and consists of the Uffizzi Controller and Uffizzi Cluster Operator.
