@@ -35,8 +35,8 @@
         "title": "Products"
     },
     "cloud": "Uffizzi Cloud",
-    "pro": "Uffizzi Pro",
-    "enterprise": "Uffizzi Enterprise",
+    "self-hosted": "Uffizzi Self-Hosted",
+    "dedicated": "Uffizzi Dedicated",
     "open-source": "Uffizzi Open Source",
     "showcase": {
         "title": "Showcase",

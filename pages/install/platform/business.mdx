@@ -1,11 +1,11 @@
 import { Callout, Steps, Tabs, Cards } from 'nextra/components'
 import Image from 'next/image'
 
-# Install Uffizzi Pro (~ 5 minutes)
+# Install Uffizzi Business (~ 5 minutes)
 
-Install Uffizzi Pro to create [ephemeral environments](/core-concepts/ephemeral-environments) on your own infrastructure.  
+Install Uffizzi Business to create [ephemeral environments](/core-concepts/ephemeral-environments) on your own infrastructure.  
 
-With Uffizzi Pro you install the Uffizzi data plane on your own Kubernetes cluster, while the Uffizzi Cloud API (app.uffizzi.com) acts as the control plane. Requests from the CLI are routed through Uffizzi Cloud, while workloads run on your cluster. 
+With Uffizzi Business you install the Uffizzi data plane on your own Kubernetes cluster, while the Uffizzi Cloud API (app.uffizzi.com) acts as the control plane. Requests from the CLI are routed through Uffizzi Cloud, while workloads run on your cluster. 
 
 Once installed, you'll be able to create and manage ephemeral environments from the [Dashboard](/usage/dashboard) web UI or the [Uffizzi CLI](/cli).
 
@@ -20,7 +20,7 @@ Items in the following list are required to install Uffizzi:
 - A business email address (required for `letsencrypt` certificate generation)
 
 <Callout type="info">
-    Uffizzi Pro requires that your cluster have public network access, therefore it will **not** install on a local 
+    Uffizzi Business requires that your cluster have public network access, therefore it will **not** install on a local 
     instance of Kubernetes, such as minikube. To host both the Uffizzi data plane and control plane without the need for over-network communication, email sales@uffizzi.com about [Uffizzi Enterprise](/install/enterprise).
 </Callout>
 
@@ -91,7 +91,7 @@ uffizzi login
 #   Acme Inc
 ```
 
-### Install Uffizzi Pro platform
+### Install Uffizzi Business platform
 
 ```bash copy
 uffizzi install [HOSTNAME] --email [EMAIL] --namespace [NAMESPACE] --context [CONTEXT]
