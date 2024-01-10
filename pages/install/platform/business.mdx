@@ -15,7 +15,7 @@ Items in the following list are required to install Uffizzi:
 
 - [Create a Uffizzi account](https://app.uffizzi.com/sign_up) (to activate your license and start your 14-day free trial)  
 - Kubernetes cluster (version 1.19 or greater) with public Internet access
-- A node with at least 1 CPU core and 1GB of memory (2 CPU cores and 2GB of memory recommended)  
+- A node with enough CPU and memory for the Uffizzi installation (2 CPU cores and 2GB of memory recommended) and your workloads 
 - A domain to use for the Uffizzi Controller hostname (e.g. `uffizzi.example.com`) and permission to update your DNS records  
 - A business email address (required for `letsencrypt` certificate generation)
 
@@ -50,7 +50,7 @@ Uffizzi CLI requests are sent to the Uffizzi Cloud API (`app.uffizzi.com`), whic
 
 ### Download the Uffizzi CLI
 
-<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
+<Tabs items={['Homebrew (Recommended)', 'Ruby Gem', 'curl']} defaultIndex="0">
     <Tabs.Tab>
         ```bash copy
 		brew tap uffizzicloud/tap && \
@@ -94,7 +94,7 @@ uffizzi login
 ### Install Uffizzi Business platform
 
 ```bash copy
-uffizzi install [HOSTNAME] --email [EMAIL] --namespace [NAMESPACE] --context [CONTEXT]
+uffizzi install HOSTNAME --email EMAIL --namespace NAMESPACE --context CONTEXT
 ```
 
 Replace `HOSTNAME` with the hostname to use for the [Uffizzi Controller](/architecture/overview#uffizzi-controller) (e.g. `uffizzi.example.com`).  
@@ -113,7 +113,9 @@ The installation process will take a few minutes to complete.
 
 After installation, you will need to update your DNS records.  
 
-To configure DNS, create a record for the Controller hostname (e.g. `*.controller.example.com`) pointing to the IP address or hostname output by the `uffizzi install` command (i.e. the IP or hostname of the Controller service on your host cluster). 
+The `uffizzi install` command will append `controller` as a subdomain to the `HOSTNAME` you provided in Step 3, e.g. `*.controller.uffizzi.example.com`.  
+
+To configure DNS, create a record for this Controller hostname, pointing to the IP address or hostname output by the `uffizzi install` command (i.e. the IP or hostname of the Controller service on your host cluster). The IP or hostname will be returned by the `uffizzi install`.   
 
 - If the output of the `uffizzi install` command is an IP address, create an `A` record:  
 
@@ -123,6 +125,8 @@ To configure DNS, create a record for the Controller hostname (e.g. `*.controlle
 | A        | *.controller.uffizzi.example.com | 34.132.250.26 | 1 hour |
 ```
 
+**Be sure to use your actual IP address for the `Data` field, not the one in the example above.**
+
 - If the output is a hostname, create a `CNAME` record:    
 
 ```
@@ -130,6 +134,8 @@ To configure DNS, create a record for the Controller hostname (e.g. `*.controlle
 |----------|----------------------------------|------------------------------------------------------------------|--------|
 | CNAME    | *.controller.uffizzi.example.com | 9fe86db0368dc670f25a426024e9cbdc.sk1.us-east-1.eks.amazonaws.com | 1 hour |
 ```
+
+**Be sure to use your actual hostname for the `Data` field, not the one in the example above.**
 
 ### Verify installation
 
