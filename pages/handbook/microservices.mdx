@@ -72,7 +72,7 @@ Within your `docker-compose.uffizzi.yml` file, add a new service (within the ser
 
 Once you have the above service added, we will now configure routing rules for Nginx to forward requests to the `voting-app` service and `result-app` service. 
 
-We will create a new configuration file called `nginx.conf` and define how Nginx should handle request routing. Please make sure this file is placed under a directory, and the total size of the directory is smaller than 1 MB compressed (the limit is not applicable if you’re using [Uffizzi CI](../references/uffizzi-ci.md)). If you’re having trouble configuring volumes, read our [troubleshooting guide](../troubleshooting/most-common-problems.md).  
+We will create a new configuration file called `nginx.conf` and define how Nginx should handle request routing. Please make sure this file is placed under a directory, and the total size of the directory is smaller than 1 MB compressed. If you’re having trouble configuring volumes, read our [troubleshooting guide](../troubleshooting/most-common-problems.md).  
 
 There are 2 ways traffic will come into the example app:  
 
