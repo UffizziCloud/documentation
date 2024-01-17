@@ -12,7 +12,7 @@ When you create an Ingress, you may choose for Uffizzi to implement it or implem
 
 ## Compose Environments
 
-All containers of a given [compose environment](/core-concepts) are deployed within a single Kubernetes Pod. Containers within this Pod share their IP network stack—including a single IP address. This means that containers within an environment can all reach each other on `localhost`. This is similar to using Docker's `host` network.
+All containers of a given [compose environment](/core-concepts/ephemeral-environments/compose) are deployed within a single Kubernetes Pod. Containers within this Pod share their IP network stack—including a single IP address. This means that containers within an environment can all reach each other on `localhost`. This is similar to using Docker's `host` network.
 
 This also means that containers must coordinate port usage, but this is no different from processes on a workstation or virtual machine. Be careful not to configure two or more containers to bind to the same TCP port.
 

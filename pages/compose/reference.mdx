@@ -25,7 +25,7 @@ The example above is valid Docker Compose syntax because the `docker-compose` CL
 
 
 ## Services  
-As with Docker Compose, a [Service](compose-spec.md#services-top-level-element) is an abstract definition of a computing resource within an application that can be combined with other components. Services are deployed as containers on Uffizzi. A valid `services` definition is required for a Uffizzi Compose file.  
+As with Docker Compose, a [Service](#services-top-level-element) is an abstract definition of a computing resource within an application that can be combined with other components. Services are deployed as containers on Uffizzi. A valid `services` definition is required for a Uffizzi Compose file.  
 
 ## Ingress  
 [Ingress](#x-uffizzi-ingress) exposes HTTPS routes from outside your preview environment to your application services. Ingress requires a `service` and `port` number as parameters. A valid `ingress` definition is required for a Uffizzi Compose file.
@@ -43,7 +43,7 @@ Each volume has a size limit of 1MB compressed. Support for larger volumes is pl
 
 ## Example Uffizzi Compose file  
 
-This is an example Docker Compose file for Uffizzi CI. If you are using a different CI provider, see the [Getting Started guide](../guides/docker-compose-template.md) for building a Docker Compose template.  
+This is an example Docker Compose file for Uffizzi CI. If you are using a different CI provider, see our [CI guides](/ci) for building a Docker Compose template.  
 
 ``` yaml title="docker-compose.uffizzi.yml"
 # Uffizzi extension
@@ -214,7 +214,7 @@ x-uffizzi:
 #### **delete_preview_when_pull_request_is_closed**  
 
 !!! important
-    This option is for Uffizzi CI only. If you are using a different CI provider, see the [Getting Started guide](../guides/docker-compose-template.md) for building a Docker Compose template.  
+    This option is for Uffizzi CI only. If you are using a different CI provider, see our [CI guides](/ci) for building a Docker Compose template.  
 
 Possible values: `true`, `false`  
 
@@ -701,7 +701,7 @@ Grant access to secrets on a per-service basis using the per-service `secrets` c
  
 #### Uffizzi CI  
 
-Secrets are name/value pairs that provide a mechanism for securing and sharing environment variables across all services in a stack. The secret name/value pairs must be [added in the Uffizzi Dashboard (UI)](../guides/secrets.md).  
+Secrets are name/value pairs that provide a mechanism for securing and sharing environment variables across all services in a stack. The secret name/value pairs must be [added in the Uffizzi Dashboard (UI)](/compose/secrets#add-secrets-element-to-your-docker-compose-template).  
 
 In the following example, `pg_user` and `pg_password` are references to secrets invoked in the [top-level `secrets` key](compose-spec.md#secrets-top-level-element). `POSTGRES_USER` and `POSTGRES_PASSWORD` are the names of secrets that have been added in the Uffizzi Dashboard. Their respective values are injected into the `db` service container once the stack is deployed.  
 
@@ -876,7 +876,7 @@ In this example, a preview will be triggered when a new tag is created for `fron
 #### **deploy_preview_when_pull_request_is_opened**  
 
 !!! important
-    This option is for Uffizzi CI only. If you are using a different CI provider, see the [Getting Started guide](../guides/docker-compose-template.md) for building a Docker Compose template.  
+    This option is for Uffizzi CI only. If you are using a different CI provider, see our [CI guides](/ci) for building a Docker Compose template.  
 
 A service-level option or override  
 
@@ -987,7 +987,7 @@ In this example, `foo` will not be deleted when the pull request is closed becau
 #### **deploy_preview_when_image_tag_is_created**  
 
 !!! important
-    This option is for Uffizzi CI only. If you are using a different CI provider, see the [Getting Started guide](../guides/docker-compose-template.md) for building a Docker Compose template.  
+    This option is for Uffizzi CI only. If you are using a different CI provider, see our [CI guides](/ci) for building a Docker Compose template.  
 
 A service-level option or override  
 
