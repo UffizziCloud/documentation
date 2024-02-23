@@ -56,8 +56,8 @@ In this quickstart, we'll use the CLI to create a virtual cluster on Uffizzi Clo
 
   Or to output just the hostname, run:
 
-  ``` bash
-  kubectl get ingress web --kubeconfig ~/.kube/config -o json | jq '.spec.rules[0].host' | tr -d '"'
+  ```bash copy
+  kubectl get ingress web --output=jsonpath='{.spec.rules[0].host}{"\n"}'
   ```
 
   You can `curl` this address, or copy and paste it into your browser to see the example application running. 
