@@ -17,6 +17,7 @@ Once installed, you'll be able to create and manage ephemeral environments from 
 
 Items in the following list are required to install Uffizzi:
 
+- [Install](/install/cli) the Uffizzi CLI  
 - [Create a Uffizzi account](https://app.uffizzi.com/sign_up) (to activate your license and start your 14-day free trial)  
 - Kubernetes cluster (version 1.19 or greater) with public Internet access
 - A node with enough CPU and memory for the Uffizzi installation (2 CPU cores and 2GB of memory recommended) and your workloads 
@@ -52,23 +53,22 @@ Uffizzi CLI requests are sent to the Uffizzi Cloud API (`app.uffizzi.com`), whic
 
 <Steps>
 
-### Download the Uffizzi CLI
+### Update your CLI
 
-<Tabs items={['Homebrew (Recommended)', 'Ruby Gem', 'curl']} defaultIndex="0">
+Be sure you've got the latest version of the [Uffizzi CLI](/install/cli):  
+
+<Tabs items={['Homebrew', 'Ruby Gem', 'curl']} defaultIndex="0">
     <Tabs.Tab>
         ```bash copy
-		brew tap uffizzicloud/tap && \
-		brew install uffizzicloud/tap/uffizzi
+		brew upgrade uffizzicloud/tap/uffizzi
 		```
     </Tabs.Tab>
     <Tabs.Tab>
         ```bash copy
-		gem install uffizzi-cli
+		gem update uffizzi-cli
 		```
-    If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
     </Tabs.Tab>
     <Tabs.Tab>
-
         ##### macOS
         ``` bash copy
         curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-darwin" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
@@ -78,10 +78,9 @@ Uffizzi CLI requests are sent to the Uffizzi Cloud API (`app.uffizzi.com`), whic
         ``` bash copy
         curl -L -o uffizzi "https://github.com/UffizziCloud/uffizzi_cli/releases/latest/download/uffizzi-linux" && sudo install -c -m 0755 uffizzi /usr/local/bin && rm -f uffizzi
         ```
-
-        If you plan to use [`uffizzi dev`](/cli/commands/dev), you will also need to download the [Skaffold CLI](https://skaffold.dev/install/#standalone-binary) as a dependency.
     </Tabs.Tab>
 </Tabs>
+
 
 ### Login or create an account
 
@@ -117,16 +116,16 @@ The installation process will take a few minutes to complete.
 
 After installation, you will need to update your DNS records.  
 
-The `uffizzi install` command will append `controller` as a subdomain to the `HOSTNAME` you provided in Step 3, e.g. `*.controller.uffizzi.example.com`.  
+The `uffizzi install` command will append `controller` as a subdomain to the `HOSTNAME` you provided in Step 3, e.g. `*.uffizzi.example.com`.  
 
 To configure DNS, create a record for this Controller hostname, pointing to the IP address or hostname output by the `uffizzi install` command (i.e. the IP or hostname of the Controller service on your host cluster). The IP or hostname will be returned by the `uffizzi install`.   
 
 - If the output of the `uffizzi install` command is an IP address, create an `A` record:  
 
 ```
-| Type     | Name                             | Data          | TTL    | 
-|----------|----------------------------------|---------------|--------|
-| A        | *.controller.uffizzi.example.com | 34.132.250.26 | 1 hour |
+| Type     | Name                  | Data          | TTL    | 
+|----------|-----------------------|---------------|--------|
+| A        | *.uffizzi.example.com | 34.132.250.26 | 1 hour |
 ```
 
 **Be sure to use your actual IP address for the `Data` field, not the one in the example above.**
@@ -134,9 +133,9 @@ To configure DNS, create a record for this Controller hostname, pointing to the 
 - If the output is a hostname, create a `CNAME` record:    
 
 ```
-| Type     | Name                             | Data                                                             | TTL    | 
-|----------|----------------------------------|------------------------------------------------------------------|--------|
-| CNAME    | *.controller.uffizzi.example.com | 9fe86db0368dc670f25a426024e9cbdc.sk1.us-east-1.eks.amazonaws.com | 1 hour |
+| Type     | Name                  | Data                                                             | TTL    | 
+|----------|-----------------------|------------------------------------------------------------------|--------|
+| CNAME    | *.uffizzi.example.com | 9fe86db0368dc670f25a426024e9cbdc.sk1.us-east-1.eks.amazonaws.com | 1 hour |
 ```
 
 **Be sure to use your actual hostname for the `Data` field, not the one in the example above.**
@@ -162,10 +161,10 @@ After installation, your cluster will be registered with Uffizzi and you will be
 To uninstall Uffizzi, run the following command:
 
 ```bash copy
-uffizzi uninstall
+uffizzi uninstall --namespace NAMESPACE
 ```
 
-This command will remove the Uffizzi Controller and Uffizzi Cluster Operator from your cluster, as well as any other resources created by Uffizzi. It will also reset your Uffizzi CLI configuration with `app.uffizzi.com` as the default API server.
+This command will remove the Uffizzi Controller and Uffizzi Cluster Operator from the `NAMESPACE` of your cluster, as well as any other resources created by Uffizzi. Your account will be configured to use the default Uffizzi Cloud Controller and Operator.  
 
 ## Next Steps
 
